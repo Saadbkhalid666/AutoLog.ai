@@ -1,3 +1,4 @@
+import os
 from flask import Flask # type: ignore
 from flask_admin import Admin   # type: ignore
 from flask_admin.contrib.sqla import ModelView # type: ignore
@@ -5,8 +6,14 @@ from config import Config
 from utils.db import db
 from routes.auth_route import auth_bp
 from models.User import User
+from flask_mail import Mail
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
+
+mail = Mail()
+
+
+ 
 
 def create_app():
     app = Flask(__name__)
@@ -16,6 +23,9 @@ def create_app():
     # Initialize DB
     db.init_app(app)
 
+    db.init_app(app)
+    mail.init_app(app)
+    app.config()
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
 
