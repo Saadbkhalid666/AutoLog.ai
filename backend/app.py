@@ -2,8 +2,8 @@ import os
 from flask import Flask # type: ignore
 from flask_admin import Admin   # type: ignore
 from flask_admin.contrib.sqla import ModelView # type: ignore
-from config import Config
 from utils.extensions import db
+from configuration.config import Config
 from routes.auth_route import auth_bp
 from models.User import User
 from utils.extensions import mail
@@ -31,7 +31,7 @@ def create_app():
 
     # Create DB tables
     with app.app_context():
-        db.create_all()
+        db.create_all() 
 
     return app
 
