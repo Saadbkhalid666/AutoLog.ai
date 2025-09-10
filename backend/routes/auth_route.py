@@ -1,7 +1,7 @@
 import time
 from flask import Blueprint, request, jsonify # type: ignore
 from utils.extensions import db
-from models.User import User
+from models.User import User # type: ignore
 from utils.generate_otp import generate_otp
 from utils.send_otp import send_otp
 
@@ -73,9 +73,9 @@ def verify_otp():
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.json
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
-    user = User.query.filter_by(username = username, password = password).first()
+    user = User.query.filter_by(email=email, password=password).first()
     if user:
         return jsonify({"message": "Login successful!"})
     else:

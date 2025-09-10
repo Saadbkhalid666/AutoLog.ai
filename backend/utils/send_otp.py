@@ -1,6 +1,6 @@
 from flask_mail import Message #type: ignore
 from utils.extensions import mail
-from config import Config
+from configuration.config import Config
 from flask import render_template_string #type: ignore
 from datetime import datetime
 
