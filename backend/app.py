@@ -6,7 +6,7 @@ from config import Config
 from utils.db import db
 from routes.auth_route import auth_bp
 from models.User import User
-from flask_mail import Mail
+from flask_mail import Mail # type: ignore
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -18,14 +18,11 @@ mail = Mail()
 def create_app():
     app = Flask(__name__)
 
-    app.config.from_object(Config)  # <-- Move this line up
-
+    app.config.from_object(Config)
     # Initialize DB
     db.init_app(app)
 
-    db.init_app(app)
     mail.init_app(app)
-    app.config()
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
 
