@@ -3,14 +3,13 @@ from flask import Flask # type: ignore
 from flask_admin import Admin   # type: ignore
 from flask_admin.contrib.sqla import ModelView # type: ignore
 from config import Config
-from utils.db import db
+from utils.extensions import db
 from routes.auth_route import auth_bp
 from models.User import User
-from flask_mail import Mail # type: ignore
+from utils.extensions import mail
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-mail = Mail()
 
 
  
