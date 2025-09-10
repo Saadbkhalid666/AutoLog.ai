@@ -23,7 +23,7 @@ def register():
         return jsonify({"message": "User with this username already exists."}), 400
 
     # Send OTP email
-    send_otp(email, "AutoLog.ai OTP Verification", f"Your OTP code is {otp}")
+    send_otp(email,  username=username, otp=otp)
 
     # Store temporary user data
     temporary_users[otp] = {
