@@ -1,7 +1,7 @@
-from flask_mail import Message
+from flask_mail import Message #type: ignore
 from utils.extensions import mail
 from config import Config
-from flask import render_template_string
+from flask import render_template_string #type: ignore
 from datetime import datetime
 
 HTML_TEMPLATE = """

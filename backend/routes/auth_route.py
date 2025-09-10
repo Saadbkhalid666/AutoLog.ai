@@ -1,5 +1,5 @@
 import time
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify # type: ignore
 from utils.extensions import db
 from models.User import User
 from utils.generate_otp import generate_otp
@@ -68,3 +68,15 @@ def verify_otp():
     del temporary_users[otp]
 
     return jsonify({"message": "OTP verified and user created successfully!"})
+
+
+@auth_bp.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+    user = User.query.filter_by(username = username, password = password).first()
+    if user:
+        return jsonify({"message": "Login successful!"})
+    else:
+        return jsonify({"message":"User not found!"}), 404
