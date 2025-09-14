@@ -9,6 +9,7 @@ from models.User import User
 from utils.extensions import mail
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
+from flask_cors import CORS # type: ignore
 
 
 
@@ -16,6 +17,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/auth/*": {"origins": "http://localhost:4200"}})
+
 
     app.config.from_object(Config)
     # Initialize DB
