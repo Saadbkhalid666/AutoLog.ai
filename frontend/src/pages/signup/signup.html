@@ -7,14 +7,14 @@
   </head>
   <body class="flex justify-center items-center min-h-screen">
     <div
-      class="signup-form-container border-[#00f0ff] border-2 rounded-xl p-6 w-[90%] max-w-md flex justify-center items-center shadow-md shadow-neon"
+      class="signup-form-container border-[#1a9fff] border-2 rounded-xl p-6 w-[90%] max-w-md flex justify-center items-center shadow-md shadow-neon"
     >
       <form
         [formGroup]="signupForm"
         (ngSubmit)="Submit()"
         class="signup-form flex flex-col justify-center items-center gap-4 w-full"
       >
-        <h1 class="signup-font text-3xl md:text-4xl text-[#1a9fff] font-bold">Sign Up</h1>
+        <h1 class="signup-font text-3xl md:text-4xl text-[#00f0ff] font-bold">Sign Up</h1>
 
         <div class="form-group flex flex-col gap-3 w-full">
           <input
@@ -22,7 +22,7 @@
             placeholder="Enter Your Username:"
             formControlName="username"
             required
-            class="p-2 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:border-[#00f0ff]"
+            class="p-2  rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100  bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
           />
           <span
             *ngIf="username?.touched && username?.errors?.['required']"
@@ -35,7 +35,7 @@
             placeholder="Enter Email:"
             formControlName="email"
             required
-            class="p-2 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:border-[#00f0ff]"
+            class="p-2  rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100  bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
           />
           <span *ngIf="email?.touched && email?.errors?.['required']" class="text-red-500 text-sm"
             >Email is required!</span
@@ -47,9 +47,8 @@
             placeholder="Enter Password:"
             formControlName="password"
             required
-            class="p-2 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:border-[#00f0ff]"
+            class="p-2  rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100  bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
           />
-          <!-- Required Error -->
           <span
             *ngIf="password?.touched && password?.errors?.['required']"
             class="text-red-500 text-sm"
@@ -57,7 +56,6 @@
             Password is required!
           </span>
 
-          <!-- MinLength Error -->
           <span
             *ngIf="password?.touched && password?.errors?.['minlength']"
             class="text-red-500 text-sm"
@@ -70,7 +68,7 @@
 
         <button
           type="submit"
-          class="btn w-full py-2 bg-[#00f0ff] text-black font-semibold rounded-md hover:bg-[#2990d9] transition-all"
+          class="btn w-full py-2 hover:text-white focus:text-white duration-150  bg-[#1a9fff] text-black font-semibold rounded-md hover:bg-[#00f0ff] transition-all"
         >
           Sign Up
         </button>
