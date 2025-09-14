@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AuthService, User } from '../../services/auth'; 
+
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -10,10 +12,11 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 })
 export class Signup {
   signupForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    username: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [Validators.required, Validators.minLength(6)]),
   });
+
   get username() {
     return this.signupForm.get('username');
   }
@@ -26,14 +29,28 @@ export class Signup {
 
   successMsg = '';
   errorMsg = '';
+  loading=false;
+
+  constructor(private authService: AuthService) {}
 
   Submit() {
     if (this.signupForm.valid) {
-      console.log(this.signupForm.value);
-      this.successMsg = 'Signup successful !';
-      this.errorMsg = '';
+      this.loading=true;
+      const user: User = this.signupForm.value as User;
+
+      this.authService.signup(user).subscribe({
+        next: (res) => {
+          this.successMsg = 'Registration Successful!';
+          this.errorMsg = '';
+          this.loading=false;
+        },
+        error: (err) => {
+          this.errorMsg = 'SignUp Failed. Please try again.';
+          this.successMsg = '';
+        },
+      });
     } else {
-      this.errorMsg = 'Please fill the form correctly ';
+      this.errorMsg = 'Form is invalid!';
       this.successMsg = '';
     }
   }
