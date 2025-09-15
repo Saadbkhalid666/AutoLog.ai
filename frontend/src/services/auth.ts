@@ -23,4 +23,7 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials);
   }
+  verifyOtp(otpData:{otp:string}): Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/verify-otp`, otpData);
+  }
 }
