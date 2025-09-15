@@ -60,6 +60,7 @@ export class Otp {
           this.loading = false;
           this.success = "OTP Verified Successfully!";
           this.err = "";
+          this.otpForm.reset();
         },
         error: (err) => {
           this.err = "OTP Verification Failed.";
