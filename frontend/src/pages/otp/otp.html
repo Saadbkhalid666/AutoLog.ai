@@ -29,8 +29,8 @@
 
       </div>
 
-        <div *ngIf="err" class="text-red-500 text-center">{{ err }}</div>
-        <div *ngIf="success" class="text-green-500 text-center">{{ success }}</div>
+        <div *ngIf="err" class="text-red-500 text-center bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md">{{ err }}</div>
+        <div *ngIf="success" class="text-green-500 text-center bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md">{{ success }}</div>
       <button
         type="submit"
         [disabled]="loading"

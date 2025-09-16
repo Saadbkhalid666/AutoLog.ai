@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth'; // path adjust karna ho sakta hai
+import { AuthService } from '../../services/auth'; 
 
 @Component({
   selector: 'app-otp',
@@ -15,7 +15,7 @@ export class Otp {
   loading = false;
   err = "";
   success = "";
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, ) {
     this.otpForm = this.fb.group({
       digits: this.fb.array<FormControl<string | null>>(
         Array(6).fill('').map(() => new FormControl('', { nonNullable: false }))
@@ -58,14 +58,21 @@ export class Otp {
       this.authService.verifyOtp({ otp }).subscribe({
         next: (res) => {
           this.loading = false;
-          this.success = "OTP Verified Successfully!";
-          this.err = "";
-          this.otpForm.reset();
+
+            this.success = "OTP Verified Successfully!";
+            this.err = "";
+          setTimeout(()=>{
+            this.success = "";
+          },2000)
+            this.otpForm.reset();
         },
         error: (err) => {
           this.err = "OTP Verification Failed.";
           this.success = "";
           this.loading = false;
+          setTimeout(()=>{
+            this.err = "";
+          },2000)
         }
       });
     } else {
