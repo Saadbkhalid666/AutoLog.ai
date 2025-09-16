@@ -43,10 +43,15 @@ export class Signup {
           this.successMsg = 'Registration Successful!';
           this.errorMsg = '';
           this.loading=false;
+          setTimeout(()=>{
+            this.successMsg=''
+          },3000)
         },
         error: (err) => {
           this.errorMsg = 'SignUp Failed. Please try again.';
           this.successMsg = '';
+          this.loading=false;
+          setTimeout(()=>{this.errorMsg=''},3000)
         },
       });
     } else {
