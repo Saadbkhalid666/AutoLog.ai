@@ -6,91 +6,62 @@
     <title>Sign Up | AutLog</title>
     <link rel="icon" href="../../assets/images/autolog-logo.png">
   </head>
-  <body class="flex justify-center items-center min-h-screen">
+<body class="bg-[#0a0a0a] min-h-screen flex justify-center items-center">
+
+  <!-- Toast container -->
+  <div class="fixed top-5 right-5 flex flex-col gap-3 z-50">
     <div
-      class="signup-form-container border-[#1a9fff] border-2 rounded-xl p-6 w-[90%] max-w-md flex justify-center items-center shadow-md shadow-neon"
+      *ngFor="let toast of toasts"
+      [ngClass]="{
+        'bg-green-500': toast.type === 'success',
+        'bg-red-500': toast.type === 'error'
+      }"
+      class="text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out animate-slide-in-out"
     >
-      <form
-        [formGroup]="signupForm"
-        (ngSubmit)="Submit()"
-        class="signup-form flex flex-col justify-center items-center gap-4 w-full"
-      >
-        <h1 class="signup-font text-3xl md:text-4xl text-[#00f0ff] font-bold">Sign Up</h1>
-
-        <div class="form-group flex flex-col gap-3 w-full">
-          <input
-            type="text"
-            placeholder="Enter Your Username:"
-            formControlName="username"
-            required
-            class="p-2 rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100 bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
-          />
-          <span
-            *ngIf="username?.touched && username?.errors?.['required']"
-            class="text-red-500 text-sm"
-            >Username is required!</span
-          >
-
-          <input
-            type="email"
-            placeholder="Enter Email:"
-            formControlName="email"
-            required
-            class="p-2 rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100 bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
-          />
-          <span *ngIf="email?.touched && email?.errors?.['required']" class="text-red-500 text-sm"
-            >Email is required!</span
-          >
-          <span *ngIf="email?.errors?.['email']" class="text-red-500 text-sm"
-            >Email Must Ends With @gmail.com</span
-          >
-
-          <input
-            type="password"
-            placeholder="Enter Password:"
-            formControlName="password"
-            required
-            class="p-2 rounded-md border-b border-gray-400 placeholder:font-serif placeholder:text-gray-400 focus:placeholder:text-gray-100 bg-transparent text-white focus:outline-none focus:border-[#1a9fff]"
-          />
-          <span
-            *ngIf="password?.touched && password?.errors?.['required']"
-            class="text-red-500 text-sm"
-          >
-            Password is required!
-          </span>
-
-          <span
-            *ngIf="password?.touched && password?.errors?.['minlength']"
-            class="text-red-500 text-sm"
-          >
-            Password must be at least 6 characters long!
-          </span>
-
-          >
-        </div>
-        <button
-          type="submit"
-          [disabled]="loading"
-          class="btn w-full py-2 duration-150 font-semibold rounded-md transition-all bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white focus:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
-        >
-          <span *ngIf="!loading">Sign Up</span>
-
-          <span *ngIf="loading" class="flex items-center gap-2">
-            <span
-              class="animate-spin border-2 border-t-transparent border-white rounded-full w-4 h-4"
-            ></span>
-            Please wait...
-          </span>
-        </button>
-
-        <p class="text-gray-400 text-sm">
-          Already have an account?
-          <a routerLink="/login" class="text-[#1a9fff] hover:underline">Login</a>
-        </p>
-
-        <p class="text-green-400  bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md text-center">{{ successMsg }}</p>
-        <p class="text-red-400 text-center  bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md">{{ errorMsg }}</p>
-      </form>
+      {{ toast.message }}
     </div>
-  </body>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="signup-form-container border-[#1a9fff] border-2 rounded-xl p-6 w-[90%] max-w-md flex flex-col items-center shadow-md shadow-neon">
+    <form [formGroup]="signupForm" (ngSubmit)="Submit()" class="w-full flex flex-col gap-4">
+      <h1 class="signup-font text-3xl md:text-4xl text-[#00f0ff] font-bold text-center">Sign Up</h1>
+
+      <div class="flex flex-col gap-3">
+        <input type="text" placeholder="Enter Username" formControlName="username"
+          class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+        />
+        <span *ngIf="username?.touched && username?.errors?.['required']" class="text-red-500 text-sm">Username is required!</span>
+
+        <input type="email" placeholder="Enter Email" formControlName="email"
+          class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+        />
+        <span *ngIf="email?.touched && email?.errors?.['required']" class="text-red-500 text-sm">Email is required!</span>
+        <span *ngIf="email?.errors?.['email']" class="text-red-500 text-sm">Email must be valid!</span>
+
+        <input type="password" placeholder="Enter Password" formControlName="password"
+          class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+        />
+        <span *ngIf="password?.touched && password?.errors?.['required']" class="text-red-500 text-sm">Password is required!</span>
+        <span *ngIf="password?.touched && password?.errors?.['minlength']" class="text-red-500 text-sm">Password must be at least 6 characters!</span>
+      </div>
+
+      <button type="submit" [disabled]="loading"
+        class="w-full py-2 mt-4 font-semibold rounded-md bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+      >
+        <span *ngIf="!loading">Sign Up</span>
+        <span *ngIf="loading" class="flex items-center gap-2">
+          <span class="animate-spin border-2 border-t-transparent border-white rounded-full w-4 h-4"></span>
+          Please wait...
+        </span>
+      </button>
+
+      <p class="text-gray-400 text-sm text-center mt-2">
+        Already have an account?
+        <a routerLink="/login" class="text-[#1a9fff] hover:underline">Login</a>
+      </p>
+    </form>
+  </div>
+</body>
+
 </html>

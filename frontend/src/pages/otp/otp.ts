@@ -11,10 +11,20 @@ import { AuthService } from '../../services/auth';
   styleUrls: ['./otp.css']
 })
 export class Otp {
+
+    toasts: { message: string; type: 'success' | 'error' }[] = [];
+
+  showToast(message: string, type: 'success' | 'error' = 'success') {
+    const toast = { message, type };
+    this.toasts.push(toast);
+
+    setTimeout(() => {
+      this.toasts = this.toasts.filter(t => t !== toast);
+    }, 3000); 
+  }
+
   otpForm: FormGroup<{ digits: FormArray<FormControl<string | null>> }>;
   loading = false;
-  err = "";
-  success = "";
   constructor(private fb: FormBuilder, private authService: AuthService, ) {
     this.otpForm = this.fb.group({
       digits: this.fb.array<FormControl<string | null>>(
@@ -38,7 +48,7 @@ export class Otp {
       nextInput.focus();
     }
   }
-
+  
   onKeyDown(event: KeyboardEvent, index: number) {
     if (event.key === 'Backspace' && !this.getControl(index).value && index > 0) {
       const prevInput = (event.target as HTMLInputElement).parentElement?.children[index - 1] as HTMLInputElement;
@@ -49,30 +59,22 @@ export class Otp {
   getOtp(): string {
     return this.digits.value.join('');
   }
-
+  
   onSubmit() {
     if (this.otpForm.valid) {
       this.loading = true;
       const otp = this.getOtp();
-
+      
       this.authService.verifyOtp({ otp }).subscribe({
         next: (res) => {
           this.loading = false;
-
-            this.success = "OTP Verified Successfully!";
-            this.err = "";
-          setTimeout(()=>{
-            this.success = "";
-          },2000)
+          
+          this.showToast('OTP Verified Successfully!', 'success');
             this.otpForm.reset();
         },
         error: (err) => {
-          this.err = "OTP Verification Failed.";
-          this.success = "";
           this.loading = false;
-          setTimeout(()=>{
-            this.err = "";
-          },2000)
+          this.showToast('Invalid OTP. Try again!', 'error');
         }
       });
     } else {
