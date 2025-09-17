@@ -1,9 +1,18 @@
-from flask_mail import Message #type: ignore
-from utils.extensions import mail
-from configuration.config import Config
-from flask import render_template_string #type: ignore
+import os
+from flask import render_template_string
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from datetime import datetime
+from dotenv import load_dotenv
 
+# Load .env variables
+load_dotenv()
+
+# Environment variables
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+VERIFIED_EMAIL = os.getenv("VERIFIED_EMAIL")
+
+# HTML template
 HTML_TEMPLATE = """
 <!doctype html>
 <html>
@@ -28,10 +37,15 @@ HTML_TEMPLATE = """
 """
 
 def send_otp(email, otp, username=None):
-    subject = "Your AutoLog.ai OTP Code"
-    sender = "AutoLog.ai"
+    """
+    Sends OTP email using SendGrid
+    """
+    if not SENDGRID_API_KEY or not VERIFIED_EMAIL:
+        raise ValueError("SendGrid API key or verified email not set in .env")
 
-    # Plain-text fallback
+    subject = "Your AutoLog.ai OTP Code"
+
+    # Plain text fallback
     plain_body = f"Your AutoLog.ai OTP code is: {otp}\nThis code will expire in 5 minutes."
 
     # Render HTML body
@@ -42,8 +56,18 @@ def send_otp(email, otp, username=None):
         year=datetime.utcnow().year
     )
 
-    msg = Message(subject, sender=sender, recipients=[email])
-    msg.body = plain_body
-    msg.html = html_body
+    # Build SendGrid Mail object
+    message = Mail(
+        from_email=VERIFIED_EMAIL,
+        to_emails=email,
+        subject=subject,
+        plain_text_content=plain_body,
+        html_content=html_body
+    )
 
-    mail.send(msg)
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(f"✅ OTP email sent! Status: {response.status_code}")
+    except Exception as e:
+        print(f"❌ Error sending email: {e}")
