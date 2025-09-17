@@ -10,9 +10,7 @@ from utils.extensions import mail
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 from flask_cors import CORS # type: ignore
-
-
-
+ 
  
 
 def create_app():
