@@ -4,50 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OTP Verification | AutoLog</title>
-    <link rel="icon" href="../../assets/images/autolog-logo.png">
+    <link rel="icon" href="../../assets/images/autolog-logo.png" />
   </head>
   <body>
-    <div class="flex justify-center items-center min-h-screen">
-  <div
-    class="flex flex-col items-center p-6 border border-[#1a9fff] rounded-xl shadow-md shadow-neon w-[90%] max-w-md"
-  >
-    <h1 class="text-3xl md:text-4xl text-[#00f0ff] otp-font mb-6">
-      OTP Verification
-    </h1>
-
-    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="w-full flex flex-col gap-6">
-      <div formArrayName="digits" class="flex justify-center gap-3 mb-4">
-        <input
-          *ngFor="let control of digits.controls; let i = index"
-          type="text"
-          maxlength="1"
-          class="md:w-12 md:h-14 w-8 h-10 text-center text-xl font-bold border-2 text-white border-gray-300 rounded-lg focus:border-[#1a9fff] focus:ring focus:ring-[#00f0ff]/50 outline-none"
-          [formControlName]="i"
-          (input)="onInput($event, i)"
-          (keydown)="onKeyDown($event, i)"
-        />
-
-      </div>
-
-        <div *ngIf="err" class="text-red-500 text-center bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md">{{ err }}</div>
-        <div *ngIf="success" class="text-green-500 text-center bg-gray-800 w-[max-content] p-4 fixed top-0 right-0 mt-2 mr-2 rounded-md">{{ success }}</div>
-      <button
-        type="submit"
-        [disabled]="loading"
-        class="btn w-full py-2 duration-150 font-semibold rounded-md transition-all bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white focus:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+    <!-- Toast container -->
+    <div class="fixed top-5 right-5 flex flex-col gap-3 z-50" *ngIf="toasts.length > 0">
+      <div
+        *ngFor="let toast of toasts"
+        [ngClass]="{
+          'bg-green-500': toast.type === 'success',
+          'bg-red-500': toast.type === 'error'
+        }"
+        class="text-white px-4 py-2 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out animate-slide-in-out"
       >
-        <span *ngIf="!loading">Verify OTP</span>
+        {{ toast.message }}
+      </div>
+    </div>
 
-        <span *ngIf="loading" class="flex items-center gap-2">
-          <span
-            class="animate-spin border-2 border-t-transparent border-white rounded-full w-4 h-4"
-          ></span>
-          Please wait...
-        </span>
-      </button>
-    </form>
-  </div>
-</div>
+    <div class="flex justify-center items-center min-h-screen">
+      <div
+        class="flex flex-col items-center p-6 border border-[#1a9fff] rounded-xl shadow-md shadow-neon w-[90%] max-w-md"
+      >
+        <h1 class="text-3xl md:text-4xl text-[#00f0ff] otp-font mb-6">OTP Verification</h1>
 
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="w-full flex flex-col gap-6">
+          <div formArrayName="digits" class="flex justify-center gap-3 mb-4">
+            <input
+              *ngFor="let control of digits.controls; let i = index"
+              type="text"
+              maxlength="1"
+              class="md:w-12 md:h-14 w-8 h-10 text-center text-xl font-bold border-2 text-white border-gray-300 rounded-lg focus:border-[#1a9fff] focus:ring focus:ring-[#00f0ff]/50 outline-none"
+              [formControlName]="i"
+              (input)="onInput($event, i)"
+              (keydown)="onKeyDown($event, i)"
+            />
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="loading"
+            class="btn w-full py-2 duration-150 font-semibold rounded-md transition-all bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white focus:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          >
+            <span *ngIf="!loading">Verify OTP</span>
+
+            <span *ngIf="loading" class="flex items-center gap-2">
+              <span
+                class="animate-spin border-2 border-t-transparent border-white rounded-full w-4 h-4"
+              ></span>
+              Please wait...
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
