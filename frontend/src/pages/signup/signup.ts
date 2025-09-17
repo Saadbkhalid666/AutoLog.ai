@@ -40,6 +40,7 @@ export class Signup {
 
       this.authService.signup(user).subscribe({
         next: (res) => {
+          this.signupForm.reset()
           this.successMsg = 'Registration Successful!';
           this.errorMsg = '';
           this.loading=false;
