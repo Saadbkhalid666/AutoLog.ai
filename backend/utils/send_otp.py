@@ -45,6 +45,6 @@ def send_otp(email, otp, username=None):
 
     try:
         mail.send(msg)
-        print(f"✅ OTP sent to {email}")
+        print(f" OTP sent to {email}")
     except Exception as e:
-        print(f"❌ Error sending OTP: {e}")
+        print(f" Error sending OTP: {e}")
