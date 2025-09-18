@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-otp',
@@ -25,7 +26,7 @@ export class Otp {
 
   otpForm: FormGroup<{ digits: FormArray<FormControl<string | null>> }>;
   loading = false;
-  constructor(private fb: FormBuilder, private authService: AuthService, ) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router:Router ) {
     this.otpForm = this.fb.group({
       digits: this.fb.array<FormControl<string | null>>(
         Array(6).fill('').map(() => new FormControl('', { nonNullable: false }))
@@ -71,6 +72,7 @@ export class Otp {
           
           this.showToast('OTP Verified Successfully!', 'success');
             this.otpForm.reset();
+            this.router.navigate(['login'])
         },
         error: (err) => {
           this.loading = false;

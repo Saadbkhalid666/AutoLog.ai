@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, User } from '../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ export class Login {
   get email( ){return this.loginForm.get('email')}
   get password( ){return this.loginForm.get('password')}
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
   loading = false;
   Submit() {
     if(this.loginForm.valid){
@@ -39,6 +40,7 @@ export class Login {
           this.loginForm.reset();
           this.loading = false;
           this.showToast('Login Successful!', 'success');
+          this.router.navigate(['home'])
         },  
         error: () => {
           this.showToast('Login Failed. Try again!', 'error');

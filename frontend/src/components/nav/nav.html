@@ -8,65 +8,80 @@
       <span class="text-[#06acf4]">AI</span>
     </h1>
 
+    <!-- Desktop Menu -->
     <ul class="hidden md:flex gap-6 text-white font-medium">
-      <li routerLink=" "  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</li>
-      <li routerLink="about"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</li>
-      <li routerLink="services"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</li>
-      <li routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</li>
+      <li routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
+        Home
+      </li>
+      <li routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
+        About
+      </li>
+      <li routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
+        Services
+      </li>
+      <li routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
+        Contact
+      </li>
     </ul>
 
-    <div class="hidden md:flex gap-3">
-      <button
-      routerLink="login"
-        class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition"
-      >
-        Login
-      </button>
-      <button
-      routerLink="signup" 
-        class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
-      >
-        Signup
-      </button>
+    <!-- Right side -->
+    <div class="hidden md:flex gap-3 items-center">
+      <ng-container *ngIf="userFirstName; else guest">
+        <div
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-green-400 text-white font-bold"
+        >
+          {{ userFirstName[0] }}
+        </div>
+        <button (click)="logout()" class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition">
+          Logout
+        </button>
+      </ng-container>
+
+      <ng-template #guest>
+        <button routerLink="login" class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition">
+          Login
+        </button>
+        <button routerLink="signup" class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition">
+          Signup
+        </button>
+      </ng-template>
     </div>
 
+    <!-- Mobile Menu Button -->
     <button (click)="toggleMenu()" class="md:hidden text-white focus:outline-none">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-7 w-7"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
   </nav>
 
   <!-- Mobile Dropdown Menu -->
   <div class="md:hidden px-6 pb-4 flex flex-col gap-4 text-white font-medium" *ngIf="isOpen">
-    <a routerLink=""  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</a>
-    <a routerLink="about"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</a>
-    <a routerLink="services"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</a>
-    <a routerLink="contact"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</a>
+    <a routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</a>
+    <a routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</a>
+    <a routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</a>
+    <a routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</a>
 
-    <div class="flex gap-3 pt-2">
-      <button routerLink="login"
-        class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full"
-      >
-        Login
-      </button>
-      <button
-      routerLink="signup"
-        class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full"
-      >
-        Signup
-      </button>
+    <div class="flex gap-3 pt-2 items-center">
+      <ng-container *ngIf="userFirstName; else mobileGuest">
+        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-green-400 text-black font-bold">
+          {{ userFirstName[0] }}
+        </div>
+        <button (click)="logout()" class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition w-full">
+          Logout
+        </button>
+      </ng-container>
+
+      <ng-template #mobileGuest>
+        <div class="flex gap-3 w-full">
+          <button routerLink="login" class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full">
+            Login
+          </button>
+          <button routerLink="signup" class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full">
+            Signup
+          </button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

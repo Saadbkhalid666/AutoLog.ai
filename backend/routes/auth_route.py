@@ -8,7 +8,6 @@ from utils.send_otp import send_otp
 auth_bp = Blueprint("auth", __name__)
 
 temporary_users = {}
-
 @auth_bp.route("/register", methods=["POST"])
 def register():
     data = request.json
@@ -18,12 +17,16 @@ def register():
     password = data.get("password")
     role = data.get("role", "user")
 
-    existing_user = User.query.filter_by(username=username).first()
-    if existing_user:
-        return jsonify({"message": "User with this username already exists."}), 400
+    # Check if username already exists
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "Username already taken"}), 400
+
+    # Check if email already exists
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "User already registered"}), 400
 
     # Send OTP email
-    send_otp(email,  username=username, otp=otp)
+    send_otp(email, username=username, otp=otp)
 
     # Store temporary user data
     temporary_users[otp] = {
@@ -35,13 +38,13 @@ def register():
         "expiry": time.time() + 300  # 5 minutes
     }
 
-    return jsonify({"message": "OTP sent successfully! Please verify."})
+    # ✅ Only message here, no username
+    return jsonify({"message": "OTP sent successfully. Please verify to complete registration."}), 200
 
 
 @auth_bp.route("/verify-otp", methods=["POST"])
 def verify_otp():
     data = request.json
-    
     otp = data.get("otp")
 
     storedData = temporary_users.get(otp)
@@ -59,7 +62,7 @@ def verify_otp():
     user = User(
         username=storedData["username"],
         email=storedData["email"],
-        password=storedData["password"],  
+        password=storedData["password"],  # ⚠️ hash password later
         role=storedData["role"],
     )
     db.session.add(user)
@@ -67,7 +70,12 @@ def verify_otp():
 
     del temporary_users[otp]
 
-    return jsonify({"message": "OTP verified and user created successfully!"})
+    # ✅ Return username + email so Angular can save it
+    return jsonify({
+        "message": "OTP verified and user created successfully!",
+        "username": user.username,
+        "email": user.email
+    }), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -75,8 +83,14 @@ def login():
     data = request.json
     email = data.get("email")
     password = data.get("password")
+
     user = User.query.filter_by(email=email, password=password).first()
     if user:
-        return jsonify({"message": "Login successful!"})
+        # ✅ Return username + email
+        return jsonify({
+            "message": "Login successful!",
+            "username": user.username,
+            "email": user.email
+        }), 200
     else:
-        return jsonify({"message":"User not found!"}), 404
+        return jsonify({"message": "User not found!"}), 404

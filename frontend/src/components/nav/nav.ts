@@ -1,17 +1,38 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../services/auth';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
-  imports: [CommonModule,RouterLink, RouterLinkActive],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './nav.html',
-  styleUrl: './nav.css'
+  styleUrl: './nav.css',
 })
-export class Nav {
-isOpen = false;  
+export class Nav implements OnInit, OnDestroy {
+  isOpen = false;
+  userFirstName: string | null = null;
+  private sub!: Subscription;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.sub = this.authService.username$.subscribe((username) => {
+      this.userFirstName = username ? username.split(' ')[0] : null;
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
   toggleMenu() {
     this.isOpen = !this.isOpen;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
