@@ -1,13 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Otp } from '../pages/otp/otp';
-import { Signup } from '../pages/signup/signup';
-import { Login } from '../pages/login/login';
+import { Nav } from '../components/nav/nav';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,Otp,Signup,Login],
+  imports: [RouterOutlet,Nav],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

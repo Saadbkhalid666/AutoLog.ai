@@ -1,1 +1,80 @@
-<p>nav works!</p>
+<div class="bg-[#0a0a0a] w-full">
+  <nav class="flex items-center justify-between px-6 py-4">
+    <!-- Logo -->
+    <h1 class="text-xl font-extrabold">
+      <span
+        class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent"
+      >
+        AutoLog
+      </span>
+      <span class="text-[#06acf4]">AI</span>
+    </h1>
+
+    <!-- Desktop Nav Links -->
+    <ul class="hidden md:flex gap-6 text-white font-medium">
+      <li class="hover:text-[#06acf4] cursor-pointer">Home</li>
+      <li class="hover:text-[#06acf4] cursor-pointer">About</li>
+      <li class="hover:text-[#06acf4] cursor-pointer">Services</li>
+      <li class="hover:text-[#06acf4] cursor-pointer">Contact</li>
+    </ul>
+
+    <!-- Desktop Buttons -->
+    <div class="hidden md:flex gap-3">
+      <button
+        class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition"
+      >
+        Login
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
+      >
+        Signup
+      </button>
+    </div>
+
+    <!-- Hamburger Icon (Mobile) -->
+    <button
+      (click)="toggleMenu()"
+      class="md:hidden text-white focus:outline-none"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-7 w-7"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Dropdown Menu -->
+  <div
+    class="md:hidden px-6 pb-4 flex flex-col gap-4 text-white font-medium"
+    *ngIf="isOpen"
+  >
+    <a class="hover:text-[#06acf4] cursor-pointer">Home</a>
+    <a class="hover:text-[#06acf4] cursor-pointer">About</a>
+    <a class="hover:text-[#06acf4] cursor-pointer">Services</a>
+    <a class="hover:text-[#06acf4] cursor-pointer">Contact</a>
+
+    <div class="flex gap-3 pt-2">
+      <button
+        class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full"
+      >
+        Login
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full"
+      >
+        Signup
+      </button>
+    </div>
+  </div>
+</div>
