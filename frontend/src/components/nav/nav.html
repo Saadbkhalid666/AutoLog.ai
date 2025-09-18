@@ -2,41 +2,35 @@
   <nav class="flex items-center justify-between px-6 py-4">
     <!-- Logo -->
     <h1 class="text-xl font-extrabold">
-      <span
-        class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent"
-      >
+      <span class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent">
         AutoLog
       </span>
       <span class="text-[#06acf4]">AI</span>
     </h1>
 
-    <!-- Desktop Nav Links -->
     <ul class="hidden md:flex gap-6 text-white font-medium">
-      <li class="hover:text-[#06acf4] cursor-pointer">Home</li>
-      <li class="hover:text-[#06acf4] cursor-pointer">About</li>
-      <li class="hover:text-[#06acf4] cursor-pointer">Services</li>
-      <li class="hover:text-[#06acf4] cursor-pointer">Contact</li>
+      <li routerLink=" "  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</li>
+      <li routerLink="about"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</li>
+      <li routerLink="services"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</li>
+      <li routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</li>
     </ul>
 
-    <!-- Desktop Buttons -->
     <div class="hidden md:flex gap-3">
       <button
+      routerLink="login"
         class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition"
       >
         Login
       </button>
       <button
+      routerLink="signup" 
         class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
       >
         Signup
       </button>
     </div>
 
-    <!-- Hamburger Icon (Mobile) -->
-    <button
-      (click)="toggleMenu()"
-      class="md:hidden text-white focus:outline-none"
-    >
+    <button (click)="toggleMenu()" class="md:hidden text-white focus:outline-none">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-7 w-7"
@@ -55,22 +49,20 @@
   </nav>
 
   <!-- Mobile Dropdown Menu -->
-  <div
-    class="md:hidden px-6 pb-4 flex flex-col gap-4 text-white font-medium"
-    *ngIf="isOpen"
-  >
-    <a class="hover:text-[#06acf4] cursor-pointer">Home</a>
-    <a class="hover:text-[#06acf4] cursor-pointer">About</a>
-    <a class="hover:text-[#06acf4] cursor-pointer">Services</a>
-    <a class="hover:text-[#06acf4] cursor-pointer">Contact</a>
+  <div class="md:hidden px-6 pb-4 flex flex-col gap-4 text-white font-medium" *ngIf="isOpen">
+    <a routerLink=""  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</a>
+    <a routerLink="about"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</a>
+    <a routerLink="services"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</a>
+    <a routerLink="contact"  routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</a>
 
     <div class="flex gap-3 pt-2">
-      <button
+      <button routerLink="login"
         class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full"
       >
         Login
       </button>
       <button
+      routerLink="signup"
         class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full"
       >
         Signup
