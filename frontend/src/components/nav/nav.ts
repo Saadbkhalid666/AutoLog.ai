@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class Nav implements OnInit, OnDestroy {
   userFirstName: string | null = null;
   private sub!: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.sub = this.authService.username$.subscribe((username) => {
@@ -34,5 +34,6 @@ export class Nav implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['login'])
   }
 }

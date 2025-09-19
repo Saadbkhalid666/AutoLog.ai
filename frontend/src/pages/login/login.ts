@@ -31,6 +31,11 @@ export class Login {
 
   constructor(private authService: AuthService, private router: Router) {}
   loading = false;
+  passwordVisible = false; 
+
+  togglePassword() {
+    this.passwordVisible = !this.passwordVisible;
+  }
   Submit() {
     if(this.loginForm.valid){
       this.loading = true;

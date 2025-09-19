@@ -5,7 +5,7 @@ import { Otp } from '../pages/otp/otp';
 import { Home } from '../pages/home/home';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'signup', pathMatch: 'full' }, // default → signup
+  { path: '', redirectTo: 'login', pathMatch: 'full' }, 
   { path: 'signup', component: Signup },
   { path: 'login', component: Login },
   { path: 'verify-otp', component: Otp },
