@@ -40,7 +40,11 @@ export class Signup {
   }
 
   loading = false;
+passwordVisible = false; 
 
+  togglePassword() {
+    this.passwordVisible = !this.passwordVisible;
+  }
   constructor(private authService: AuthService, private router: Router) {}
 
   Submit() {
