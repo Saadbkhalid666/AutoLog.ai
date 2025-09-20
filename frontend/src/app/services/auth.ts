@@ -17,7 +17,7 @@ export class AuthService {
   username$ = this.usernameSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    const savedUsername = localStorage.getItem('username');
+    const savedUsername = sessionStorage.getItem('username');
     if (savedUsername) {
       this.usernameSubject.next(savedUsername);
     }
@@ -27,7 +27,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
       tap((res) => {
         if (res?.username) {
-          localStorage.setItem('username', res.username);
+          sessionStorage.setItem('username', res.username);
           this.usernameSubject.next(res.username);
         }
       })
@@ -38,7 +38,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((res) => {
         if (res?.username) {
-          localStorage.setItem('username', res.username);
+          sessionStorage.setItem('username', res.username);
           this.usernameSubject.next(res.username);
         }
       })
