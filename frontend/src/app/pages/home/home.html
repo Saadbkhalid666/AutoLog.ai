@@ -1,33 +1,18 @@
-<div class="container">
-  <!-- <div class="heading-container">
-    <!-- Meta (goes in <head>) -->
-    <!-- <title>AutoLog.AI | Track Vehicle Service & Fuel Logs with AI</title> -->
-    <!-- <meta -->
-      <!-- name="description"
-      content="AutoLog.AI is a smart vehicle tracking app to log fuel usage, monitor mileage, and manage car service appointments with AI-powered reminders."
-    />
-    <meta
-      name="keywords"
-      content="vehicle service tracker, fuel log app, car maintenance, auto service reminders, mileage tracker, AutoLog.AI"
-    /> -->
+<div class="hero-container flex flex-col-reverse md:flex-row items-center justify-between w-full h-screen px-6 md:px-10">
+  <!-- LEFT (but in mobile it comes at bottom because of flex-col-reverse) -->
+  <div class="text-content w-full md:w-1/2 mt-6 md:mt-0 md:pr-10 text-center md:text-left">
+    <h1 class="text-3xl md:text-5xl font-bold text-[#00f0ff] leading-tight">
+      Track Your Vehicle’s Service & Fuel Logs with AutoLog.AI
+    </h1>
+    <p class="mt-4 md:mt-6 text-base md:text-lg text-gray-300">
+      AutoLog.AI is an <strong>intelligent car maintenance app</strong> that helps drivers 
+      <strong>log fuel consumption</strong>, track mileage, and manage service appointments 
+      with ease. Get <em>AI-powered reminders</em> to keep your car in top shape 🚗✨.
+    </p>
+  </div>
 
-      <!-- <h1 class="text-3xl md:text-4xl font-bold text-[#00f0ff]">
-        Track Your Vehicle’s Service & Fuel Logs with AutoLog.AI
-      </h1>
-      <p class="mt-4 text-lg text-gray-300">
-        AutoLog.AI is an <strong>intelligent car maintenance app</strong> that helps drivers
-        <strong>log fuel consumption</strong>, track mileage, and
-        <strong>manage service appointments</strong> with ease. Get
-        <em>AI-powered reminders</em> for oil changes, inspections, and repairs — keeping your
-        vehicle in top shape.
-      </p>
-      <p class="mt-2 text-gray-400 text-sm">
-        Perfect for car owners, fleet managers, and anyone who wants
-        <strong>smarter vehicle maintenance tracking</strong>. -->
-<!-- ?      </p> -->
-  <!-- </div> -->
-  <div class="model-container w-full h-full">
-    <app-model></app-model>
-
+  <!-- RIGHT: 3D Car Model -->
+  <div class="model-container w-full md:w-1/2 h-[300px] md:h-[500px] relative  ">
+    <canvas #canvas class="w-full h-full block"></canvas>
   </div>
 </div>
