@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -8,16 +8,25 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
   templateUrl: './model.html',
   styleUrls: ['./model.css'],
 })
-export class Model implements AfterViewInit {
+export class Model implements AfterViewInit, OnDestroy {
   @ViewChild('canvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
   private controls!: OrbitControls;
+  private model!: THREE.Group;
+  private resizeObserver!: ResizeObserver;
 
   ngAfterViewInit() {
     this.initializeScene();
     this.loadModel();
+    this.addResizeHandler();
+  }
+
+  ngOnDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   private initializeScene() {
@@ -30,7 +39,7 @@ export class Model implements AfterViewInit {
     this.camera = new THREE.PerspectiveCamera(
       45,
       canvas.clientWidth / canvas.clientHeight,
-      0.1,
+      1,
       5000
     );
     this.camera.position.set(0, 50, 300);
@@ -67,9 +76,10 @@ export class Model implements AfterViewInit {
     const loader = new GLTFLoader();
 
     loader.load(
-      'assets/model/conceptcar.glb', // ✅ direct path to your .glb
+      'assets/model/conceptcar.glb',
       (gltf) => {
-        this.processModel(gltf.scene);
+        this.model = gltf.scene;
+        this.processModel(this.model);
         console.log('✅ conceptcar.glb loaded successfully');
       },
       (xhr) => {
@@ -82,9 +92,10 @@ export class Model implements AfterViewInit {
   }
 
   private processModel(model: THREE.Group) {
+    // --- Scale (not too small, not too big) ---
     model.scale.set(5, 5, 5);
-    model.position.y = 0;
 
+    // --- Shadows + materials ---
     model.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
@@ -102,6 +113,37 @@ export class Model implements AfterViewInit {
     });
 
     this.scene.add(model);
+
+    // --- Auto-fit model to camera ---
+    this.fitCameraToObject(model);
+  }
+
+  private fitCameraToObject(object: THREE.Object3D) {
+    const box = new THREE.Box3().setFromObject(object);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const fov = this.camera.fov * (Math.PI / 180);
+    let cameraZ = Math.abs(maxDim / (2 * Math.tan(fov / 2)));
+
+    cameraZ *= 1.5; // padding
+
+    this.camera.position.set(center.x, center.y + maxDim / 2, cameraZ);
+    this.camera.lookAt(center);
+
+    this.controls.target.copy(center);
+    this.controls.update();
+  }
+
+  private addResizeHandler() {
+    const canvas = this.canvasRef.nativeElement;
+    this.resizeObserver = new ResizeObserver(() => {
+      this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    });
+    this.resizeObserver.observe(canvas);
   }
 
   private animate() {
