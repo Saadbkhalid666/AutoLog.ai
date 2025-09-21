@@ -1,26 +1,32 @@
-<div class="bg-gradient-to-b from -[#0a0a0a] to-[#141a17] w-full shadow-2xl shadow-[#1f3f3c] w-full ">
-  <nav class="flex items-center justify-between px-6 py-4">
+<!-- Semantic header for SEO -->
+<header class="bg-gradient-to-b from-[#0a0a0a] to-[#141a17] w-full shadow-2xl shadow-[#1f3f3c]">
+  <nav 
+    class="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-4"
+    aria-label="Main Navigation"
+  >
     <!-- Logo -->
     <h1 class="text-xl font-extrabold">
-      <span class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent">
-        AutoLog
-      </span>
-      <span class="text-[#06acf4]">AI</span>
+      <a routerLink="/" aria-label="AutoLog Home" class="flex items-center gap-1">
+        <span class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent">
+          AutoLog
+        </span>
+        <span class="text-[#06acf4]">AI</span>
+      </a>
     </h1>
 
     <!-- Desktop Menu -->
     <ul class="hidden md:flex gap-6 text-white font-medium">
-      <li routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
-        Home
+      <li>
+        <a routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Home</a>
       </li>
-      <li routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
-        About
+      <li>
+        <a routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">About</a>
       </li>
-      <li routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
-        Services
+      <li>
+        <a routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Services</a>
       </li>
-      <li routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">
-        Contact
+      <li>
+        <a routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Contact</a>
       </li>
     </ul>
 
@@ -29,26 +35,43 @@
       <ng-container *ngIf="userFirstName; else guest">
         <div
           class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-green-400 text-white font-bold"
+          aria-label="User Profile"
         >
           {{ userFirstName[0] }}
         </div>
-        <button (click)="logout()" class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition">
+        <button 
+          (click)="logout()" 
+          class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition"
+          aria-label="Logout"
+        >
           Logout
         </button>
       </ng-container>
 
       <ng-template #guest>
-        <button routerLink="login" class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition">
+        <button 
+          routerLink="login" 
+          class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition"
+          aria-label="Login"
+        >
           Login
         </button>
-        <button routerLink="signup" class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition">
+        <button 
+          routerLink="signup" 
+          class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
+          aria-label="Signup"
+        >
           Signup
         </button>
       </ng-template>
     </div>
 
     <!-- Mobile Menu Button -->
-    <button (click)="toggleMenu()" class="md:hidden text-white focus:outline-none">
+    <button 
+      (click)="toggleMenu()" 
+      class="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-[#06acf4] rounded"
+      aria-label="Toggle navigation menu"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
@@ -56,24 +79,36 @@
   </nav>
 
   <!-- Mobile Dropdown Menu -->
-  <div class="md:hidden px-6 pb-4 flex flex-col gap-4 text-white font-medium" *ngIf="isOpen">
+  <div 
+    class="md:hidden px-4 sm:px-6 pb-4 flex flex-col gap-4 text-white font-medium transition-all duration-300 ease-in-out"
+    *ngIf="isOpen"
+    role="menu"
+    aria-label="Mobile Navigation"
+  >
     <a routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</a>
     <a routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</a>
     <a routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</a>
     <a routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</a>
 
-    <div class="flex gap-3 pt-2 items-center">
+    <div class="flex flex-col gap-3 pt-2">
       <ng-container *ngIf="userFirstName; else mobileGuest">
-        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-green-400 text-black font-bold">
+        <div 
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-green-400 text-black font-bold"
+          aria-label="User Profile"
+        >
           {{ userFirstName[0] }}
         </div>
-        <button (click)="logout()" class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition w-full">
+        <button 
+          (click)="logout()" 
+          class="px-4 py-2 rounded-md border border-red-500 text-red-500 hover:bg-red-500 hover:text-black transition w-full"
+          aria-label="Logout"
+        >
           Logout
         </button>
       </ng-container>
 
       <ng-template #mobileGuest>
-        <div class="flex gap-3 w-full">
+        <div class="flex flex-col sm:flex-row gap-3 w-full">
           <button routerLink="login" class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full">
             Login
           </button>
@@ -84,4 +119,4 @@
       </ng-template>
     </div>
   </div>
-</div>
+</header>
