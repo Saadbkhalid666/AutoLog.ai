@@ -60,6 +60,10 @@ export class AuthService {
     return this.usernameSubject.value;
   }
 
+  checkUserName():string | null{
+    return this.usernameSubject.value
+  }
+
   logout(): void {
     localStorage.removeItem('username');
     this.usernameSubject.next(null);
