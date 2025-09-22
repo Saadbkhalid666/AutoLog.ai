@@ -1,1 +1,9 @@
- 
+ .model-wrapper {
+  position: fixed;  /* hamesha viewport me rahe */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;    /* full screen height */
+  pointer-events: none; /* clicks neeche ke elements ko milen */
+  z-index: 10;
+}
