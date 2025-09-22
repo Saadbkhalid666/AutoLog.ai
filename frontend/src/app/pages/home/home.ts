@@ -1,14 +1,16 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-
+import {AuthService} from "../../services/auth"
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements AfterViewInit {
+export class Home implements AfterViewInit, OnInit {
   @ViewChild('canvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -32,7 +34,7 @@ export class Home implements AfterViewInit {
       45,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
-      100000 // Increased far plane to avoid clipping on larger scales
+      100000 
     );
     this.camera.position.set(0, 200, 500);
 
@@ -58,10 +60,12 @@ export class Home implements AfterViewInit {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
-    this.controls.autoRotate = true; // Enable auto-rotation around the target (model's axis)
-    this.controls.autoRotateSpeed = 2.0; // Adjust speed as needed (2.0 is default for reasonable rotation)
+    this.controls.autoRotate = true; 
+    this.controls.autoRotateSpeed = 2.0; 
+    this.controls.enablePan=false
+    this.controls.enableZoom=false
+    this.controls.enableRotate=false
 
-    // Start animation loop
     this.animate();
   }
 
@@ -129,4 +133,15 @@ export class Home implements AfterViewInit {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
+
+  constructor(private auth: AuthService, private router: Router){}
+
+  private sub !:Subscription
+  
+  ngOnInit(){
+    this.sub = this.auth.username$.subscribe(username =>{
+      username ?  this.router.navigate(['home']) : this.router.navigate(['login'])
+    })
+  }
+
 }
