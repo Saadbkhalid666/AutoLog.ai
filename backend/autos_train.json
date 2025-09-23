@@ -1,0 +1,5 @@
+[
+  {"user": "How often should I change my oil?", "bot": "You should change your oil every 5,000 to 7,500 km or as recommended by your car manufacturer."},
+  {"user": "My car battery is dead, what should I do?", "bot": "Check the terminals for corrosion and consider jump-starting it. Replace if necessary."},
+  {"user": "How to check tire pressure?", "bot": "Use a tire pressure gauge. Check when tires are cold and compare with the recommended PSI."}
+]
