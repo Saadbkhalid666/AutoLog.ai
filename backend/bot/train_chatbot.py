@@ -6,8 +6,9 @@ model_name = "microsoft/DialoGPT-small"
 
 # Load tokenizer & model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-tokenizer.pad_token = tokenizer.eos_token  # <-- important fix
+tokenizer.pad_token = tokenizer.eos_token  # important fix
 model = AutoModelForCausalLM.from_pretrained(model_name)
+model.config.pad_token_id = tokenizer.eos_token_id  # fix for Trainer
 
 # Dataset path
 dataset_path = Path(__file__).parent.parent / "autos_train.json"
@@ -16,10 +17,14 @@ dataset = load_dataset("json", data_files={"train": str(dataset_path)})
 # Tokenization function
 def tokenize_function(example):
     text = example["user"] + tokenizer.eos_token + example["bot"] + tokenizer.eos_token
-    tokenized = tokenizer(text, truncation=True, padding="max_length", max_length=128)
-    tokenized["labels"] = tokenized["input_ids"]  # <-- add labels
+    tokenized = tokenizer(
+        text,
+        truncation=True,
+        padding="max_length",
+        max_length=128
+    )
+    tokenized["labels"] = tokenized["input_ids"]
     return tokenized
-
 
 tokenized_datasets = dataset.map(tokenize_function, batched=False)
 
@@ -32,6 +37,8 @@ training_args = TrainingArguments(
     learning_rate=5e-5,
     weight_decay=0.01,
     save_total_limit=2,
+    logging_steps=10,
+    save_strategy="epoch",
 )
 
 # Trainer
@@ -46,4 +53,4 @@ trainer.train()
 trainer.save_model(str(output_dir))
 tokenizer.save_pretrained(str(output_dir))
 
-print(f"Training complete! Model saved to {output_dir}")
+print(f"✅ Training complete! Model saved to {output_dir}")

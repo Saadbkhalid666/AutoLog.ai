@@ -5,6 +5,7 @@ import torch #type: ignore
 
 chat_bp = Blueprint("chat", __name__)
 
+
 # Model path
 model_path = Path(__file__).parent.parent / "autolog-ai-chatbot"
 
@@ -25,9 +26,17 @@ def chat():
     # Generate reply
     chat_history_ids = model.generate(
         input_ids,
-        max_length=1000,
-        pad_token_id=tokenizer.eos_token_id
+        max_length=200,
+        pad_token_id=tokenizer.eos_token_id,
+        no_repeat_ngram_size=2,
+        top_k=50,
+        top_p=0.95,
+        temperature=0.7,
     )
-    
-    reply = tokenizer.decode(chat_history_ids[:, input_ids.shape[-1]:][0], skip_special_tokens=True)
+
+    # Decode output and clean reply
+    output_text = tokenizer.decode(chat_history_ids[0], skip_special_tokens=True)
+    reply = output_text.replace(user_input, "").strip()
+
     return jsonify({"reply": reply})
+
