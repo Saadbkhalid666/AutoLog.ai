@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, request
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from flask import Blueprint, jsonify, request #type: ignore
+from transformers import AutoTokenizer, AutoModelForCausalLM #type: ignore
 from pathlib import Path
-import torch
+import torch #type: ignore
 
 chat_bp = Blueprint("chat", __name__)
 
@@ -12,7 +12,7 @@ model_path = Path(__file__).parent.parent / "autolog-ai-chatbot"
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path)
 
-@chat_bp.route("/chat", methods=["POST"])
+@chat_bp.route("/c", methods=["POST"])
 def chat():
     data = request.get_json()
     user_input = data.get("message", "")
