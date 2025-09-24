@@ -14,3 +14,5 @@ venv/
 ~/.cache/huggingface/
 
 .DS_Store
+autos_train.json
+autolog-ai-chatbot
