@@ -2,3 +2,15 @@ env
 __pycache__
 *.pyc
 .env
+autos_train.json
+venv/
+.env/
+.venv/
+*.bin
+*.safetensors
+*.pth
+/assistant/models/
+/assistant/data/
+~/.cache/huggingface/
+
+.DS_Store
