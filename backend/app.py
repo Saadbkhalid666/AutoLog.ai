@@ -10,7 +10,7 @@ from utils.extensions import mail
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 from flask_cors import CORS # type: ignore
- 
+from routes.assistant_route import chat_bp
  
 
 def create_app():
@@ -25,6 +25,7 @@ def create_app():
     mail.init_app(app)
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(chat_bp, url_prefix="/chat")
 
     # Flask-Admin setup
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
