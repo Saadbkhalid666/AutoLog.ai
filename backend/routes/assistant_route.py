@@ -1,42 +1,49 @@
-from flask import Blueprint, jsonify, request #type: ignore
-from transformers import AutoTokenizer, AutoModelForCausalLM #type: ignore
+from flask import Blueprint, request, jsonify
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from pathlib import Path
 import torch #type: ignore
 
 chat_bp = Blueprint("chat", __name__)
 
-
-# Model path
+# Path to your locally trained Hugging Face model
 model_path = Path(__file__).parent.parent / "autolog-ai-chatbot"
 
-# Load trained model & tokenizer
+# Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(model_path)
+
+# Device: CPU or GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
 @chat_bp.route("/c", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_input = data.get("message", "")
+    user_input = data.get("message", "").strip()
+
     if not user_input:
         return jsonify({"error": "No message provided"}), 400
 
-    # Encode input
-    input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors="pt")
+    # Encode user input only
+    input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors="pt").to(device)
 
     # Generate reply
     chat_history_ids = model.generate(
         input_ids,
-        max_length=200,
+        max_length=200,           # max tokens
         pad_token_id=tokenizer.eos_token_id,
         no_repeat_ngram_size=2,
-        top_k=50,
-        top_p=0.95,
-        temperature=0.7,
+        top_k=20,
+        top_p=0.9,
+        temperature=0.6
     )
 
-    # Decode output and clean reply
-    output_text = tokenizer.decode(chat_history_ids[0], skip_special_tokens=True)
-    reply = output_text.replace(user_input, "").strip()
+    # Remove user input from generated output
+    reply_ids = chat_history_ids[0][input_ids.shape[-1]:]
+    reply = tokenizer.decode(reply_ids, skip_special_tokens=True).strip()
+# Add Velix identity prefix if missing
+    if "velix" not in reply.lower():   # lowercase for safety
+        reply = "Velix reporting: " + reply
+
 
     return jsonify({"reply": reply})
-
