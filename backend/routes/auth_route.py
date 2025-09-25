@@ -62,7 +62,7 @@ def verify_otp():
     user = User(
         username=storedData["username"],
         email=storedData["email"],
-        password=storedData["password"],  # ⚠️ hash password later
+        password=storedData["password"],  
         role=storedData["role"],
     )
     db.session.add(user)
