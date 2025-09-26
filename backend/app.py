@@ -11,9 +11,9 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 from flask_cors import CORS # type: ignore
 from routes.assistant_route import chat_bp
-from routes.fuel_log_route import fuel_log_bp 
+from routes.fuel_logs_route import fuel_log_bp 
 from models.fuel_log import FuelLog
-from flask_migrate import Migrate
+from flask_migrate import Migrate #type:ignore
 
 
 
