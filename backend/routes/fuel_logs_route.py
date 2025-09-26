@@ -83,4 +83,36 @@ def post_ocr_fuel_log():
         }
     })
 
- 
+@fuel_log_bp.route("/get-fuel-logs/<int:user_id>", methods=["GET"])
+def get_fuel_logs(user_id):
+    logs = FuelLog.query.filter_by(user_id = user_id).order_by(FuelLog.date.desc()).all()
+
+    logs_list = [log.to_dict() for log in logs]
+    return jsonify({"user_id":user_id, "fuel_logs":logs_list})
+
+@fuel_log_bp.route("/delete-fuel-log/<int:log_id>", methods=["DELETE"])
+def delete_fuel_log_by_id(log_id):
+    log = FuelLog.query.get(log_id)
+    if not log:
+        return jsonify({"error":"Fuel Log doesn't exist!"}), 404
+    
+    db.session.delete(log)
+    db.session.commit()
+
+    return jsonify({"message":"Fuel Log deleted Successfully!"})
+
+
+@fuel_log_bp.route("update-fuel-log/<int:log_id>", methods=["PUT"])
+def update_fuel_log_by_id(log_id):
+    log = FuelLog.query.get(log_id)
+    if not log:
+        return jsonify({"error":"Fuel Log not found!"}), 404
+    
+    data = request.get_json()
+    log.date = datetime.utcnow().date()
+    log.litres = data.get("litres", log.litres)
+    log.price  = data.get("price", log.price)
+    log.odometere = data.get("odometer", log.odometer)
+
+    db.session.commit()
+    return jsonify({"message":"Fuel log updated!", "fuel_log":log.to_dict()})
