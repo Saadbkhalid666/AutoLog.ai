@@ -9,7 +9,7 @@ class FuelLog(db.Model):
     date = db.Column(db.Date, nullable=False, default=datetime.utcnow)  # ✅ fixed
     litres = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    mileage = db.Column(db.Integer, nullable=False)
+    odometer = db.Column(db.Integer, nullable=False)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # ✅ ok
 
