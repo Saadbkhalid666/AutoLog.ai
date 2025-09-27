@@ -14,7 +14,7 @@ from routes.assistant_route import chat_bp
 from routes.fuel_logs_route import fuel_log_bp 
 from models.fuel_log import FuelLog
 from flask_migrate import Migrate #type:ignore
-
+from routes.service_reminders_route import service_reminder_bp
 
 
 
@@ -34,7 +34,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
-
+    app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     # Flask-Admin setup
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
     admin.add_view(ModelView(User, db.session))
