@@ -28,7 +28,7 @@ HTML_TEMPLATE = """
 """
 def send_otp(email, otp, username=None):
     subject = "Your AutoLog.ai OTP Code"
-    sender = Config.MAIL_USERNAME  # Must be your verified email
+    sender = Config.MAIL_USERNAME  
 
     plain_body = f"Your AutoLog.ai OTP code is: {otp}\nThis code will expire in 5 minutes."
 
