@@ -15,7 +15,7 @@ from routes.fuel_logs_route import fuel_log_bp
 from models.fuel_log import FuelLog
 from flask_migrate import Migrate #type:ignore
 from routes.service_reminders_route import service_reminder_bp
-
+from models.service_reminders import ServiceReminders
 
 
 
@@ -39,6 +39,7 @@ def create_app():
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(FuelLog,db.session))
+    admin.add_view(ModelView(ServiceReminders, db.session))
 
     # Create DB tables
     with app.app_context():
