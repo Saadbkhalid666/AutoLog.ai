@@ -1,9 +1,9 @@
 import  logging
-from flask import Flask
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-from flask_cors import CORS
-from flask_migrate import Migrate
+from flask import Flask #type: ignore
+from flask_admin import Admin #type: ignore
+from flask_admin.contrib.sqla import ModelView #type: ignore
+from flask_cors import CORS #type: ignore
+from flask_migrate import Migrate #type: ignore
 from configuration.config import Config
 from utils.extensions import db, mail
 from routes.auth_route import auth_bp
@@ -13,7 +13,7 @@ from routes.service_reminders_route import service_reminder_bp
 from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
 import atexit
 
 # Configure logging

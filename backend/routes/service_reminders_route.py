@@ -1,7 +1,6 @@
 # routes/service_reminders_route.py
 import logging
-from flask import jsonify, request, Blueprint, current_app
-from apscheduler.schedulers.background import BackgroundScheduler
+from flask import jsonify, request, Blueprint, current_app #type:ignore 
 from models.service_reminders import ServiceReminders
 from models.User import User
 from utils.extensions import db
