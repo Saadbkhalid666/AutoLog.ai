@@ -1,9 +1,9 @@
-from flask_mail import Message
-from flask import render_template_string
+from flask_mail import Message #type:ignore
+from flask import render_template_string #type:ignore
 from configuration.config import Config
 from utils.extensions import mail
 from datetime import datetime
-import pytz
+import pytz #type:ignore
 
 PK_TZ = pytz.timezone("Asia/Karachi")
 
@@ -34,8 +34,8 @@ SERVICE_REMINDER_TEMPLATE = """
   <body style="background:#0b0b0b;color:#fff;font-family:Arial,Helvetica,sans-serif;padding:20px">
     <div style="max-width:600px;margin:auto;background:#111;border-radius:12px;padding:24px;box-shadow:0 0 24px rgba(0,255,127,0.08)">
       <h2 style="color:#00ff7f;margin:0 0 10px">AutoLog.ai — Service Reminder</h2>
-      <p>Salam {{ username or "User" }},</p>
-      <p>This is a friendly reminder for your upcoming vehicle service:</p>
+      <p style="color:white;">Salam {{ username or "User" }},</p>
+      <p style="color:white;">This is a friendly reminder for your upcoming vehicle service:</p>
       <div style="background:#000;border:1px solid #1f1f1f;padding:16px;border-radius:10px;margin:20px 0">
         <p style="margin:6px 0"><strong style="color:#bfbfbf">Service Type:</strong> <span style="color:#e8e8e8">{{ service_type }}</span></p>
         <p style="margin:6px 0"><strong style="color:#bfbfbf">Due Date:</strong> <span style="color:#e8e8e8">{{ due_date_readable }}</span></p>
@@ -43,7 +43,7 @@ SERVICE_REMINDER_TEMPLATE = """
         <p style="margin:6px 0"><strong style="color:#bfbfbf">Note:</strong> <span style="color:#e8e8e8">{{ note }}</span></p>
         {% endif %}
       </div>
-      <p>Stay safe on the road 🚗💨</p>
+      <p style="color:white;">Stay safe on the road 🚗💨</p>
       <p style="margin-top:30px;color:#7a7a7a;font-size:12px">~ AutoLog.ai System</p>
     </div>
   </body>
