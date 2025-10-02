@@ -27,11 +27,10 @@ export class CarModel implements AfterViewInit {
     // GSAP animation → Hero se About par move
     // Hero pe by default car right me ho
     gsap.set('#car', {
-      
-      x: 500,  
+      x: 500,
     });
 
-    // ScrollTrigger: About pe jaate hi car left side aa jaye
+    // Hero → About transition
     gsap.to('#car', {
       x: () => {
         const para = document.querySelector('#aboutContent') as HTMLElement;
@@ -39,17 +38,23 @@ export class CarModel implements AfterViewInit {
           const rect = para.getBoundingClientRect();
           const screenCenter = window.innerWidth / 2;
           return rect.left - screenCenter - 500;
-          // Left side shift (150px offset aur bhi adjust kar sakta hai)
         }
-        return -100; // fallback left
+        return -100;
       },
       scrollTrigger: {
         trigger: '#about',
         start: 'top center',
-        end: 'bottom center',
+        end: 'top top',
         scrub: true,
-        
       },
+    });
+
+    // Freeze when we pass About
+    ScrollTrigger.create({
+      trigger: '#about',
+      start: 'bottom top',
+      onEnter: () => document.getElementById('car')?.classList.add('stopped'),
+      onLeaveBack: () => document.getElementById('car')?.classList.remove('stopped'),
     });
   }
 

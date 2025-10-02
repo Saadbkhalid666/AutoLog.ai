@@ -1,9 +1,17 @@
- .model-wrapper {
-  position: fixed;  /* hamesha viewport me rahe */
+/* Default fixed behavior */
+.model-wrapper {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;    /* full screen height */
-  pointer-events: none; /* clicks neeche ke elements ko milen */
+  height: 100vh;
+  pointer-events: none;
   z-index: 10;
+}
+
+/* When frozen at About */
+.model-wrapper.stopped {
+  position: absolute;
+  top: auto;
+  bottom: 0;   /* tweak this if needed to adjust where it rests */
 }
