@@ -4,6 +4,7 @@ import { Login } from './pages/login/login';
 import { Otp } from './pages/otp/otp';
 import { Home } from './pages/home/home';
 import { Terms } from './pages/terms/terms';
+import { Policy } from './pages/policy/policy';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'verify-otp', component: Otp },
   { path: 'home', component: Home },
   { path: 'terms', component: Terms },
+  {path:'privacy', component: Policy},
   { path: '**', redirectTo: 'signup' },
 ];
