@@ -5,9 +5,10 @@
 import { Hero } from "../../sections/hero/hero";
 import { About } from "../../sections/about/about";
 import { CarModel } from "../../components/car-model/car-model";
+import { Features } from "../../sections/features/features";
 @Component({
   selector: 'app-home',
-  imports:[Hero,About,CarModel],
+  imports:[Hero,About,CarModel, Features],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
