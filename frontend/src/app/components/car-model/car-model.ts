@@ -48,14 +48,8 @@ export class CarModel implements AfterViewInit {
         scrub: true,
       },
     });
+  
 
-    // Freeze when we pass About
-    ScrollTrigger.create({
-      trigger: '#about',
-      start: 'bottom top',
-      onEnter: () => document.getElementById('car')?.classList.add('stopped'),
-      onLeaveBack: () => document.getElementById('car')?.classList.remove('stopped'),
-    });
   }
 
   private initializeScene() {
