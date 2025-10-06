@@ -1,75 +1,94 @@
 <!-- Features Section -->
-<section aria-labelledby="features-heading" class="py-16 px-4 min-h-screen w-full bg-[#071017]">
+<section id="services" aria-labelledby="features-heading" class="py-16 px-4 min-h-screen w-full bg-[#071017]">
   <div class="max-w-7xl mx-auto">
-    <h2 id="features-heading" class="text-3xl md:text-4xl font-semibold text-[#42f5d8] mb-10 text-center md:text-left">
-      Features
+    
+    <h2 id="features-heading" class="text-4xl md:text-5xl font-semibold text-[#42f5d8] mb-20  text-center">
+      Services
     </h2>
 
-    <!-- ✅ 1 column on mobile/tablet, 2 columns on large screens -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Centered Grid Wrapper -->
+    <div class="w-full flex justify-center">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 max-w-4xl">
 
-      <!-- Card: Fuel Logging -->
-      <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl w-full">
-        <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
-          <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 7a1 1 0 0 1 1-1h6v12H4a1 1 0 0 1-1-1V7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M13 6h3a2 2 0 0 1 2 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M18 8v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M20 14l1.5-1A1 1 0 0 0 22 12V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white">Fuel Logging</h3>
-          <p class="mt-2 text-sm text-white/70">Record your fuel purchases effortlessly. Track mileage, cost per litre, and trends over time.</p>
-        </div>
-      </article>
+        <!-- Card: Fuel Logging -->
+        <article class="group flex flex-col sm:flex-row items-start   gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 ">
+          <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
+            <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 7a1 1 0 0 1 1-1h6v12H4a1 1 0 0 1-1-1V7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 6h3a2 2 0 0 1 2 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 8v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 14l1.5-1A1 1 0 0 0 22 12V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-white">Fuel Logging & Mileage Tracking</h3>
+            <p class="mt-2 text-sm text-white/70">
+              Easily log every fuel purchase and monitor fuel efficiency with accurate mileage tracking. View detailed analytics such as 
+              cost per litre, fuel consumption patterns, trip-based usage, and historical spending insights. Perfect for drivers who want 
+              to optimize fuel economy and maintain long-term budget control.
+            </p>
+          </div>
+        </article>
 
-      <!-- Card: Service Reminders -->
-      <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl w-full">
-        <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
-          <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
-            <path d="M16 3v4M8 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M3 11h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white">Service Reminders</h3>
-          <p class="mt-2 text-sm text-white/70">Get notified for upcoming maintenance and never miss an oil change or service window.</p>
-        </div>
-      </article>
+        <!-- Card: Service Reminders -->
+        <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl">
+          <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
+            <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+              <path d="M16 3v4M8 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M3 11h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-white">Automated Service Reminders</h3>
+            <p class="mt-2 text-sm text-white/70">
+              Stay on top of your vehicle's maintenance schedule with intelligent notifications. Get timely alerts for oil changes, 
+              tire rotations, brake inspections, and engine check-ups. Reduce the risk of breakdowns, extend your car's lifespan, and 
+              maintain manufacturer warranty compliance effortlessly.
+            </p>
+          </div>
+        </article>
 
-      <!-- Card: AI Assistant -->
-      <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl w-full">
-        <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
-          <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="7" y="3" width="10" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <rect x="4" y="10" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="9" cy="14" r="0.8" fill="currentColor"/>
-            <circle cx="15" cy="14" r="0.8" fill="currentColor"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white">AI Assistant</h3>
-          <p class="mt-2 text-sm text-white/70">Ask questions and get real-time help: diagnostics, next service predictions, and cost estimates.</p>
-        </div>
-      </article>
+        <!-- Card: AI Assistant -->
+        <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl">
+          <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
+            <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="7" y="3" width="10" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="4" y="10" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="14" r="0.8" fill="currentColor"/>
+              <circle cx="15" cy="14" r="0.8" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-white">AI-Powered Vehicle Assistant</h3>
+            <p class="mt-2 text-sm text-white/70">
+              Get instant answers to car-related questions with smart AI support. Receive personalized maintenance predictions, 
+              cost estimates, and troubleshooting guidance tailored to your vehicle's condition. Perfect for everyday drivers and 
+              vehicle owners who want expert help without the hassle.
+            </p>
+          </div>
+        </article>
 
-      <!-- Card: OCR Receipt Scanner -->
-      <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl w-full">
-        <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
-          <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 3v3a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M9 12h6M9 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white">OCR Receipt Scanner</h3>
-          <p class="mt-2 text-sm text-white/70">Scan receipts to extract information automatically — fuel amount, station, date, and total cost.</p>
-        </div>
-      </article>
+        <!-- Card: OCR Receipt Scanner -->
+        <article class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl">
+          <div class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10">
+            <svg class="w-7 h-7 text-[#42f5d8]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 3v3a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 12h6M9 15h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-white">OCR-Based Receipt Scanner</h3>
+            <p class="mt-2 text-sm text-white/70">
+              Automatically scan and extract key details from fuel and service receipts with AI-based OCR technology. Capture station name, 
+              amount spent, fuel quantity, transaction date, and total cost in seconds — no manual entry required. Ideal for accurate expense 
+              tracking and digital recordkeeping.
+            </p>
+          </div>
+        </article>
 
+      </div>
     </div>
   </div>
 </section>

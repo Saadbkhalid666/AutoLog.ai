@@ -13,5 +13,6 @@
 .model-wrapper.stopped {
   position: absolute;
   top: auto;
-  bottom: 0;   /* tweak this if needed to adjust where it rests */
+  bottom: 0;  /* model will stop here, above Services */
+  left: 0;
 }

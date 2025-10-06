@@ -24,13 +24,10 @@ export class CarModel implements AfterViewInit {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // GSAP animation → Hero se About par move
-    // Hero pe by default car right me ho
-    gsap.set('#car', {
-      x: 500,
-    });
+    // Set initial X position for Hero
+    gsap.set('#car', { x: 500 });
 
-    // Hero → About transition
+    // Hero → About animation
     gsap.to('#car', {
       x: () => {
         const para = document.querySelector('#aboutContent') as HTMLElement;
@@ -42,17 +39,17 @@ export class CarModel implements AfterViewInit {
         return -100;
       },
       scrollTrigger: {
-        trigger: '#about',
+        trigger: '#aboutSection',
         start: 'top center',
         end: 'top top',
         scrub: true,
       },
     });
 
-    // Freeze when we pass About
+    // Freeze model after About section
     ScrollTrigger.create({
-      trigger: '#about',
-      start: 'bottom top',
+      trigger: '#aboutSection',
+      start: 'bottom top', // bottom of About reaches top of viewport
       onEnter: () => document.getElementById('car')?.classList.add('stopped'),
       onLeaveBack: () => document.getElementById('car')?.classList.remove('stopped'),
     });
@@ -116,12 +113,10 @@ export class CarModel implements AfterViewInit {
         const maxDim = Math.max(size.x, size.y, size.z);
         const fov = this.camera.fov * (Math.PI / 180);
         let cameraDist = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-
         cameraDist *= 1.5;
 
         this.camera.position.set(center.x + cameraDist, center.y + maxDim * 0.3, center.z);
         this.camera.lookAt(center);
-
         this.controls.target.copy(center);
         this.controls.update();
       },
