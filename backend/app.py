@@ -22,7 +22,12 @@ logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/*": {"origins": "http://192.168.1.7:4200"}}, supports_credentials=True)
+    CORS(
+    app,
+    resources={r"/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200"]}},
+    supports_credentials=True   
+    )
+
     app.config.from_object(Config)
     db.init_app(app)
     mail.init_app(app)
@@ -55,4 +60,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(host="192.168.1.7", port=5000, debug=True)
+    app.run(debug=True)

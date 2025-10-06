@@ -6,7 +6,7 @@
     <title>OTP Verification | AutoLog</title>
     <link rel="icon" href="../../assets/images/autolog-logo.png" />
   </head>
-  <body>
+  <body class="bg-black text-white">
     <!-- Toast container -->
     <div class="fixed top-5 right-5 flex flex-col gap-3 z-50" *ngIf="toasts.length > 0">
       <div
@@ -23,9 +23,9 @@
 
     <div class="flex justify-center items-center min-h-screen">
       <div
-        class="flex flex-col items-center p-6 border border-[#1a9fff] rounded-xl shadow-md shadow-neon w-[90%] max-w-md"
+        class="flex flex-col items-center p-6 border border-[#42f5d8] rounded-xl shadow-md shadow-neon w-[90%] max-w-md bg-[#0d0d0d]"
       >
-        <h1 class="text-3xl md:text-4xl text-[#00f0ff] otp-font mb-6">OTP Verification</h1>
+        <h1 class="text-3xl md:text-4xl text-[#42f5d8] otp-font mb-6">OTP Verification</h1>
 
         <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="w-full flex flex-col gap-6">
           <div formArrayName="digits" class="flex justify-center gap-3 mb-4">
@@ -33,7 +33,7 @@
               *ngFor="let control of digits.controls; let i = index"
               type="text"
               maxlength="1"
-              class="md:w-12 md:h-14 w-8 h-10 text-center text-xl font-bold border-2 text-white border-gray-300 rounded-lg focus:border-[#1a9fff] focus:ring focus:ring-[#00f0ff]/50 outline-none"
+              class="md:w-12 md:h-14 w-8 h-10 text-center text-xl font-bold border-2 text-white border-gray-300 rounded-lg focus:border-[#42f5d8] focus:ring focus:ring-[#42f5d8]/50 outline-none bg-transparent"
               [formControlName]="i"
               (input)="onInput($event, i)"
               (keydown)="onKeyDown($event, i)"
@@ -43,7 +43,7 @@
           <button
             type="submit"
             [disabled]="loading"
-            class="btn w-full py-2 duration-150 font-semibold rounded-md transition-all bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white focus:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+            class="btn w-full py-2 duration-150 font-semibold rounded-md transition-all bg-[#42f5d8] text-black hover:bg-[#39e2c7] hover:text-white focus:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
           >
             <span *ngIf="!loading">Verify OTP</span>
 
