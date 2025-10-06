@@ -1,1 +1,69 @@
-<p>fuel-log works!</p>
+<div class="max-w-5xl mx-auto py-12 px-4">
+
+  <!-- Manual Fuel Log Form -->
+  <div class="bg-[#0f1b26] p-8 rounded-3xl mb-12 shadow-lg border border-gray-700">
+    <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">Add Manual Fuel Log</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <input type="date" [(ngModel)]="manualLog.date" 
+             class="p-3 rounded-xl w-full placeholder:text-white bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
+             placeholder="Date" />
+      <input type="text" [(ngModel)]="manualLog.litres" 
+             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
+             placeholder="Litres" />
+      <input type="text" [(ngModel)]="manualLog.price" 
+             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
+             placeholder="Price" />
+      <input type="text" [(ngModel)]="manualLog.odometer" 
+             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
+             placeholder="Odometer" />
+    </div>
+    <button (click)="addManualLog()" 
+            class="mt-6 w-full bg-teal-500 text-white font-semibold py-3 rounded-2xl hover:bg-teal-600 transition-all duration-200">
+      Add Log
+    </button>
+  </div>
+
+  <!-- Fuel Logs Table -->
+  <div class="bg-[#0f1b26] p-8 rounded-3xl shadow-lg border border-gray-700">
+    <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">Your Fuel Logs</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto text-left text-white border-collapse">
+        <thead>
+          <tr class="bg-gray-800/50 border-b border-gray-600">
+            <th class="px-4 py-3 text-lg font-medium">Date</th>
+            <th class="px-4 py-3 text-lg font-medium">Litres</th>
+            <th class="px-4 py-3 text-lg font-medium">Price</th>
+            <th class="px-4 py-3 text-lg font-medium">Odometer</th>
+            <th class="px-4 py-3 text-lg font-medium">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of fuelLogs" class="border-b border-gray-700 hover:bg-gray-800/40 transition-colors duration-150">
+            <td class="px-4 py-3">{{ log.date | date:'mediumDate' }}</td>
+            <td class="px-4 py-3">{{ log.litres }}</td>
+            <td class="px-4 py-3">{{ log.price }}</td>
+            <td class="px-4 py-3">{{ log.odometer }}</td>
+            <td class="px-4 py-3 flex gap-3">
+              <button *ngIf="log.id" (click)="deleteLog(log.id)" 
+                      class="bg-red-500 px-3 py-1 rounded-xl hover:bg-red-600 transition-colors duration-200">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<div class="bg-[#0f1b26] p-8 rounded-3xl shadow-lg border border-gray-700 mt-8">
+  <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">
+    Fuel Usage & Price Over Time
+  </h2>
+  <div echarts [options]="chartOptions" class="w-full h-64"></div>
+</div>
+
+
+
+
+
+</div>
