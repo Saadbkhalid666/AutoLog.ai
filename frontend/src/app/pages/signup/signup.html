@@ -23,10 +23,10 @@
 
     <!-- Signup Form -->
     <div
-      class="signup-form-container border-[#1a9fff] border-2 rounded-xl p-6 w-[90%] max-w-md flex flex-col items-center shadow-md shadow-neon"
+      class="signup-form-container border-[#42f5d8] border-2 rounded-xl p-6 w-[90%] max-w-md flex flex-col items-center shadow-md shadow-neon"
     >
       <form [formGroup]="signupForm" (ngSubmit)="Submit()" class="w-full flex flex-col gap-4">
-        <h1 class="signup-font text-3xl md:text-4xl text-[#00f0ff] font-bold text-center">
+        <h1 class="signup-font text-3xl md:text-4xl text-[#42f5d8] font-bold text-center">
           Sign Up
         </h1>
 
@@ -35,7 +35,7 @@
             type="text"
             placeholder="Enter Username"
             formControlName="username"
-            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#42f5d8] placeholder:text-gray-400"
           />
           <span
             *ngIf="username?.touched && username?.errors?.['required']"
@@ -47,7 +47,7 @@
             type="email"
             placeholder="Enter Email"
             formControlName="email"
-            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#42f5d8] placeholder:text-gray-400"
           />
           <span *ngIf="email?.touched && email?.errors?.['required']" class="text-red-500 text-sm"
             >Email is required!</span
@@ -55,18 +55,18 @@
           <span *ngIf="email?.errors?.['email']" class="text-red-500 text-sm"
             >Email must be valid!</span
           >
- 
+
           <div class="flex flex-col gap-1 relative">
             <input
               [type]="passwordVisible ? 'text' : 'password'"
               placeholder="Enter Password"
               formControlName="password"
-              class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400 w-full"
+              class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#42f5d8] placeholder:text-gray-400 w-full"
             />
             <button
               type="button"
               (click)="togglePassword()"
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1a9fff] focus:outline-none"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#42f5d8] focus:outline-none"
               [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
             >
               <ng-container *ngIf="!passwordVisible; else eyeOff">
@@ -120,23 +120,12 @@
               Password must be at least 6 characters!
             </span>
           </div>
-
-          <span
-            *ngIf="password?.touched && password?.errors?.['required']"
-            class="text-red-500 text-sm"
-            >Password is required!</span
-          >
-          <span
-            *ngIf="password?.touched && password?.errors?.['minlength']"
-            class="text-red-500 text-sm"
-            >Password must be at least 6 characters!</span
-          >
         </div>
 
         <button
           type="submit"
           [disabled]="loading"
-          class="w-full py-2 mt-4 font-semibold rounded-md bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          class="w-full py-2 mt-4 font-semibold rounded-md bg-[#42f5d8] text-black hover:bg-[#39e2c7] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
         >
           <span *ngIf="!loading">Sign Up</span>
           <span *ngIf="loading" class="flex items-center gap-2">
@@ -149,7 +138,7 @@
 
         <p class="text-gray-400 text-sm text-center mt-2">
           Already have an account?
-          <a routerLink="/login" class="text-[#1a9fff] hover:underline">Login</a>
+          <a routerLink="/login" class="text-[#42f5d8] hover:underline">Login</a>
         </p>
       </form>
     </div>

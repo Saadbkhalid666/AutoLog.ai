@@ -8,22 +8,22 @@
         <span class="bg-gradient-to-b from-white to-gray-800 bg-clip-text text-transparent">
           AutoLog
         </span>
-        <span class="text-[#06acf4]">AI</span>
+        <span class="text-[#42f5d8]">AI</span>
       </a>
     </h1>
 
     <ul class="hidden md:flex gap-6 text-white font-medium">
       <li>
-        <a routerLink="/home" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Home</a>
+        <a routerLink="/home" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition">Home</a>
       </li>
       <li>
-        <a href="#about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">About</a>
+        <a href="#about" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition">About</a>
       </li>
       <li>
-        <a routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Services</a>
+        <a routerLink="services" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition">Services</a>
       </li>
       <li>
-        <a routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] transition">Contact</a>
+        <a routerLink="contact" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition">Contact</a>
       </li>
     </ul>
 
@@ -48,14 +48,14 @@
       <ng-template #guest>
         <button 
           routerLink="login" 
-          class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition"
+          class="px-4 py-2 rounded-md border border-[#42f5d8] text-[#42f5d8] hover:bg-[#42f5d8] hover:text-black transition"
           aria-label="Login"
         >
           Login
         </button>
         <button 
           routerLink="signup" 
-          class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
+          class="px-4 py-2 rounded-md bg-[#42f5d8] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition"
           aria-label="Signup"
         >
           Signup
@@ -66,7 +66,7 @@
     <!-- Mobile Menu Button -->
     <button 
       (click)="toggleMenu()" 
-      class="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-[#06acf4] rounded"
+      class="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-[#42f5d8] rounded"
       aria-label="Toggle navigation menu"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,10 +82,10 @@
     role="menu"
     aria-label="Mobile Navigation"
   >
-    <a routerLink="" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Home</a>
-    <a routerLink="about" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">About</a>
-    <a routerLink="services" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Services</a>
-    <a routerLink="contact" routerLinkActive="text-[#06acf4]" class="hover:text-[#06acf4] cursor-pointer">Contact</a>
+    <a routerLink="" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] cursor-pointer">Home</a>
+    <a routerLink="about" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] cursor-pointer">About</a>
+    <a routerLink="services" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] cursor-pointer">Services</a>
+    <a routerLink="contact" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] cursor-pointer">Contact</a>
 
     <div class="flex flex-col gap-3 pt-2">
       <ng-container *ngIf="userFirstName; else mobileGuest">
@@ -106,10 +106,10 @@
 
       <ng-template #mobileGuest>
         <div class="flex flex-col sm:flex-row gap-3 w-full">
-          <button routerLink="login" class="px-4 py-2 rounded-md border border-[#06acf4] text-[#06acf4] hover:bg-[#06acf4] hover:text-black transition w-full">
+          <button routerLink="login" class="px-4 py-2 rounded-md border border-[#42f5d8] text-[#42f5d8] hover:bg-[#42f5d8] hover:text-black transition w-full">
             Login
           </button>
-          <button routerLink="signup" class="px-4 py-2 rounded-md bg-[#06acf4] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full">
+          <button routerLink="signup" class="px-4 py-2 rounded-md bg-[#42f5d8] text-black font-semibold hover:bg-[#00f0ff] hover:text-white transition w-full">
             Signup
           </button>
         </div>

@@ -21,8 +21,8 @@
     </div>
 
     <!-- Form container -->
-    <div class="w-[90%] max-w-md border-2 border-[#1a9fff] rounded-xl p-6 shadow-md shadow-neon bg-[#0d0d0d]">
-      <h1 class="text-3xl md:text-4xl text-center font-bold mb-6 text-[#00f0ff]">
+    <div class="w-[90%] max-w-md border-2 border-[#42f5d8] rounded-xl p-6 shadow-md shadow-neon bg-[#0d0d0d]">
+      <h1 class="text-3xl md:text-4xl text-center font-bold mb-6 text-[#42f5d8]">
         Login
       </h1>
 
@@ -37,7 +37,7 @@
             type="email"
             placeholder="Enter Email"
             formControlName="email"
-            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400"
+            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#42f5d8] placeholder:text-gray-400"
           />
           <span
             *ngIf="email?.touched && email?.errors?.['required']"
@@ -50,58 +50,57 @@
           </span>
         </div>
 
-       <!-- Password -->
-<div class="flex flex-col gap-1 relative">
-  <input
-    [type]="passwordVisible ? 'text' : 'password'"
-    placeholder="Enter Password"
-    formControlName="password"
-    class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#1a9fff] placeholder:text-gray-400 w-full"
-  />
+        <!-- Password -->
+        <div class="flex flex-col gap-1 relative">
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            placeholder="Enter Password"
+            formControlName="password"
+            class="p-2 rounded-md border-b border-gray-400 bg-transparent text-white focus:outline-none focus:border-[#42f5d8] placeholder:text-gray-400 w-full"
+          />
 
-  <!-- Toggle Button -->
-  <button
-    type="button"
-    (click)="togglePassword()"
-    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1a9fff] focus:outline-none"
-    [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
-  >
-    <ng-container *ngIf="!passwordVisible; else eyeOff">
-      <!-- Eye open -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M2.25 12s3.75-7.5 9.75-7.5S21.75 12 21.75 12s-3.75 7.5-9.75 7.5S2.25 12 2.25 12z"/>
-        <circle cx="12" cy="12" r="3"/>
-      </svg>
-    </ng-container>
-    <ng-template #eyeOff>
-      <!-- Eye off -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 3l18 18M9.88 9.88a3 3 0 014.24 4.24M6.23 6.23A10.477 10.477 0 001.5 12s3.75 7.5 10.5 7.5a10.48 10.48 0 005.77-1.73M17.77 17.77A10.477 10.477 0 0022.5 12s-3.75-7.5-10.5-7.5a10.48 10.48 0 00-5.77 1.73"/>
-      </svg>
-    </ng-template>
-  </button>
+          <!-- Toggle Button -->
+          <button
+            type="button"
+            (click)="togglePassword()"
+            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#42f5d8] focus:outline-none"
+            [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
+          >
+            <ng-container *ngIf="!passwordVisible; else eyeOff">
+              <!-- Eye open -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M2.25 12s3.75-7.5 9.75-7.5S21.75 12 21.75 12s-3.75 7.5-9.75 7.5S2.25 12 2.25 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </ng-container>
+            <ng-template #eyeOff>
+              <!-- Eye off -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 3l18 18M9.88 9.88a3 3 0 014.24 4.24M6.23 6.23A10.477 10.477 0 001.5 12s3.75 7.5 10.5 7.5a10.48 10.48 0 005.77-1.73M17.77 17.77A10.477 10.477 0 0022.5 12s-3.75-7.5-10.5-7.5a10.48 10.48 0 00-5.77 1.73"/>
+              </svg>
+            </ng-template>
+          </button>
 
-  <!-- Validation errors -->
-  <span *ngIf="password?.touched && password?.errors?.['required']"
-        class="text-red-500 text-sm">
-    Password is required!
-  </span>
-  <span *ngIf="password?.touched && password?.errors?.['minlength']"
-        class="text-red-500 text-sm">
-    Password must be at least 6 characters!
-  </span>
-</div>
-
+          <!-- Validation errors -->
+          <span *ngIf="password?.touched && password?.errors?.['required']"
+                class="text-red-500 text-sm">
+            Password is required!
+          </span>
+          <span *ngIf="password?.touched && password?.errors?.['minlength']"
+                class="text-red-500 text-sm">
+            Password must be at least 6 characters!
+          </span>
+        </div>
 
         <!-- Submit Button -->
         <button
           type="submit"
           [disabled]="loading"
-          class="w-full py-2 mt-4 font-semibold rounded-md bg-[#1a9fff] text-black hover:bg-[#00f0ff] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+          class="w-full py-2 mt-4 font-semibold rounded-md bg-[#42f5d8] text-black hover:bg-[#39e2c7] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
         >
           <span *ngIf="!loading">Login</span>
           <span *ngIf="loading" class="flex items-center gap-2">
@@ -115,7 +114,7 @@
         <!-- Redirect link -->
         <p class="text-gray-400 text-sm text-center mt-3">
           Don’t have an account?
-          <a routerLink="/signup" class="text-[#1a9fff] hover:underline">
+          <a routerLink="/signup" class="text-[#42f5d8] hover:underline">
             Sign Up
           </a>
         </p>
