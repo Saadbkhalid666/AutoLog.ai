@@ -1,11 +1,81 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ServiceReminder, ServiceReminderService } from "../../services/service-reminder-service";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reminder',
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reminder.html',
   styleUrl: './reminder.css'
 })
-export class Reminder {
+export class Reminder implements OnInit {
+  
+  reminders: ServiceReminder[] = [];
+  newReminder: ServiceReminder = { user_id: 1, service_type: '', due_date: '', note: '' };
+  editingReminder: ServiceReminder | null = null;
+  loading = false;
+  errorMsg = '';
+ 
+  constructor(private reminderService: ServiceReminderService) {}
 
+  ngOnInit() {
+    this.getReminders();
+  }
+
+  getReminders() {
+    this.loading = true;
+    this.reminderService.getReminders(this.newReminder.user_id).subscribe({
+      next: (data) => {
+        this.reminders = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMsg = 'Failed to fetch reminders';
+        this.loading = false;
+      }
+    });
+  }
+
+  addReminder() {
+    if (!this.newReminder.service_type || !this.newReminder.due_date || !this.newReminder.note) {
+      this.errorMsg = 'Please fill in all fields.';
+      return;
+    }
+
+    this.reminderService.addReminder(this.newReminder).subscribe({
+      next: () => {
+        this.newReminder = { user_id: 1, service_type: '', due_date: '', note: '' };
+        this.getReminders();
+      },
+      error: () => this.errorMsg = 'Failed to add reminder'
+    });
+  }
+
+  editReminder(reminder: ServiceReminder) {
+    this.editingReminder = { ...reminder };
+  }
+
+  updateReminder() {
+    if (!this.editingReminder) return;
+    this.reminderService.updateReminder(this.editingReminder.id!, this.editingReminder).subscribe({
+      next: () => {
+        this.editingReminder = null;
+        this.getReminders();
+      },
+      error: () => this.errorMsg = 'Failed to update reminder'
+    });
+  }
+
+  deleteReminder(id: number) {
+    if (!confirm('Are you sure you want to delete this reminder?')) return;
+    this.reminderService.deleteReminder(id).subscribe({
+      next: () => this.getReminders(),
+      error: () => this.errorMsg = 'Failed to delete reminder'
+    });
+  }
+
+  cancelEdit() {
+    this.editingReminder = null;
+  }
 }
