@@ -65,19 +65,7 @@ def schedule_reminder(reminder_id, due_date, test_mode=False):
     except Exception as e:
         logger.error(f"Failed to schedule reminder {reminder_id}: {str(e)}")
 
-@service_reminder_bp.route("/test-reminder/<int:id>", methods=["GET"])
-def test_reminder(id):
-    reminder = ServiceReminders.query.get(id)
-    if not reminder:
-        logger.warning(f"Test reminder failed: Reminder ID {id} not found")
-        return jsonify({"error": f"Reminder with ID {id} not found"}), 404
-    if not reminder.user:
-        logger.warning(f"Test reminder failed: No user for reminder ID {id}")
-        return jsonify({"error": f"No user associated with reminder ID {id}"}), 404
-    schedule_reminder(id, None, test_mode=True)
-    logger.info(f"Test reminder scheduled for ID {id}")
-    return jsonify({"message": f"Test reminder scheduled for ID {id}"})
-
+ 
 @service_reminder_bp.route("/add", methods=["POST"])
 def add_reminder():
     data = request.json
