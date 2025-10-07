@@ -6,6 +6,7 @@ import { Home } from './pages/home/home';
 import { Terms } from './pages/terms/terms';
 import { Policy } from './pages/policy/policy';
 import {  FuelLogs } from './pages/fuel-log/fuel-log';
+import { Reminder } from './pages/reminder/reminder';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'terms', component: Terms },
   {path:'privacy', component: Policy},
   {path:'fuellog/mannual',component:FuelLogs},
+  {path:'service-reminders', component:Reminder},
   { path: '**', redirectTo: 'signup' },
 ];

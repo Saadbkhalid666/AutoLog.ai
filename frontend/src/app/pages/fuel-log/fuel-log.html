@@ -1,69 +1,62 @@
-<div class="max-w-5xl mx-auto py-12 px-4">
+<div class="max-w-5xl mx-auto p-8 text-white">
+  <h2 class="text-3xl font-bold mb-6 text-center text-lime-400">Manual Fuel Logs</h2>
 
-  <!-- Manual Fuel Log Form -->
-  <div class="bg-[#0f1b26] p-8 rounded-3xl mb-12 shadow-lg border border-gray-700">
-    <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">Add Manual Fuel Log</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <input type="date" [(ngModel)]="manualLog.date" 
-             class="p-3 rounded-xl w-full placeholder:text-white bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
-             placeholder="Date" />
-      <input type="text" [(ngModel)]="manualLog.litres" 
-             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
-             placeholder="Litres" />
-      <input type="text" [(ngModel)]="manualLog.price" 
-             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
-             placeholder="Price" />
-      <input type="text" [(ngModel)]="manualLog.odometer" 
-             class="p-3 rounded-xl w-full bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-teal-400" 
-             placeholder="Odometer" />
+  <!-- Add Fuel Log Form -->
+  <div class="bg-white/10 p-6 rounded-2xl mb-10 shadow-md border border-white/10 backdrop-blur-md">
+    <h3 class="text-xl font-semibold mb-4 text-gray-200 text-center">Add New Fuel Log</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <input [(ngModel)]="manualLog.date" type="date"
+        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+      <input [(ngModel)]="manualLog.litres" type="number" placeholder="Litres"
+        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+      <input [(ngModel)]="manualLog.price" type="number" placeholder="Price"
+        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+      <input [(ngModel)]="manualLog.odometer" type="number" placeholder="Odometer"
+        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
     </div>
-    <button (click)="addManualLog()" 
-            class="mt-6 w-full bg-teal-500 text-white font-semibold py-3 rounded-2xl hover:bg-teal-600 transition-all duration-200">
+    <button (click)="addManualLog()"
+      class="mt-5 w-full bg-lime-500 hover:bg-lime-600 text-black font-semibold py-3 rounded-xl transition-all duration-200">
       Add Log
     </button>
   </div>
 
   <!-- Fuel Logs Table -->
-  <div class="bg-[#0f1b26] p-8 rounded-3xl shadow-lg border border-gray-700">
-    <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">Your Fuel Logs</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full table-auto text-left text-white border-collapse">
-        <thead>
-          <tr class="bg-gray-800/50 border-b border-gray-600">
-            <th class="px-4 py-3 text-lg font-medium">Date</th>
-            <th class="px-4 py-3 text-lg font-medium">Litres</th>
-            <th class="px-4 py-3 text-lg font-medium">Price</th>
-            <th class="px-4 py-3 text-lg font-medium">Odometer</th>
-            <th class="px-4 py-3 text-lg font-medium">Actions</th>
+  <div class="bg-white/10 p-6 rounded-2xl shadow-md border border-white/10 backdrop-blur-md">
+    <h3 class="text-2xl font-bold mb-6 text-lime-400 text-center">Your Fuel Logs</h3>
+
+    <div *ngIf="fuelLogs.length > 0; else noLogs" class="overflow-x-auto">
+      <table class="w-full border border-white/10 text-sm rounded-lg overflow-hidden">
+        <thead class="bg-white/5">
+          <tr>
+            <th class="p-3 text-left">Date</th>
+            <th class="p-3 text-left">Litres</th>
+            <th class="p-3 text-left">Price</th>
+            <th class="p-3 text-left">Odometer</th>
+            <th class="p-3 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let log of fuelLogs" class="border-b border-gray-700 hover:bg-gray-800/40 transition-colors duration-150">
-            <td class="px-4 py-3">{{ log.date | date:'mediumDate' }}</td>
-            <td class="px-4 py-3">{{ log.litres }}</td>
-            <td class="px-4 py-3">{{ log.price }}</td>
-            <td class="px-4 py-3">{{ log.odometer }}</td>
-            <td class="px-4 py-3 flex gap-3">
-              <button *ngIf="log.id" (click)="deleteLog(log.id)" 
-                      class="bg-red-500 px-3 py-1 rounded-xl hover:bg-red-600 transition-colors duration-200">
-                Delete
-              </button>
+          <tr *ngFor="let log of fuelLogs" class="border-t border-white/10 hover:bg-white/5 transition-colors duration-150">
+            <td class="p-3">{{ log.date | date:'mediumDate' }}</td>
+            <td class="p-3">{{ log.litres }}</td>
+            <td class="p-3">{{ log.price }}</td>
+            <td class="p-3">{{ log.odometer }}</td>
+            <td class="p-3 flex gap-2">
+              <button (click)="deleteLog(log.id!)" class="text-red-400 hover:underline">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <ng-template #noLogs>
+      <p class="text-center text-gray-400 mt-4">No fuel logs yet 😢</p>
+    </ng-template>
   </div>
 
-<div class="bg-[#0f1b26] p-8 rounded-3xl shadow-lg border border-gray-700 mt-8">
-  <h2 class="text-3xl font-bold text-teal-400 mb-6 text-center">
-    Fuel Usage & Price Over Time
-  </h2>
-  <div echarts [options]="chartOptions" class="w-full h-64"></div>
-</div>
-
-
-
-
-
+  <!-- Chart Section -->
+  <div class="bg-white/10 p-6 rounded-2xl shadow-md border border-white/10 backdrop-blur-md mt-10">
+    <h3 class="text-2xl font-bold mb-4 text-lime-400 text-center">Fuel Usage & Price Over Time</h3>
+    <div echarts [options]="chartOptions" class="w-full h-64"></div>
+  </div>
 </div>
