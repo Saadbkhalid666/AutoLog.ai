@@ -81,26 +81,63 @@ def verify_otp():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    data = request.json
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"message": "No data provided"}), 400
+            
+        email = data.get("email")
+        password = data.get("password")
 
-    user = User.query.filter_by(email=email, password=password).first()
-    if user:
+        if not email or not password:
+            return jsonify({"message": "Email and password required"}), 400
+
+        print(f"Login attempt for email: {email}")
+
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            print("User not found")
+            return jsonify({"message": "Invalid email or password!"}), 401
+            
+        # Check password (consider hashing passwords in future)
+        if user.password != password:
+            print("Password mismatch")
+            return jsonify({"message": "Invalid email or password!"}), 401
+
+        # Clear and create new session
+        session.clear()
         session["user_id"] = user.id
         session["username"] = user.username
-    
-    
-
+        session.modified = True
+        
+        print(f"✅ Login successful - user_id: {session.get('user_id')}, username: {session.get('username')}")
+        
         return jsonify({
             "message": "Login successful!",
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+            "user_id": user.id
         }), 200
-    else:
-        return jsonify({"message": "User not found!"}), 404
+        
+    except Exception as e:
+        print(f"Login error: {str(e)}")
+        return jsonify({"message": "Server error during login"}), 500
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return jsonify({"message": "Logged out successfully!"}), 200
+
+
+@auth_bp.route("/check-session", methods=["GET"])
+def check_session():
+    user_id = session.get("user_id")
+    username = session.get("username")
+    return jsonify({
+        "user_id": user_id,
+        "username": username,
+        "session_keys": list(session.keys()),
+        "message": "Session check successful"
+    }), 200
+
+ 

@@ -23,12 +23,12 @@ logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
-    CORS(
-    app,
-    resources={r"/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200"]}},
-    supports_credentials=True   
-    )
-
+    CORS(app, 
+         supports_credentials=True, 
+         origins=["http://localhost:4200"],
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+    
     app.config.from_object(Config)
     app.secret_key = app.config["SECRET_KEY"]
     Session(app)
@@ -65,4 +65,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(host="localhost", port=5000, debug=True)
