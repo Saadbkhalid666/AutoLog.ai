@@ -5,7 +5,7 @@ class FuelLog(db.Model):
     __tablename__ = "fuel_log"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, primary_key=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     date = db.Column(db.Date, nullable=False, default=datetime.utcnow) 
     litres = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)

@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   signup(user: User): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+    return this.http.post<any>(`${this.apiUrl}/register`, user, {withCredentials:true}).pipe(
       tap((res) => {
         if (res?.username) {
           sessionStorage.setItem('username', res.username);
@@ -35,18 +35,20 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
       tap((res) => {
         if (res?.username) {
           sessionStorage.setItem('username', res.username);
           this.usernameSubject.next(res.username);
+          localStorage.setItem('token', res.token);
+
         }
       })
     );
   }
 
   verifyOtp(otpData: { otp: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/verify-otp`, otpData).pipe(
+    return this.http.post<any>(`${this.apiUrl}/verify-otp`, otpData, {withCredentials:true}).pipe(
       tap((res) => {
         if (res?.username) {
           localStorage.setItem('username', res.username);
@@ -60,8 +62,8 @@ export class AuthService {
     return this.usernameSubject.value;
   }
 
-  checkUserName():string | null{
-    return this.usernameSubject.value
+  checkUserName(): string | null {
+    return this.usernameSubject.value;
   }
 
   logout(): void {

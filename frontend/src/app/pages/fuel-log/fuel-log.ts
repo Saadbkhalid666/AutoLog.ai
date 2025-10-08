@@ -13,11 +13,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
 })
 export class FuelLogs implements OnInit {
 
-  userId = 1;
   fuelLogs: FuelLog[] = [];
   manualLog: FuelLog = { date: '', litres: '', price: '', odometer: '' };
   ocrFile!: File;
-  chartOptions: any = {}; // ECharts config
+  chartOptions: any = {};
 
   constructor(private fuelService: FuelLogService) {}
 
@@ -26,8 +25,8 @@ export class FuelLogs implements OnInit {
   }
 
   loadFuelLogs() {
-    this.fuelService.getFuelLogs(this.userId).subscribe(res => {
-      this.fuelLogs = res.fuel_logs;
+    this.fuelService.getFuelLogs().subscribe(res => {
+      this.fuelLogs = res.fuel_logs || [];
 
       if (this.fuelLogs.length > 0) {
         const sortedLogs = this.fuelLogs.slice().sort(
@@ -44,18 +43,8 @@ export class FuelLogs implements OnInit {
           xAxis: { type: 'category', data: labels },
           yAxis: { type: 'value' },
           series: [
-            {
-              name: 'Litres',
-              type: 'line',
-              data: litresData,
-              smooth: true
-            },
-            {
-              name: 'Price',
-              type: 'line',
-              data: priceData,
-              smooth: true
-            }
+            { name: 'Litres', type: 'line', data: litresData, smooth: true },
+            { name: 'Price', type: 'line', data: priceData, smooth: true }
           ]
         };
       }
@@ -63,7 +52,6 @@ export class FuelLogs implements OnInit {
   }
 
   addManualLog() {
-    this.manualLog.user_id = this.userId;
     this.fuelService.addManualFuelLog(this.manualLog).subscribe(() => {
       this.manualLog = { date: '', litres: '', price: '', odometer: '' };
       this.loadFuelLogs();

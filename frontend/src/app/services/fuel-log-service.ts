@@ -15,29 +15,36 @@ export interface FuelLog {
   providedIn: 'root'
 })
 export class FuelLogService {
-  private baseUrl = 'http://localhost:5000/vehicle'; // Flask API URL
-
+  private baseUrl = 'http://127.0.0.1:5000/vehicle'; // Flask API URL
   constructor(private http: HttpClient) {}
 
-  getFuelLogs(userId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get-fuel-logs/${userId}`);
+  getFuelLogs(): Observable<any> {
+  const token = localStorage.getItem('token');
+
+    return this.http.get(`${this.baseUrl}/get-fuel-logs`,{
+      headers:{
+        AuthenticatorAssertionResponse: `Bearer ${token}`
+        
+      }
+    });
+
   }
 
   addManualFuelLog(log: FuelLog): Observable<any> {
-    return this.http.post(`${this.baseUrl}/fuel-log/manual`, log);
+    return this.http.post(`${this.baseUrl}/fuel-log/manual`, log, { withCredentials: true });
   }
 
   uploadOCRFuelLog(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, formData);
+    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, formData, { withCredentials: true });
   }
 
   deleteFuelLog(logId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`);
+    return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`, { withCredentials: true });
   }
 
   updateFuelLog(logId: number, log: FuelLog): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update-fuel-log/${logId}`, log);
+    return this.http.put(`${this.baseUrl}/update-fuel-log/${logId}`, log, { withCredentials: true });
   }
 }

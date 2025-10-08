@@ -1,5 +1,6 @@
 import  logging
 from flask import Flask #type: ignore
+from flask_session import Session
 from flask_admin import Admin #type: ignore
 from flask_admin.contrib.sqla import ModelView #type: ignore
 from flask_cors import CORS #type: ignore
@@ -29,6 +30,10 @@ def create_app():
     )
 
     app.config.from_object(Config)
+    app.secret_key = app.config["SECRET_KEY"]
+    Session(app)
+
+    
     db.init_app(app)
     mail.init_app(app)
 
