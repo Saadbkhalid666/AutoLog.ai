@@ -35,26 +35,56 @@
       </thead>
       <tbody>
         <tr *ngFor="let reminder of reminders" class="border-t border-white/10">
-          <td class="p-3">
-            <input *ngIf="editingReminder?.id === reminder.id" [(ngModel)]="editingReminder?.service_type" class="bg-transparent border border-white/20 p-1 rounded" />
-            <span *ngIf="editingReminder?.id !== reminder.id">{{ reminder.service_type }}</span>
-          </td>
-          <td class="p-3">
-            <input *ngIf="editingReminder?.id === reminder.id" [(ngModel)]="editingReminder?.due_date" type="date" class="bg-transparent border border-white/20 p-1 rounded" />
-            <span *ngIf="editingReminder?.id !== reminder.id">{{ reminder.due_date }}</span>
-          </td>
-          <td class="p-3">
-            <input *ngIf="editingReminder?.id === reminder.id" [(ngModel)]="editingReminder?.note" class="bg-transparent border border-white/20 p-1 rounded" />
-            <span *ngIf="editingReminder?.id !== reminder.id">{{ reminder.note }}</span>
-          </td>
-          <td class="p-3">{{ reminder.status }}</td>
-          <td class="p-3 flex gap-2">
-            <button *ngIf="editingReminder?.id !== reminder.id" (click)="editReminder(reminder)" class="text-blue-400 hover:underline">Edit</button>
-            <button *ngIf="editingReminder?.id === reminder.id" (click)="updateReminder()" class="text-green-400 hover:underline">Save</button>
-            <button *ngIf="editingReminder?.id === reminder.id" (click)="cancelEdit()" class="text-gray-400 hover:underline">Cancel</button>
-            <button (click)="deleteReminder(reminder.id!)" class="text-red-400 hover:underline">Delete</button>
-          </td>
-        </tr>
+  <td class="p-3">
+    <input 
+      *ngIf="editingReminder && editingReminder.id === reminder.id"
+      [(ngModel)]="editingReminder.service_type"
+      class="bg-transparent border border-white/20 p-1 rounded" />
+    <span *ngIf="!editingReminder || editingReminder.id !== reminder.id">
+      {{ reminder.service_type }}
+    </span>
+  </td>
+
+  <td class="p-3">
+    <input 
+      *ngIf="editingReminder && editingReminder.id === reminder.id"
+      [(ngModel)]="editingReminder.due_date" 
+      type="date"
+      class="bg-transparent border border-white/20 p-1 rounded" />
+    <span *ngIf="!editingReminder || editingReminder.id !== reminder.id">
+      {{ reminder.due_date }}
+    </span>
+  </td>
+
+  <td class="p-3">
+    <input 
+      *ngIf="editingReminder && editingReminder.id === reminder.id"
+      [(ngModel)]="editingReminder.note"
+      class="bg-transparent border border-white/20 p-1 rounded" />
+    <span *ngIf="!editingReminder || editingReminder.id !== reminder.id">
+      {{ reminder.note }}
+    </span>
+  </td>
+
+  <td class="p-3">{{ reminder.status }}</td>
+  <td class="p-3 flex gap-2">
+    <button *ngIf="!editingReminder || editingReminder.id !== reminder.id"
+            (click)="editReminder(reminder)"
+            class="text-blue-400 hover:underline">Edit</button>
+
+    <button *ngIf="editingReminder && editingReminder.id === reminder.id"
+            (click)="updateReminder()"
+            class="text-green-400 hover:underline">Save</button>
+
+    <button *ngIf="editingReminder && editingReminder.id === reminder.id"
+            (click)="cancelEdit()"
+            class="text-gray-400 hover:underline">Cancel</button>
+
+    <button (click)="deleteReminder(reminder.id!)"
+            class="text-red-400 hover:underline">Delete</button>
+  </td>
+</tr>
+
       </tbody>
     </table>
   </div>

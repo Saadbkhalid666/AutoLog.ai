@@ -1,5 +1,6 @@
 import time
-from flask import Blueprint, request, jsonify # type: ignore
+from flask import Blueprint, request, jsonify, session # type: ignore
+
 from utils.extensions import db
 from models.User import User # type: ignore
 from utils.generate_otp import generate_otp
@@ -86,7 +87,11 @@ def login():
 
     user = User.query.filter_by(email=email, password=password).first()
     if user:
-        # ✅ Return username + email
+        session["user_id"] = user.id
+        session["username"] = user.username
+    
+    
+
         return jsonify({
             "message": "Login successful!",
             "username": user.username,
@@ -94,3 +99,8 @@ def login():
         }), 200
     else:
         return jsonify({"message": "User not found!"}), 404
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({"message": "Logged out successfully!"}), 200

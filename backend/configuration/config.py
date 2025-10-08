@@ -11,3 +11,9 @@ class Config:
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "false").lower() in ["true", "1", "t"]
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    SESSION_TYPE = "filesystem"
+    SESSION_FILE_DIR = os.path.join(os.getcwd(), 'flask_session')
+    SESSION_PERMANENT=False
+
+
+    
