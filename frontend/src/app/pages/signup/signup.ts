@@ -13,15 +13,8 @@ import { Router } from '@angular/router';
 })
 export class Signup {
   toasts: { message: string; type: 'success' | 'error' }[] = [];
-
-  showToast(message: string, type: 'success' | 'error' = 'success') {
-    const toast = { message, type };
-    this.toasts.push(toast);
-
-    setTimeout(() => {
-      this.toasts = this.toasts.filter((t) => t !== toast);
-    }, 3000);
-  }
+  loading = false;
+  passwordVisible = false;
 
   signupForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.minLength(3)]),
@@ -29,52 +22,43 @@ export class Signup {
     password: new FormControl<string>('', [Validators.required, Validators.minLength(6)]),
   });
 
-  get username() {
-    return this.signupForm.get('username');
-  }
-  get email() {
-    return this.signupForm.get('email');
-  }
-  get password() {
-    return this.signupForm.get('password');
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  loading = false;
-passwordVisible = false; 
+  get username() { return this.signupForm.get('username'); }
+  get email() { return this.signupForm.get('email'); }
+  get password() { return this.signupForm.get('password'); }
 
   togglePassword() {
     this.passwordVisible = !this.passwordVisible;
   }
-  constructor(private authService: AuthService, private router: Router) {}
+
+  showToast(message: string, type: 'success' | 'error' = 'success') {
+    const toast = { message, type };
+    this.toasts.push(toast);
+    setTimeout(() => this.toasts = this.toasts.filter(t => t !== toast), 3000);
+  }
 
   Submit() {
-  if (this.signupForm.valid) {
+    if (!this.signupForm.valid) {
+      this.showToast('Form is invalid!', 'error');
+      return;
+    }
+
     this.loading = true;
     const user: User = this.signupForm.value as User;
 
     this.authService.signup(user).subscribe({
       next: () => {
-        this.signupForm.reset({}, { emitEvent: false });
-        this.showToast('Registration Successful! Please verify OTP.', 'success');
         this.loading = false;
+        this.signupForm.reset({}, { emitEvent: false });
+        this.showToast('Registration successful! Please verify OTP.', 'success');
         this.router.navigate(['verify-otp']);
       },
-      error: (err) => {
+      error: err => {
         this.loading = false;
-        if (err.error?.error === 'User already registered') {
-          this.showToast('User is already registered!', 'error');
-        } else if (err.error?.error === 'Username already taken') {
-          this.showToast('Username already taken!', 'error');
-        } else if (err.error?.message) {
-          this.showToast(err.error.message, 'error');
-        } else {
-          this.showToast('Registration Failed. Try again!', 'error');
-        }
-      },
+        const errorMsg = err?.error?.error || err?.error?.message || 'Registration failed. Try again!';
+        this.showToast(errorMsg, 'error');
+      }
     });
-  } else {
-    this.showToast('Form is invalid!', 'error');
   }
-}
-
 }
