@@ -1,22 +1,19 @@
 import os
 import pytesseract #type:ignore
-from flask import Blueprint, request, jsonify, session #type:ignore
+from flask import Blueprint, request, jsonify #type:ignore
+from flask_jwt_extended import jwt_required, get_jwt_identity #type:ignore
 from utils.extensions import db
 from models.fuel_log import FuelLog
 from datetime import datetime
 from PIL import Image #type:ignore
 
 fuel_log_bp = Blueprint("vehicle", __name__)
-
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-
 @fuel_log_bp.route("/fuel-log/manual", methods=["POST"])
+@jwt_required()
 def post_manual_fuel_log():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized!"}), 401
-
+    user_id = get_jwt_identity()
     data = request.get_json()
     date_value = data.get("date")
     if date_value:
@@ -40,13 +37,10 @@ def post_manual_fuel_log():
         "fuel_log": fuel_log.to_dict()
     }), 201
 
-
 @fuel_log_bp.route("/fuel-logs/ocr", methods=["POST"])
+@jwt_required()
 def post_ocr_fuel_log():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized!"}), 401
-
+    user_id = get_jwt_identity()
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded!"}), 400
     
@@ -83,23 +77,21 @@ def post_ocr_fuel_log():
         }
     })
 
-
 @fuel_log_bp.route("/get-fuel-logs", methods=["GET"])
+@jwt_required()
 def get_fuel_logs():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized!"}), 401
-
+    user_id = get_jwt_identity()
     logs = FuelLog.query.filter_by(user_id=user_id).order_by(FuelLog.date.desc()).all()
     logs_list = [log.to_dict() for log in logs]
     return jsonify({"fuel_logs": logs_list})
 
-
 @fuel_log_bp.route("/update-fuel-log/<int:log_id>", methods=["PUT"])
+@jwt_required()
 def update_fuel_log_by_id(log_id):
+    user_id = get_jwt_identity()
     log = FuelLog.query.get(log_id)
-    if not log:
-        return jsonify({"error": "Fuel Log not found!"}), 404
+    if not log or log.user_id != user_id:
+        return jsonify({"error": "Fuel Log not found or unauthorized!"}), 404
 
     data = request.get_json()
     log.date = datetime.utcnow().date()
@@ -111,11 +103,9 @@ def update_fuel_log_by_id(log_id):
     return jsonify({"message": "Fuel log updated!", "fuel_log": log.to_dict()})
 
 @fuel_log_bp.route("/delete-fuel-log/<int:log_id>", methods=["DELETE"])
+@jwt_required()
 def delete_fuel_log(log_id):
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized!"}), 401
-
+    user_id = get_jwt_identity()
     log = FuelLog.query.get(log_id)
     if not log or log.user_id != user_id:
         return jsonify({"error": "Fuel Log not found or unauthorized!"}), 404

@@ -15,6 +15,8 @@ from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
+from flask_jwt_extended import JWTManager
+
 import atexit
 
 # Configure logging
@@ -38,6 +40,8 @@ def create_app():
     mail.init_app(app)
 
     migrate = Migrate(app, db)
+
+    jwt = JWTManager(app)
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
