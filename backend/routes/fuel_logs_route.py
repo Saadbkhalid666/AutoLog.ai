@@ -9,7 +9,6 @@ from PIL import Image #type:ignore
 
 fuel_log_bp = Blueprint("vehicle", __name__)
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
 @fuel_log_bp.route("/fuel-log/manual", methods=["POST"])
 @jwt_required()
 def post_manual_fuel_log():
@@ -21,12 +20,19 @@ def post_manual_fuel_log():
     else:
         date_value = datetime.utcnow().date()
 
+    try:
+        litres = float(data.get("litres", 0))
+        price = float(data.get("price", 0))
+        odometer = int(data.get("odometer", 0))
+    except ValueError:
+        return jsonify({"error": "Invalid number format"}), 422
+
     fuel_log = FuelLog(
         user_id=user_id,
         date=date_value,
-        litres=data.get("litres"),
-        price=data.get("price"),
-        odometer=data.get("odometer")
+        litres=litres,
+        price=price,
+        odometer=odometer
     )
 
     db.session.add(fuel_log)
@@ -57,12 +63,12 @@ def post_ocr_fuel_log():
     date = datetime.utcnow().date()
 
     fuel_log = FuelLog(
-        user_id=user_id,
-        date=date,
-        litres=litres,
-        price=price,
-        odometer=odometer
-    )
+    user_id=user_id,
+    date=date,
+    litres=float(litres),
+    price=float(price),
+    odometer=int(odometer)
+)
 
     db.session.add(fuel_log)
     db.session.commit()

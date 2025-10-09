@@ -55,7 +55,7 @@ def verify_otp():
     db.session.commit()
     del temporary_users[otp]
 
-    access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=7))
+    access_token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=7))
     return jsonify({
         "message": "OTP verified and user created successfully!",
         "username": user.username,
@@ -77,7 +77,7 @@ def login():
     if not user or user.password != password:
         return jsonify({"message": "Invalid email or password!"}), 401
 
-    access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=7))
+    access_token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=7))
     return jsonify({
         "message": "Login successful!",
         "username": user.username,

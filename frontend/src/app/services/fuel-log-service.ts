@@ -6,9 +6,9 @@ export interface FuelLog {
   id?: number;
   user_id?: number;
   date: string;
-  litres: string;
-  price: string;
-  odometer: string;
+  litres: number;
+  price: number;
+  odometer: number;
 }
 
 @Injectable({
@@ -28,8 +28,11 @@ export class FuelLogService {
     };
   }
 
-  getFuelLogs(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get-fuel-logs`, this.getAuthHeaders());
+  getFuelLogs(): Observable<{ fuel_logs: FuelLog[] }> {
+    return this.http.get<{ fuel_logs: FuelLog[] }>(
+      `${this.baseUrl}/get-fuel-logs`,
+      this.getAuthHeaders()
+    );
   }
 
   addManualFuelLog(log: FuelLog): Observable<any> {
