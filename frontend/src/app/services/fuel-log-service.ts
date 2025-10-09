@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface FuelLog {
@@ -15,31 +15,38 @@ export interface FuelLog {
   providedIn: 'root'
 })
 export class FuelLogService {
-  private baseUrl = 'http://localhost:5000/vehicle'; // Flask API URL
+  private baseUrl = 'http://127.0.0.1:5000/vehicle';
+
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders({
+        Authorization: token ? `Bearer ${token}` : ''
+      })
+    };
+  }
+
   getFuelLogs(): Observable<any> {
-  const token = localStorage.getItem('token');
-
-    return this.http.get(`${this.baseUrl}/get-fuel-logs`, { withCredentials: true });
-
+    return this.http.get(`${this.baseUrl}/get-fuel-logs`, this.getAuthHeaders());
   }
 
   addManualFuelLog(log: FuelLog): Observable<any> {
-    return this.http.post(`${this.baseUrl}/fuel-log/manual`, log, { withCredentials: true });
+    return this.http.post(`${this.baseUrl}/fuel-log/manual`, log, this.getAuthHeaders());
   }
 
   uploadOCRFuelLog(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, formData, { withCredentials: true });
+    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, formData, this.getAuthHeaders());
   }
 
   deleteFuelLog(logId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`, { withCredentials: true });
+    return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`, this.getAuthHeaders());
   }
 
   updateFuelLog(logId: number, log: FuelLog): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update-fuel-log/${logId}`, log, { withCredentials: true });
+    return this.http.put(`${this.baseUrl}/update-fuel-log/${logId}`, log, this.getAuthHeaders());
   }
 }

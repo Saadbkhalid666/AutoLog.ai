@@ -1,6 +1,5 @@
 import  logging
 from flask import Flask #type: ignore
-from flask_session import Session
 from flask_admin import Admin #type: ignore
 from flask_admin.contrib.sqla import ModelView #type: ignore
 from flask_cors import CORS #type: ignore
@@ -32,8 +31,6 @@ def create_app():
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     
     app.config.from_object(Config)
-    app.secret_key = app.config["SECRET_KEY"]
-    Session(app)
 
     
     db.init_app(app)
@@ -69,4 +66,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(host="localhost", port=5000, debug=True)
+    app.run(debug=True)
