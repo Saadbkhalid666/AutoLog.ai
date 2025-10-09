@@ -12,7 +12,7 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:5000/auth';
+  private apiUrl = 'http://localhost:5000/auth';
   private usernameSubject = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSubject.asObservable();
 
@@ -40,7 +40,6 @@ export class AuthService {
         if (res?.username) {
           sessionStorage.setItem('username', res.username);
           this.usernameSubject.next(res.username);
-          localStorage.setItem('token', res.token);
 
         }
       })

@@ -15,6 +15,8 @@ from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
+from flask_jwt_extended import JWTManager
+
 import atexit
 
 # Configure logging
@@ -23,12 +25,12 @@ logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
-    CORS(
-    app,
-    resources={r"/*": {"origins": ["http://localhost:4200", "http://127.0.0.1:4200"]}},
-    supports_credentials=True   
-    )
-
+    CORS(app, 
+         supports_credentials=True, 
+         origins=["http://localhost:4200"],
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+    
     app.config.from_object(Config)
     app.secret_key = app.config["SECRET_KEY"]
     Session(app)
@@ -38,6 +40,8 @@ def create_app():
     mail.init_app(app)
 
     migrate = Migrate(app, db)
+
+    jwt = JWTManager(app)
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
@@ -65,4 +69,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(host="localhost", port=5000, debug=True)

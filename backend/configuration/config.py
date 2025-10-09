@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from datetime import timedelta
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    JWT_SECRET_KEY = os.getenv("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = os.getenv("MAIL_SERVER")
@@ -11,9 +12,6 @@ class Config:
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "false").lower() in ["true", "1", "t"]
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
-    SESSION_TYPE = "filesystem"
-    SESSION_FILE_DIR = os.path.join(os.getcwd(), 'flask_session')
-    SESSION_PERMANENT=False
-
-
-    
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
+ 
+   

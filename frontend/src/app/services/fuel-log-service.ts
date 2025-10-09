@@ -15,18 +15,13 @@ export interface FuelLog {
   providedIn: 'root'
 })
 export class FuelLogService {
-  private baseUrl = 'http://127.0.0.1:5000/vehicle'; // Flask API URL
+  private baseUrl = 'http://localhost:5000/vehicle'; // Flask API URL
   constructor(private http: HttpClient) {}
 
   getFuelLogs(): Observable<any> {
   const token = localStorage.getItem('token');
 
-    return this.http.get(`${this.baseUrl}/get-fuel-logs`,{
-      headers:{
-        AuthenticatorAssertionResponse: `Bearer ${token}`
-        
-      }
-    });
+    return this.http.get(`${this.baseUrl}/get-fuel-logs`, { withCredentials: true });
 
   }
 
