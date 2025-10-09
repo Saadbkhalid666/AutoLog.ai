@@ -9,15 +9,13 @@ import { NgxEchartsModule } from 'ngx-echarts';
   standalone: true,
   imports: [CommonModule, FormsModule, NgxEchartsModule],
   templateUrl: './fuel-log.html',
-  styleUrls: ['./fuel-log.css']
+  styleUrls: ['./fuel-log.css'],
 })
 export class FuelLogs implements OnInit {
-
   fuelLogs: FuelLog[] = [];
-  manualLog: FuelLog = { date: '', litres: '', price: '', odometer: '' };
+  manualLog: FuelLog = { date: '', litres: 0, price: 0, odometer: 0 };
   ocrFile!: File;
   chartOptions: any = {};
-  loading = false;
 
   constructor(private fuelService: FuelLogService) {}
 
@@ -26,17 +24,17 @@ export class FuelLogs implements OnInit {
   }
 
   loadFuelLogs() {
-    this.fuelService.getFuelLogs().subscribe(res => {
+    this.fuelService.getFuelLogs().subscribe((res) => {
       this.fuelLogs = res.fuel_logs || [];
 
       if (this.fuelLogs.length > 0) {
-        const sortedLogs = [...this.fuelLogs].sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
+        const sortedLogs = this.fuelLogs
+          .slice()
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-        const labels = sortedLogs.map(log => new Date(log.date).toLocaleDateString());
-        const litresData = sortedLogs.map(log => Number(log.litres));
-        const priceData = sortedLogs.map(log => Number(log.price));
+        const labels = sortedLogs.map((log) => new Date(log.date).toLocaleDateString());
+        const litresData = sortedLogs.map((log) => log.litres);
+        const priceData = sortedLogs.map((log) => log.price);
 
         this.chartOptions = {
           tooltip: { trigger: 'axis' },
@@ -45,21 +43,24 @@ export class FuelLogs implements OnInit {
           yAxis: { type: 'value' },
           series: [
             { name: 'Litres', type: 'line', data: litresData, smooth: true },
-            { name: 'Price', type: 'line', data: priceData, smooth: true }
-          ]
+            { name: 'Price', type: 'line', data: priceData, smooth: true },
+          ],
         };
       }
     });
   }
-
   addManualLog() {
-    if (!this.manualLog.litres || !this.manualLog.price || !this.manualLog.odometer) return;
+    const logPayload = {
+      ...this.manualLog,
+      litres: Number(this.manualLog.litres),
+      price: Number(this.manualLog.price),
+      odometer: Number(this.manualLog.odometer),
+    };
 
-    this.loading = true;
-    this.fuelService.addManualFuelLog(this.manualLog).subscribe(() => {
-      this.manualLog = { date: '', litres: '', price: '', odometer: '' };
+    this.fuelService.addManualFuelLog(logPayload).subscribe(() => {
+      // Reset manualLog with proper number types
+      this.manualLog = { date: '', litres: 0, price: 0, odometer: 0 };
       this.loadFuelLogs();
-      this.loading = false;
     });
   }
 
@@ -69,15 +70,17 @@ export class FuelLogs implements OnInit {
 
   uploadOCR() {
     if (!this.ocrFile) return;
-    this.loading = true;
     this.fuelService.uploadOCRFuelLog(this.ocrFile).subscribe(() => {
       this.ocrFile = undefined as any;
       this.loadFuelLogs();
-      this.loading = false;
     });
   }
 
   deleteLog(id: number) {
     this.fuelService.deleteFuelLog(id).subscribe(() => this.loadFuelLogs());
+  }
+
+  updateLog(log: FuelLog) {
+    this.fuelService.updateFuelLog(log.id!, log).subscribe(() => this.loadFuelLogs());
   }
 }
