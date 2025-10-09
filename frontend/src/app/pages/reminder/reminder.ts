@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceReminder, ServiceReminderService } from "../../services/service-reminder-service";
+import { ServiceReminder, ServiceReminderService } from '../../services/service-reminder-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reminder',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './reminder.html',
-  styleUrl: './reminder.css'
+  styleUrls: ['./reminder.css']
 })
 export class Reminder implements OnInit {
   
   reminders: ServiceReminder[] = [];
-  newReminder: ServiceReminder = { user_id: 1, service_type: '', due_date: '', note: '' };
+  newReminder: ServiceReminder = { service_type: '', due_date: '', note: '' };
   editingReminder: ServiceReminder | null = null;
   loading = false;
   errorMsg = '';
- 
+
   constructor(private reminderService: ServiceReminderService) {}
 
   ngOnInit() {
@@ -25,7 +26,7 @@ export class Reminder implements OnInit {
 
   getReminders() {
     this.loading = true;
-    this.reminderService.getReminders(this.newReminder.user_id).subscribe({
+    this.reminderService.getReminders().subscribe({
       next: (data) => {
         this.reminders = data;
         this.loading = false;
@@ -45,10 +46,12 @@ export class Reminder implements OnInit {
 
     this.reminderService.addReminder(this.newReminder).subscribe({
       next: () => {
-        this.newReminder = { user_id: 1, service_type: '', due_date: '', note: '' };
+        this.newReminder = { service_type: '', due_date: '', note: '' };
         this.getReminders();
       },
-      error: () => this.errorMsg = 'Failed to add reminder'
+      error: (err) => {
+        this.errorMsg = err.error?.error || 'Failed to add reminder';
+      }
     });
   }
 
@@ -63,7 +66,9 @@ export class Reminder implements OnInit {
         this.editingReminder = null;
         this.getReminders();
       },
-      error: () => this.errorMsg = 'Failed to update reminder'
+      error: (err) => {
+        this.errorMsg = err.error?.error || 'Failed to update reminder';
+      }
     });
   }
 
@@ -71,7 +76,7 @@ export class Reminder implements OnInit {
     if (!confirm('Are you sure you want to delete this reminder?')) return;
     this.reminderService.deleteReminder(id).subscribe({
       next: () => this.getReminders(),
-      error: () => this.errorMsg = 'Failed to delete reminder'
+      error: (err) => this.errorMsg = err.error?.error || 'Failed to delete reminder'
     });
   }
 

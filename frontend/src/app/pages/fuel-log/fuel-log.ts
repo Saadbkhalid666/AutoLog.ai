@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FuelLogService, FuelLog } from "../../services/fuel-log-service";
+import { FuelLogService, FuelLog } from '../../services/fuel-log-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -17,6 +17,7 @@ export class FuelLogs implements OnInit {
   manualLog: FuelLog = { date: '', litres: '', price: '', odometer: '' };
   ocrFile!: File;
   chartOptions: any = {};
+  loading = false;
 
   constructor(private fuelService: FuelLogService) {}
 
@@ -29,7 +30,7 @@ export class FuelLogs implements OnInit {
       this.fuelLogs = res.fuel_logs || [];
 
       if (this.fuelLogs.length > 0) {
-        const sortedLogs = this.fuelLogs.slice().sort(
+        const sortedLogs = [...this.fuelLogs].sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
 
@@ -52,9 +53,13 @@ export class FuelLogs implements OnInit {
   }
 
   addManualLog() {
+    if (!this.manualLog.litres || !this.manualLog.price || !this.manualLog.odometer) return;
+
+    this.loading = true;
     this.fuelService.addManualFuelLog(this.manualLog).subscribe(() => {
       this.manualLog = { date: '', litres: '', price: '', odometer: '' };
       this.loadFuelLogs();
+      this.loading = false;
     });
   }
 
@@ -64,9 +69,11 @@ export class FuelLogs implements OnInit {
 
   uploadOCR() {
     if (!this.ocrFile) return;
+    this.loading = true;
     this.fuelService.uploadOCRFuelLog(this.ocrFile).subscribe(() => {
       this.ocrFile = undefined as any;
       this.loadFuelLogs();
+      this.loading = false;
     });
   }
 
