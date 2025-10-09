@@ -15,7 +15,7 @@ from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager #type:ignore
 
 import atexit
 
