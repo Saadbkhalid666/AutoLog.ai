@@ -111,8 +111,10 @@ def update_fuel_log_by_id(log_id):
 @fuel_log_bp.route("/delete-fuel-log/<int:log_id>", methods=["DELETE"])
 @jwt_required()
 def delete_fuel_log(log_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     log = FuelLog.query.get(log_id)
+    print("DELETE REQUEST:", log, "User:", user_id, "Log Owner:", log.user_id if log else None)
+
     if not log or log.user_id != user_id:
         return jsonify({"error": "Fuel Log not found or unauthorized!"}), 404
 

@@ -45,9 +45,11 @@ export class FuelLogService {
     return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, formData, this.getAuthHeaders());
   }
 
-  deleteFuelLog(logId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`, this.getAuthHeaders());
-  }
+ deleteFuelLog(logId: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/delete-fuel-log/${logId}`, {
+    headers: this.getAuthHeaders().headers
+  });
+}
 
   updateFuelLog(logId: number, log: FuelLog): Observable<any> {
     return this.http.put(`${this.baseUrl}/update-fuel-log/${logId}`, log, this.getAuthHeaders());

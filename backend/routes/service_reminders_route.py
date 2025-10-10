@@ -145,7 +145,7 @@ def update_reminder(id):
 @service_reminder_bp.route("/delete/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_reminder(id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     reminder = ServiceReminders.query.get_or_404(id)
     if reminder.user_id != user_id:
         return jsonify({"error": "Unauthorized"}), 401

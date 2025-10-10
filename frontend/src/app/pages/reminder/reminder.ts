@@ -73,12 +73,12 @@ export class Reminder implements OnInit {
   }
 
   deleteReminder(id: number) {
-    if (!confirm('Are you sure you want to delete this reminder?')) return;
-    this.reminderService.deleteReminder(id).subscribe({
-      next: () => this.getReminders(),
-      error: (err) => this.errorMsg = err.error?.error || 'Failed to delete reminder'
-    });
-  }
+  this.reminderService.deleteReminder(id).subscribe({
+    next: () => this.getReminders(),
+    error: (err) => this.errorMsg = err.error?.error || 'Failed to delete reminder'
+  });
+}
+
 
   cancelEdit() {
     this.editingReminder = null;
