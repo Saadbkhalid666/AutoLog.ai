@@ -76,10 +76,13 @@ export class FuelLogs implements OnInit {
     });
   }
 
-  deleteLog(id: number) {
-    this.fuelService.deleteFuelLog(id).subscribe(() => this.loadFuelLogs());
-  }
-
+deleteLog(id: number) {
+  console.log("Deleting log:", id);
+  this.fuelService.deleteFuelLog(id).subscribe({
+    next: res => console.log(res),
+    error: err => console.error(err)
+  });
+}
   updateLog(log: FuelLog) {
     this.fuelService.updateFuelLog(log.id!, log).subscribe(() => this.loadFuelLogs());
   }

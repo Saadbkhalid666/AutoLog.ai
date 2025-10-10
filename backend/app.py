@@ -21,11 +21,13 @@ import atexit
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+app = Flask(__name__)
+app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
 
 def create_app():
-    app = Flask(__name__)
     CORS(app, 
          supports_credentials=True, 
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )    
     app.config.from_object(Config)
 
@@ -39,7 +41,6 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
-    app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
