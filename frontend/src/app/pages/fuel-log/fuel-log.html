@@ -37,11 +37,45 @@
         </thead>
         <tbody>
           <tr *ngFor="let log of fuelLogs" class="border-t border-white/10 hover:bg-white/5 transition-colors duration-150">
-            <td class="p-3">{{ log.date | date:'mediumDate' }}</td>
-            <td class="p-3">{{ log.litres }}</td>
-            <td class="p-3">{{ log.price }}</td>
-            <td class="p-3">{{ log.odometer }}</td>
+            <!-- Date / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.date" type="date"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.date | date:'mediumDate' }}</span>
+            </td>
+
+            <!-- Litres / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.litres" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.litres }}</span>
+            </td>
+
+            <!-- Price / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.price" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.price }}</span>
+            </td>
+
+            <!-- Odometer / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.odometer" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.odometer }}</span>
+            </td>
+
+            <!-- Actions -->
             <td class="p-3 flex gap-2">
+              <button *ngIf="editingLogId !== log.id" (click)="startEdit(log)"
+                      class="text-blue-400 hover:underline">Edit</button>
+
+              <button *ngIf="editingLogId === log.id" (click)="saveEdit()"
+                      class="text-green-400 hover:underline">Save</button>
+
+              <button *ngIf="editingLogId === log.id" (click)="cancelEdit()"
+                      class="text-gray-400 hover:underline">Cancel</button>
+
               <button (click)="deleteLog(log.id!)" class="text-red-400 hover:underline">Delete</button>
             </td>
           </tr>
@@ -50,7 +84,7 @@
     </div>
 
     <ng-template #noLogs>
-      <p class="text-center text-gray-400 mt-4">No fuel logs yet 😢</p>
+      <p class="text-center text-gray-400 mt-4">No fuel logs yet</p>
     </ng-template>
   </div>
 
