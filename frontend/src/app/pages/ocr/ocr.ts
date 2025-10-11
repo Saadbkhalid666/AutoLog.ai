@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxEchartsModule,  } from 'ngx-echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { OcrFuelService } from '../../services/ocr.service';
 
 interface FuelLog {
@@ -28,7 +28,7 @@ export class OcrComponent {
   lastOcrLog: FuelLog | null = null;
   fuelLogs: FuelLog[] = [];
   isUploading = false;
-
+  chartOptions: any = {};
 
   constructor(private fuelService: OcrFuelService) {}
 
@@ -36,43 +36,13 @@ export class OcrComponent {
     this.fetchLogs();
   }
 
-  fetchLogs() {
-    this.fuelService.getFuelLogs().subscribe({
-      next: (res) => {
-        this.fuelLogs = res.fuel_logs.map(l => ({
-          ...l,
-          date: new Date(l.date).toISOString()
-        }));
-        this.updateChart();
-      },
-      error: (err) => console.error('Failed fetching logs', err)
-    });
-  }
-
-  updateChart() {
-    const sorted = [...this.fuelLogs].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    const x = sorted.map(l => new Date(l.date).toLocaleDateString());
-    const litres = sorted.map(l => l.litres);
-    const price = sorted.map(l => l.price);
-
-    this.chartOptions = {
-      tooltip: { trigger: 'axis' },
-      legend: { data: ['Litres', 'Price'] },
-      xAxis: { type: 'category', data: x },
-      yAxis: [
-        { type: 'value', name: 'Litres' },
-        { type: 'value', name: 'Price' }
-      ],
-      series: [
-        { name: 'Litres', type: 'line', data: litres },
-        { name: 'Price', type: 'line', data: price }
-      ]
-    };
+  openFilePicker() {
+    this.fileInputRef.nativeElement.click();
   }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
+    if (input.files?.[0]) {
       this.selectedFile = input.files[0];
       this.previewUrl = URL.createObjectURL(this.selectedFile);
     }
@@ -96,10 +66,10 @@ export class OcrComponent {
           };
           this.lastOcrLog = log;
           this.fuelLogs = [...this.fuelLogs, log];
-          this.updateChart();
+          this.buildChart();
         }
 
-        if (this.fileInputRef) this.fileInputRef.nativeElement.value = '';
+        this.fileInputRef.nativeElement.value = '';
         this.selectedFile = null;
         this.previewUrl = null;
       },
@@ -109,5 +79,40 @@ export class OcrComponent {
         this.extractedText = 'Extraction failed. Try cropping or improving lighting.';
       }
     });
+  }
+
+  fetchLogs() {
+    this.fuelService.getFuelLogs().subscribe({
+      next: (res) => {
+        this.fuelLogs = res.fuel_logs.map((l: any) => ({
+          ...l, date: new Date(l.date).toISOString()
+        }));
+        this.buildChart();
+      },
+      error: (err) => console.error('Failed fetching logs', err)
+    });
+  }
+
+  buildChart() {
+    if (!this.fuelLogs.length) {
+      this.chartOptions = {};
+      return;
+    }
+
+    const sorted = [...this.fuelLogs].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const labels = sorted.map(l => new Date(l.date).toLocaleDateString());
+    const litresData = sorted.map(l => l.litres);
+    const priceData = sorted.map(l => l.price);
+
+    this.chartOptions = {
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['Litres', 'Price'] },
+      xAxis: { type: 'category', data: labels },
+      yAxis: { type: 'value' },
+      series: [
+        { name: 'Litres', type: 'line', data: litresData, smooth: true },
+        { name: 'Price', type: 'line', data: priceData, smooth: true }
+      ]
+    };
   }
 }
