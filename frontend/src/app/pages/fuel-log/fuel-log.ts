@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FuelLogService, FuelLog } from '../../services/fuel-log-service';
+import { FuelLogService, FuelLog } from '../../services/fuel-log.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxEchartsModule } from 'ngx-echarts';

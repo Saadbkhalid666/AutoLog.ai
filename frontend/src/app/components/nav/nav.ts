@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,6 +34,6 @@ export class Nav implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['login']) 
+    this.router.navigate(['login']);
   }
 }

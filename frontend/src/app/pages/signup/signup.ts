@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService, User } from '../../services/auth';
+import { AuthService, User } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -24,9 +24,15 @@ export class Signup {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  get username() { return this.signupForm.get('username'); }
-  get email() { return this.signupForm.get('email'); }
-  get password() { return this.signupForm.get('password'); }
+  get username() {
+    return this.signupForm.get('username');
+  }
+  get email() {
+    return this.signupForm.get('email');
+  }
+  get password() {
+    return this.signupForm.get('password');
+  }
 
   togglePassword() {
     this.passwordVisible = !this.passwordVisible;
@@ -35,7 +41,7 @@ export class Signup {
   showToast(message: string, type: 'success' | 'error' = 'success') {
     const toast = { message, type };
     this.toasts.push(toast);
-    setTimeout(() => this.toasts = this.toasts.filter(t => t !== toast), 3000);
+    setTimeout(() => (this.toasts = this.toasts.filter((t) => t !== toast)), 3000);
   }
 
   Submit() {
@@ -54,11 +60,12 @@ export class Signup {
         this.showToast('Registration successful! Please verify OTP.', 'success');
         this.router.navigate(['verify-otp']);
       },
-      error: err => {
+      error: (err) => {
         this.loading = false;
-        const errorMsg = err?.error?.error || err?.error?.message || 'Registration failed. Try again!';
+        const errorMsg =
+          err?.error?.error || err?.error?.message || 'Registration failed. Try again!';
         this.showToast(errorMsg, 'error');
-      }
+      },
     });
   }
 }

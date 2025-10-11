@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceReminder, ServiceReminderService } from '../../services/service-reminder-service';
+import { ServiceReminder, ServiceReminderService } from '../../services/service-reminder.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
