@@ -121,8 +121,10 @@
         </a>
 
         <!-- Card: AI Assistant -->
-        <article
-          class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl"
+         <a  routerLink="/assistant/c" class="hover:cursor-pointer">
+
+           <article
+           class="group flex flex-col sm:flex-row items-start gap-4 p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/0 backdrop-blur-md border border-white/10 shadow-xl"
         >
           <div
             class="flex-none w-14 h-14 rounded-lg flex items-center justify-center bg-[#062827] border border-white/10"
@@ -150,14 +152,14 @@
                 rx="2"
                 stroke="currentColor"
                 stroke-width="1.5"
-              />
-              <circle cx="9" cy="14" r="0.8" fill="currentColor" />
-              <circle cx="15" cy="14" r="0.8" fill="currentColor" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold text-white">AI-Powered Vehicle Assistant</h3>
-            <p class="mt-2 text-sm text-white/70">
+                />
+                <circle cx="9" cy="14" r="0.8" fill="currentColor" />
+                <circle cx="15" cy="14" r="0.8" fill="currentColor" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white">AI-Powered Vehicle Assistant</h3>
+              <p class="mt-2 text-sm text-white/70">
               Get instant answers to car-related questions with smart AI support. Receive
               personalized maintenance predictions, cost estimates, and troubleshooting guidance
               tailored to your vehicle's condition. Perfect for everyday drivers and vehicle owners
@@ -165,6 +167,7 @@
             </p>
           </div>
         </article>
+      </a>
 
         <!-- Card: OCR Receipt Scanner -->
         <a routerLink="/fuellog/ocr" class="hover:cursor-pointer">
