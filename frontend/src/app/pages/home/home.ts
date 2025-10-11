@@ -1,13 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, ElementRef, AfterViewInit } from '@angular/core';
-import { CarModel } from '../../components/car-model/car-model';
-import { Hero } from '../../sections/hero/hero';
-import { About } from '../../sections/about/about';
 import { Services } from '../../sections/services/services';
 
 @Component({
   selector: 'app-home',
-  imports:[CommonModule, CarModel, Hero, About,Services],
+  imports:[CommonModule,Services],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
