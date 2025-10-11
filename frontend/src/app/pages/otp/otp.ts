@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth'; 
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +15,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './otp.html',
-  styleUrls: ['./otp.css']
+  styleUrls: ['./otp.css'],
 })
 export class Otp {
   toasts: { message: string; type: 'success' | 'error' }[] = [];
@@ -20,8 +26,10 @@ export class Otp {
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.otpForm = this.fb.group({
       digits: this.fb.array<FormControl<string | null>>(
-        Array(6).fill('').map(() => new FormControl('', { nonNullable: false }))
-      )
+        Array(6)
+          .fill('')
+          .map(() => new FormControl('', { nonNullable: false }))
+      ),
     });
   }
 
@@ -43,7 +51,9 @@ export class Otp {
 
   onKeyDown(event: KeyboardEvent, index: number) {
     if (event.key === 'Backspace' && !this.getControl(index).value && index > 0) {
-      const prevInput = (event.target as HTMLInputElement).parentElement?.children[index - 1] as HTMLInputElement;
+      const prevInput = (event.target as HTMLInputElement).parentElement?.children[
+        index - 1
+      ] as HTMLInputElement;
       prevInput.focus();
     }
   }
@@ -56,7 +66,7 @@ export class Otp {
     const toast = { message, type };
     this.toasts.push(toast);
     setTimeout(() => {
-      this.toasts = this.toasts.filter(t => t !== toast);
+      this.toasts = this.toasts.filter((t) => t !== toast);
     }, 3000);
   }
 
@@ -70,17 +80,17 @@ export class Otp {
     const otp = this.getOtp();
 
     this.authService.verifyOtp({ otp }).subscribe({
-      next: res => {
+      next: (res) => {
         this.loading = false;
         this.showToast('OTP Verified Successfully!', 'success');
         this.otpForm.reset();
         this.router.navigate(['login']);
       },
-      error: err => {
+      error: (err) => {
         this.loading = false;
         const msg = err?.error?.message || 'Invalid OTP. Try again!';
         this.showToast(msg, 'error');
-      }
+      },
     });
   }
 }
