@@ -13,3 +13,4 @@ import { Footer } from './sections/footer/footer';
 export class App {
   protected readonly title = signal('frontend');
 }
+ 
