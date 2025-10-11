@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OcrFuelService {
-  private baseUrl = '/vehicle';
-  private tokenKey = 'access_token';
+  private baseUrl = 'http://127.0.0.1:5000/vehicle';
+  private tokenKey = 'token';
 
   constructor(private http: HttpClient) {}
 

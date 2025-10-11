@@ -7,6 +7,7 @@ import { Terms } from './pages/terms/terms';
 import { Policy } from './pages/policy/policy';
 import {  FuelLogs } from './pages/fuel-log/fuel-log';
 import { Reminder } from './pages/reminder/reminder';
+import { OcrComponent } from './pages/ocr/ocr';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   {path:'privacy', component: Policy},
   {path:'fuellog/mannual',component:FuelLogs},
   {path:'service-reminders', component:Reminder},
+  {path:'fuellog/ocr', component:OcrComponent},
   { path: '**', redirectTo: 'signup' },
 ];
