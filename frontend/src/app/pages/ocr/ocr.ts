@@ -1,11 +1,35 @@
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-@Component({
-  selector: 'app-ocr',
-  imports: [],
-  templateUrl: './ocr.html',
-  styleUrl: './ocr.css'
+@Injectable({
+  providedIn: 'root'
 })
-export class Ocr {
+export class OcrFuelService {
+  private baseUrl = '/vehicle';
+  private tokenKey = 'access_token';
 
+  constructor(private http: HttpClient) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem(this.tokenKey);
+    return new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : ''
+    });
+  }
+
+  getFuelLogs(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-fuel-logs`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  uploadOcr(file: File): Observable<any> {
+    const form = new FormData();
+    form.append('file', file);
+
+    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, form, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

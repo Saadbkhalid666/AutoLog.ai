@@ -1,36 +1,35 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-export interface FuelLog{
-     id?: number;
-  user_id?: number;
-  date: string;
-  litres: number;
-  price: number;
-  odometer: number;
-  created_at?: string;
-}
- 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
+export class OcrFuelService {
+  private baseUrl = '/vehicle';
+  private tokenKey = 'access_token';
 
-export class OCRService {
-    private baseUrl = 'http://127.0.0.1:500/vehicle';
+  constructor(private http: HttpClient) {}
 
-    constructor(private http:HttpClient){}
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem(this.tokenKey);
+    return new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : ''
+    });
+  }
 
-    private getAuthHeaders(){
-        const token = localStorage.getItem('token') || '';
-        return {
-            headers: new HttpHeaders({
-                Authorization: token ? `Bearer ${token}`
-            })
-        }
-    }
-    
-     
-      }
-    
+  getFuelLogs(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-fuel-logs`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  uploadOcr(file: File): Observable<any> {
+    const form = new FormData();
+    form.append('file', file);
+
+    return this.http.post(`${this.baseUrl}/fuel-logs/ocr`, form, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }
