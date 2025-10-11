@@ -1,0 +1,50 @@
+:host { display: block; }
+
+/* ensure canvas fills container and preserves aspect */
+.model-column {
+  /* sticky on large screens; behaves like normal flow on small screens */
+  box-sizing: border-box;
+}
+
+/* keep canvas responsive */
+.model-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* small screens: model should appear above content as full width */
+@media (max-width: 1023px) {
+  .model-column {
+    position: relative;
+    height: 60vh; /* reduce for mobile */
+  }
+}
+
+/* larger screens: keep the left column sticky inside wrapper */
+@media (min-width: 1024px) {
+  .model-column {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+/* slight style niceties */
+.hero-container {
+  display: flex;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.about-section {
+  background: #0a0a0a;
+}
+
+/* optional: style to make car slide smoother when GSAP sets transform */
+#car {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
