@@ -1,6 +1,8 @@
 <div class="container relative">
-  <!-- Fixed 3D Model -->
-  <div class="model-container  fixed top-0 left-0 w-1/2 h-screen z-10  ">
+  <div
+    class="model-container w-1/2 h-screen z-10"
+    [ngClass]="isStuck ? 'fixed top-0 left-0' : 'absolute top-[600px] left-0 opacity-0 pointer-events-none'"
+  >
     <app-car-model></app-car-model>
   </div>
 
@@ -9,4 +11,3 @@
 </div>
 
 <app-services></app-services>
- 
