@@ -34,8 +34,6 @@ def chat():
 
     reply_ids = chat_history_ids[0][input_ids.shape[-1]:]
     reply = tokenizer.decode(reply_ids, skip_special_tokens=True).strip()
-
-    if "velix" not in reply.lower():
-        reply = "Velix reporting: " + reply
+ 
 
     return jsonify({"reply": reply})
