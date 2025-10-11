@@ -8,9 +8,10 @@ import { Policy } from './pages/policy/policy';
 import {  FuelLogs } from './pages/fuel-log/fuel-log';
 import { Reminder } from './pages/reminder/reminder';
 import { OcrComponent } from './pages/ocr/ocr';
+import { AuthGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+   { path: '', component: Home, canActivate: [AuthGuard] },
   { path: 'signup', component: Signup },
   { path: 'login', component: Login },
   { path: 'verify-otp', component: Otp },
