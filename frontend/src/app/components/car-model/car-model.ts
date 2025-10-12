@@ -24,34 +24,54 @@ export class CarModel implements AfterViewInit {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Set initial X position for Hero
+    // Set initial X position for Hero (right side)
     gsap.set('#car', { x: 500 });
 
-    // Hero → About animation
+    // Hero → About animation - moves from right to left
     gsap.to('#car', {
-      x: () => {
-        const para = document.querySelector('#aboutContent') as HTMLElement;
-        if (para) {
-          const rect = para.getBoundingClientRect();
-          const screenCenter = window.innerWidth / 2;
-          return rect.left - screenCenter - 500;
-        }
-        return -100;
-      },
+      x: -300, // Final position on left side
       scrollTrigger: {
         trigger: '#aboutSection',
-        start: 'top center',
-        end: 'top top',
+        start: 'top bottom', // When top of about section hits bottom of viewport
+        end: 'center center', // Stop when about section is centered
         scrub: true,
+        markers: false, // Set to true to see animation markers for debugging
       },
     });
 
-    // Freeze model after About section
+    // Freeze position after reaching about section
     ScrollTrigger.create({
       trigger: '#aboutSection',
-      start: 'bottom top', // bottom of About reaches top of viewport
-      onEnter: () => document.getElementById('car')?.classList.add('stopped'),
-      onLeaveBack: () => document.getElementById('car')?.classList.remove('stopped'),
+      start: 'center center', // When about section is centered
+      end: 'bottom top', // When bottom of about hits top of viewport
+      pin: true, // This pins the element in place
+      pinSpacing: false, // No extra spacing
+      onEnter: () => {
+        console.log('Car pinned at about section');
+      },
+      onLeave: () => {
+        console.log('Car unpinned');
+      },
+    });
+
+    // Alternative approach if pin doesn't work well:
+    // Keep the car fixed when in about section
+    ScrollTrigger.create({
+      trigger: '#aboutSection',
+      start: 'top center',
+      end: 'bottom top',
+      onEnter: () => {
+        document.getElementById('car')?.classList.add('pinned');
+      },
+      onLeave: () => {
+        document.getElementById('car')?.classList.remove('pinned');
+      },
+      onEnterBack: () => {
+        document.getElementById('car')?.classList.add('pinned');
+      },
+      onLeaveBack: () => {
+        document.getElementById('car')?.classList.remove('pinned');
+      },
     });
   }
 
