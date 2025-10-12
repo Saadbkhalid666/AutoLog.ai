@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component,  } from '@angular/core';
 import { Services } from '../../sections/services/services';
-import { HeroAboutCarComponent } from '../../sections/hero-about-car-component/hero-about-car-component';
+import { Hero } from '../../sections/hero/hero';
+import { About } from '../../sections/about/about';
+import { CarModel } from '../../components/car-model/car-model';
 
 @Component({
   selector: 'app-home',
-  imports:[CommonModule,Services,HeroAboutCarComponent ],
+  imports:[CommonModule,Services, Hero, About, CarModel ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
