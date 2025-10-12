@@ -1,24 +1,33 @@
- .model-wrapper {
-  position: absolute;
+.model-wrapper {
+  position: fixed; /* Changed to fixed so it stays in viewport */
   top: 50%;
   left: 50%;
-  width: 600px;  /* adjust size */
-  height: 400px; /* adjust size */
+  width: 600px;
+  height: 400px;
   transform: translate(-50%, -50%);
-  pointer-events: none; /* allows scrolling/interactions */
-  z-index: 10;
-}
-
-.model-wrapper.stopped {
   pointer-events: none;
+  z-index: 5; /* Lower than text content */
 }
 
 .hero-container {
   position: relative;
   z-index: 1;
+  min-height: 100vh;
 }
 
 .about-section {
   position: relative;
   z-index: 1;
+  min-height: 100vh;
+}
+
+.text-content {
+  position: relative;
+  z-index: 10; /* Higher than canvas */
+}
+
+/* Ensure good contrast between text and 3D model background */
+.text-content h1,
+.text-content p {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }

@@ -1,11 +1,14 @@
-<div id="car" class="model-wrapper">
-  <canvas #canvas class="w-full h-full"></canvas>
-</div>
-
-<div id="hero" class="hero-container flex justify-start items-center h-screen px-6 lg:px-20">
-  <div class="text-content w-full lg:w-1/2 text-center lg:text-left">
+<!-- Hero Section -->
+<div id="hero" class="hero-container flex justify-start items-center h-screen px-6 lg:px-20 relative">
+  <!-- Car Model Canvas -->
+  <div class="model-wrapper">
+    <canvas #canvas class="w-full h-full"></canvas>
+  </div>
+  
+  <!-- Text Content -->
+  <div class="text-content w-full lg:w-1/2 text-center lg:text-left relative z-10">
     <h1 class="text-2xl md:text-3xl lg:text-5xl font-bold text-[#42f5d8] leading-tight">
-      Track Your Vehicle’s Service & Fuel Logs with AutoLog.AI
+      Track Your Vehicle's Service & Fuel Logs with AutoLog.AI
     </h1>
     <p class="mt-3 sm:mt-4 md:mt-6 text-sm md:text-base lg:text-lg text-gray-300">
       AutoLog.AI is an <strong>intelligent car maintenance app</strong> that helps drivers 
@@ -15,9 +18,13 @@
   </div>
 </div>
 
+<!-- About Section -->
 <section id="about" 
-  class="about-section h-screen flex flex-col lg:flex-row justify-end items-center px-6 lg:px-20 text-gray-200 bg-[#0a0a0a]">
-  <div class="max-w-2xl text-center lg:text-left">
+  class="about-section h-screen flex flex-col lg:flex-row justify-end items-center px-6 lg:px-20 text-gray-200 bg-[#0a0a0a] relative">
+  
+  <!-- Car Model Canvas will be positioned here via animation -->
+  
+  <div class="max-w-2xl text-center lg:text-left relative z-10">
     <h2 class="text-3xl md:text-5xl font-bold mb-6 text-[#42f5d8]">
       About AutoLogAI
     </h2>
@@ -31,7 +38,7 @@
       <br /><br />
       Drivers can also take advantage of 
       <strong id="servic">OCR receipt scanning</strong>, making it easy to log fuel or 
-      service expenses without manual entry. Whether you’re focused on 
+      service expenses without manual entry. Whether you're focused on 
       saving costs, improving vehicle performance, or ensuring timely 
       check-ups, AutoLog.AI brings efficiency, reliability, and peace of mind 
       into one seamless experience. 
