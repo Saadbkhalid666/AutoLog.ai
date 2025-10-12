@@ -1,27 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, ElementRef, AfterViewInit } from '@angular/core';
+import { Component,  } from '@angular/core';
 import { Services } from '../../sections/services/services';
+import { HeroAboutCarComponent } from '../../sections/hero-about-car-component/hero-about-car-component';
 
 @Component({
   selector: 'app-home',
-  imports:[CommonModule,Services],
+  imports:[CommonModule,Services,HeroAboutCarComponent ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class Home implements AfterViewInit {
-  isStuck: boolean = true;
-  aboutOffsetTop: number = 0;
-
-  constructor(private el: ElementRef) {}
-
-  ngAfterViewInit() {
-    const aboutSection = this.el.nativeElement.querySelector('#aboutSection');
-    this.aboutOffsetTop = aboutSection.offsetTop;
-  }
-
-  @HostListener('window:scroll', [])
-  onScroll() {
-    const scrollPos = window.scrollY;
-    this.isStuck = scrollPos < this.aboutOffsetTop - 200; // adjust threshold if needed
-  }
+export class Home  {
 }
