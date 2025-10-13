@@ -1,7 +1,13 @@
-<div class="">
-<app-hero></app-hero>
-<app-about id="aboutSection" ></app-about>
-<app-car-model></app-car-model>
-<app-services></app-services>
-
-</div> 
+<div class="relative">
+  <!-- Hero Section -->
+  <app-hero></app-hero>
+  
+  <!-- About Section - Make sure it has proper height -->
+  <app-about id="aboutSection" class="min-h-screen"></app-about>
+  
+  <!-- Car Model - This will animate and pin to about section -->
+  <app-car-model></app-car-model>
+  
+  <!-- Services Section -->
+  <app-services></app-services>
+</div>

@@ -15,6 +15,8 @@ from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
 from flask_jwt_extended import JWTManager #type:ignore
+from routes.contact_form_route import contact_bp
+
 
 import atexit
 
@@ -42,6 +44,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
+    app.register_blueprint(contact_bp, url_prefix="/form")
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
     admin.add_view(ModelView(User, db.session))
