@@ -47,6 +47,19 @@ def create_app():
 
     jwt = JWTManager(app)
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "admin_auth.login" 
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        from models.User import User
+        return User.query.get(int(user_id))
+
+    CSRFProtect(app)
+    Talisman(app, content_security_policy=None)  # forces HTTPS; configure CSP as needed
+    limiter = Limiter(app, key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
+
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
