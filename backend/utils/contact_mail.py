@@ -1,9 +1,9 @@
-from flask_mail import Message 
-from flask import render_template_string
+from flask_mail import Message #type:ignore
+from flask import render_template_string #type:ignore
 from configuration.config import Config
 from datetime import datetime
 from utils.extensions import mail
-import pytz
+import pytz #type:ignore
 
 PK_TZ = pytz.timezone("Asia/Karachi")
 
