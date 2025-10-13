@@ -5,7 +5,7 @@ from datetime import datetime
 from utils.extensions import mail
 import pytz
 
-PK_TZ = pytz.timezone("Aisa/Karachi")
+PK_TZ = pytz.timezone("Asia/Karachi")
 
 def _to_datetime(value):
     if isinstance(value, datetime):

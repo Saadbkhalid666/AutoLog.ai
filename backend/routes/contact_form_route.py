@@ -14,3 +14,4 @@ def submit_form():
     admin_email = admin.email if email else None
 
     send_email(name,email,msg,admin_email)
+    return jsonify({"message":"Form submitted!"}), 200
