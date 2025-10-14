@@ -59,7 +59,8 @@ def create_app():
 
     CSRFProtect(app)
     Talisman(app, content_security_policy=None) 
-    limiter = Limiter(app, key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
+    limiter = Limiter( key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
+    limiter.init_app(app)
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")

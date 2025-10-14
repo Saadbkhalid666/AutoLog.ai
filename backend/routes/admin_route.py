@@ -1,10 +1,10 @@
 # routes/admin_auth.py
-from flask import Blueprint, request, render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Blueprint, request, render_template, redirect, url_for, flash #type:ignore
+from flask_login import login_user, logout_user, login_required, current_user #type:ignore
 from models.User import User
 from utils.extensions import db
-from flask import current_app as app
-from flask_limiter import Limiter
+from flask import current_app as app #type:ignore
+from flask_limiter import Limiter #type:ignore
 
 admin_auth = Blueprint("admin_auth", __name__, template_folder="templates")
 

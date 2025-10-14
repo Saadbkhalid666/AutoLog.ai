@@ -1,7 +1,7 @@
 # safe_model_view.py
-from flask_admin.contrib.sqla import ModelView
-from flask_login import current_user
-from wtforms.fields import SelectField
+from flask_admin.contrib.sqla import ModelView #type:ignore
+from flask_login import current_user #type:ignore
+from wtforms.fields import SelectField #type:ignore
 
 class BaseSecureModelView(ModelView):
     form_excluded_columns = ('created_at',)
