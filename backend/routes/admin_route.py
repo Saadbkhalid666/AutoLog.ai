@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect
 from flask_login import login_user, logout_user, login_required
 from models.User import User
 from utils.extensions import csrf
+from flask_wtf.csrf import generate_csrf
 
 
 
@@ -21,15 +22,13 @@ def login():
             return "Invalid credentials or not admin", 401
 
     return """
-  <form method="POST" action="/admin/login">
-    {{ csrf_token() }}  <!-- If using Flask-Admin or custom Jinja -->
-
-    <!-- OR if you're using WTForms -->
-    {{ form.hidden_tag() }}
+  <<form method="POST" action="/admin/login">
+    <input type="hidden" name="csrf_token" value="{generate_csrf()}"/>
 
     <input type="email" name="email" placeholder="Email" required />
     <input type="password" name="password" placeholder="Password" required />
     <button type="submit">Login</button>
+</form>
 </form>
 
     """

@@ -1,7 +1,7 @@
 import os
 import atexit
 import  logging
-from flask import Flask #type: ignore
+from flask import Flask, request #type: ignore
 from flask_admin import Admin #type: ignore
 from flask_admin.contrib.sqla import ModelView #type: ignore
 from flask_cors import CORS #type: ignore
@@ -66,10 +66,14 @@ def create_app():
 
 
     CSRFProtect(app)
+    CSRFProtect(app)
+
+# Disable CSRF only for admin login
     @app.before_request
     def disable_csrf_for_admin_login():
-        if request.path == "/admin/login":
-            setattr(request, '_dont_enforce_csrf', True)
+        if request.path.startswith("/admin/login"):
+            request._dont_enforce_csrf = True
+
 
     Talisman(app, content_security_policy=None) 
     limiter = Limiter( key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
