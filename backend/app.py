@@ -26,6 +26,11 @@ from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
 from routes.admin_route import admin_auth
 from view.safe_model_view import UserAdmin,BaseSecureModelView
+from flask_wtf import CSRFProtect
+
+csrf = CSRFProtect()
+
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -43,6 +48,7 @@ def create_app():
     
     db.init_app(app)
     mail.init_app(app)
+    csrf.init_(app)
 
     migrate = Migrate(app, db)
 
