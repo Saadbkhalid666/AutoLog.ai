@@ -64,7 +64,13 @@ def create_app():
         from models.User import User
         return User.query.get(int(user_id))
 
+
     CSRFProtect(app)
+    @app.before_request
+    def disable_csrf_for_admin_login():
+        if request.path == "/admin/login":
+            setattr(request, '_dont_enforce_csrf', True)
+
     Talisman(app, content_security_policy=None) 
     limiter = Limiter( key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
     limiter.init_app(app)
@@ -73,7 +79,7 @@ def create_app():
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
-    app.register_blueprint(admin_bp, url_prefix="/admin_auth")
+    app.register_blueprint(admin_bp, url_prefix="/admin")
 
     if os.getenv("FLASK_ENV", "production") == "development":
         admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
