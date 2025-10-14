@@ -22,7 +22,7 @@ from flask_talisman import Talisman #type:ignore
 from flask_limiter import Limiter #type:ignore
 from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
-
+from routes.admin_route import admin_auth
 
 import atexit
 
@@ -64,6 +64,7 @@ def create_app():
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
+    app.register_blueprint(admin_auth)
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
     admin.add_view(ModelView(User, db.session))
