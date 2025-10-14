@@ -1,16 +1,14 @@
 from flask import Blueprint, request, redirect
 from flask_login import login_user, logout_user, login_required
 from models.User import User
-from utils.extensions import csrf
-from flask_wtf.csrf import generate_csrf
 
-
-
-admin_bp = Blueprint("admin_auth",__name__)
+admin_bp = Blueprint("admin_auth", __name__)
 
 @admin_bp.route("/login", methods=["GET", "POST"])
-@csrf.exempt 
 def login():
+    # ✅ Disable CSRF for this specific request (if CSRFProtect is enabled globally)
+    setattr(request, "_dont_enforce_csrf", True)
+
     if request.method == "POST":
         email = request.form.get("email") or request.json.get("email")
         password = request.form.get("password") or request.json.get("password")
@@ -21,19 +19,15 @@ def login():
         else:
             return "Invalid credentials or not admin", 401
 
+    # ✅ No CSRF token in form
     return """
-  <<form method="POST" action="/admin/login">
-    <input type="hidden" name="csrf_token" value="{generate_csrf()}"/>
-
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
-</form>
-
+    <form method="POST" action="/admin/login">
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+    </form>
     """
 
-    
 @admin_bp.route("/logout")
 @login_required
 def logout():

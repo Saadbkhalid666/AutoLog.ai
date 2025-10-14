@@ -66,7 +66,6 @@ def create_app():
 
 
     CSRFProtect(app)
-    CSRFProtect(app)
 
 # Disable CSRF only for admin login
     @app.before_request
@@ -83,6 +82,7 @@ def create_app():
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
+    csrf.exempt(admin_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
     if os.getenv("FLASK_ENV", "production") == "development":
