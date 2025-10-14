@@ -14,5 +14,8 @@ class Config:
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=6)  
+    WTF_CSRF_ENABLED = True
+
  
    

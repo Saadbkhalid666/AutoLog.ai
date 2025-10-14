@@ -1,11 +1,13 @@
+import os
+import atexit
 import  logging
-from flask import Flask #type: ignore
+from flask import Flask, request #type: ignore
 from flask_admin import Admin #type: ignore
 from flask_admin.contrib.sqla import ModelView #type: ignore
 from flask_cors import CORS #type: ignore
 from flask_migrate import Migrate #type: ignore
 from configuration.config import Config
-from utils.extensions import db, mail
+from utils.extensions import db, mail, csrf
 from routes.auth_route import auth_bp
 from routes.assistant_route import chat_bp
 from routes.fuel_logs_route import fuel_log_bp
@@ -16,9 +18,18 @@ from models.service_reminders import ServiceReminders
 from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
 from flask_jwt_extended import JWTManager #type:ignore
 from routes.contact_form_route import contact_bp
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required #type:ignore
+from flask_wtf import CSRFProtect #type:ignore
+from flask_talisman import Talisman #type:ignore
+from flask_limiter import Limiter #type:ignore
+from flask_limiter.util import get_remote_address #type:ignore
+from datetime import timedelta
+from routes.admin_route import admin_bp
+from view.safe_model_view import UserAdmin,BaseSecureModelView
 
 
-import atexit
+
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -36,21 +47,52 @@ def create_app():
     
     db.init_app(app)
     mail.init_app(app)
+    csrf.init_app(app)
+
+
 
     migrate = Migrate(app, db)
 
     jwt = JWTManager(app)
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "admin_auth.login" 
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        from models.User import User
+        return User.query.get(int(user_id))
+
+
+
+# Disable CSRF only for admin login
+    @app.before_request
+    def disable_csrf_for_admin_login():
+        if request.path.startswith("/admin/login"):
+            request._dont_enforce_csrf = True
+
+
+    Talisman(app, content_security_policy=None) 
+    limiter = Limiter( key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
+    limiter.init_app(app)
+
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
+    csrf.exempt(admin_bp)
+    app.register_blueprint(admin_bp, url_prefix="/admin")
 
-    admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-    admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(FuelLog, db.session))
-    admin.add_view(ModelView(ServiceReminders, db.session))
+    if os.getenv("FLASK_ENV", "production") == "development":
+        admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
+        admin.add_view(UserAdmin(User, db.session))
+        admin.add_view(BaseSecureModelView(FuelLog, db.session))
+        admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
+    else:
+         pass
 
+     
     scheduler = BackgroundScheduler()
     app.scheduler = scheduler
     scheduler.start()
