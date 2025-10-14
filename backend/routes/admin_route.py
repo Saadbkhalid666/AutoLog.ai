@@ -1,10 +1,14 @@
 from flask import Blueprint, request, redirect
 from flask_login import login_user, logout_user, login_required
 from models.User import User
+from utils.extensions import csrf
 
-admin_auth = Blueprint("admin_auth", __name__, url_prefix="/admin")
 
-@admin_auth.route("/login", methods=["GET", "POST"])
+
+admin_bp = Blueprint("admin_auth",__name__)
+
+@admin_bp.route("/login", methods=["GET", "POST"])
+@csrf.exempt 
 def login():
     if request.method == "POST":
         email = request.form.get("email") or request.json.get("email")
@@ -17,15 +21,21 @@ def login():
             return "Invalid credentials or not admin", 401
 
     return """
-    <form method="post">
-      <input name="email" placeholder="email" />
-      <input name="password" type="password" placeholder="password" />
-      <button type="submit">Login</button>
-    </form>
+  <form method="POST" action="/admin/login">
+    {{ csrf_token() }}  <!-- If using Flask-Admin or custom Jinja -->
+
+    <!-- OR if you're using WTForms -->
+    {{ form.hidden_tag() }}
+
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+</form>
+
     """
 
     
-@admin_auth.route("/admin/logout")
+@admin_bp.route("/logout")
 @login_required
 def logout():
     logout_user()

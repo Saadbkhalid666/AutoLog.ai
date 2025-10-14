@@ -7,7 +7,7 @@ from flask_admin.contrib.sqla import ModelView #type: ignore
 from flask_cors import CORS #type: ignore
 from flask_migrate import Migrate #type: ignore
 from configuration.config import Config
-from utils.extensions import db, mail
+from utils.extensions import db, mail, csrf
 from routes.auth_route import auth_bp
 from routes.assistant_route import chat_bp
 from routes.fuel_logs_route import fuel_log_bp
@@ -24,11 +24,10 @@ from flask_talisman import Talisman #type:ignore
 from flask_limiter import Limiter #type:ignore
 from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
-from routes.admin_route import admin_auth
+from routes.admin_route import admin_bp
 from view.safe_model_view import UserAdmin,BaseSecureModelView
-from flask_wtf import CSRFProtect
 
-csrf = CSRFProtect()
+
 
 
 
@@ -48,7 +47,9 @@ def create_app():
     
     db.init_app(app)
     mail.init_app(app)
-    csrf.init_(app)
+    csrf.init_app(app)
+
+
 
     migrate = Migrate(app, db)
 
@@ -72,7 +73,7 @@ def create_app():
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
-    app.register_blueprint(admin_auth)
+    app.register_blueprint(admin_bp, url_prefix="/admin_auth")
 
     if os.getenv("FLASK_ENV", "production") == "development":
         admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
