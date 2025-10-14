@@ -1,3 +1,5 @@
+import os
+import atexit
 import  logging
 from flask import Flask #type: ignore
 from flask_admin import Admin #type: ignore
@@ -24,7 +26,6 @@ from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
 from routes.admin_route import admin_auth
 from view.safe_model_view import UserAdmin,BaseSecureModelView
-import atexit
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -57,7 +58,7 @@ def create_app():
         return User.query.get(int(user_id))
 
     CSRFProtect(app)
-    Talisman(app, content_security_policy=None)  # forces HTTPS; configure CSP as needed
+    Talisman(app, content_security_policy=None) 
     limiter = Limiter(app, key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
