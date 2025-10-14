@@ -65,7 +65,6 @@ def create_app():
         return User.query.get(int(user_id))
 
 
-    CSRFProtect(app)
 
 # Disable CSRF only for admin login
     @app.before_request
