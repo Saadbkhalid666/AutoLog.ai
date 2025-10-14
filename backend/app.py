@@ -66,11 +66,15 @@ def create_app():
     app.register_blueprint(contact_bp, url_prefix="/form")
     app.register_blueprint(admin_auth)
 
-    admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-    admin.add_view(UserAdmin(User, db.session))
-    admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
-    admin.add_view(BaseSecureModelView(FuelLog, db.session))
+    if os.getenv("FLASK_ENV", "production") == "development":
+        admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
+        admin.add_view(UserAdmin(User, db.session))
+        admin.add_view(BaseSecureModelView(FuelLog, db.session))
+        admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
+    else:
+         pass
 
+     
     scheduler = BackgroundScheduler()
     app.scheduler = scheduler
     scheduler.start()
