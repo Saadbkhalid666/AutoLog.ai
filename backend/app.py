@@ -23,7 +23,7 @@ from flask_limiter import Limiter #type:ignore
 from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
 from routes.admin_route import admin_auth
-
+from view.safe_model_view import UserAdmin,BaseSecureModelView
 import atexit
 
 # Configure logging
@@ -67,9 +67,9 @@ def create_app():
     app.register_blueprint(admin_auth)
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-    admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(FuelLog, db.session))
-    admin.add_view(ModelView(ServiceReminders, db.session))
+    admin.add_view(UserAdmin(User, db.session))
+    admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
+    admin.add_view(BaseSecureModelView(FuelLog, db.session))
 
     scheduler = BackgroundScheduler()
     app.scheduler = scheduler
