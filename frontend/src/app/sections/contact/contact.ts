@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact',
+  standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule, // ✅ Replace FormsModule with this
+    ReactiveFormsModule, 
   ],
   templateUrl: './contact.html',
   styleUrl: './contact.css',

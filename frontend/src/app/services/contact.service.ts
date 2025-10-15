@@ -14,7 +14,7 @@ export interface ContactPayload {
 })
 export class ContactService {
   // adjust base URL if needed
-  private baseUrl = ''; // leave empty to use same origin, or set e.g. 'http://localhost:5000'
+  private baseUrl = '127.0.0.1:5000'; 
 
   constructor(private http: HttpClient) {}
 
