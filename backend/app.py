@@ -102,8 +102,6 @@ def create_app():
             scheduler.start()
             logger.info("Database tables created")
         
-        
-
     return app
 
 if __name__ == "__main__":
