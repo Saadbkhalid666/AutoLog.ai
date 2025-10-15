@@ -11,6 +11,7 @@ def login():
         password = request.form.get("password") or request.json.get("password")
         user = User.query.filter_by(email=email).first()
 
+        print(user.password)
         if user and user.check_password(password) and user.role == "admin":
             login_user(user)
             return redirect("/admin") 
