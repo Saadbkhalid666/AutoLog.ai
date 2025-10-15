@@ -1,8 +1,8 @@
 # models/user.py
 from datetime import datetime
 from utils.extensions import db
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin #type:ignore
+from werkzeug.security import generate_password_hash, check_password_hash #type:ignore
 
 
 class User(db.Model, UserMixin):

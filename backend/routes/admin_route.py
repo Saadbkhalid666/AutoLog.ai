@@ -1,5 +1,5 @@
-from flask import Blueprint, request, redirect
-from flask_login import login_user, logout_user, login_required
+from flask import Blueprint, request, redirect #type:ignore
+from flask_login import login_user, logout_user, login_required #type:ignore
 from models.User import User
 
 admin_bp = Blueprint("admin_auth", __name__)
