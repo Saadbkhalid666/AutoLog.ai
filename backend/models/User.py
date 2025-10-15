@@ -24,3 +24,12 @@ class User(db.Model, UserMixin):
     def check_password(self, raw_password: str) -> bool:
         return check_password_hash(self.password, raw_password)
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username":self.username
+            ,"email":self.email,
+            "password":self.password,
+            "role":self.role
+            ,"created_at":str(self.created_at)
+        }
