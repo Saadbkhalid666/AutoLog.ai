@@ -49,7 +49,12 @@ def create_app():
     mail.init_app(app)
     csrf.init_app(app)
 
-
+    csrf.exempt(auth_bp)
+    csrf.exempt(chat_bp)
+    csrf.exempt(fuel_log_bp)
+    csrf.exempt(service_reminder_bp)
+    csrf.exempt(contact_bp)
+    csrf.exempt(admin_bp)
 
     migrate = Migrate(app, db)
 
@@ -66,31 +71,23 @@ def create_app():
 
 
 
-# Disable CSRF only for admin login
-    @app.before_request
-    def disable_csrf_for_admin_login():
-        if request.path.startswith("/admin/login"):
-            request._dont_enforce_csrf = True
-
-
+ 
     Talisman(app, content_security_policy=None) 
     limiter = Limiter( key_func=get_remote_address, default_limits=["200 per day", "50 per hour"])
-    limiter.init_app(app)
+    limiter.exempt(admin_bp)
+    limiter.exempt(auth_bp)
+
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
-    csrf.exempt(admin_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
-    if os.getenv("FLASK_ENV", "production") == "development":
-        admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-        admin.add_view(UserAdmin(User, db.session))
-        admin.add_view(BaseSecureModelView(FuelLog, db.session))
-        admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
-    else:
-         pass
+    admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
+    admin.add_view(UserAdmin(User, db.session))
+    admin.add_view(BaseSecureModelView(FuelLog, db.session))
+    admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
 
      
     scheduler = BackgroundScheduler()
@@ -104,7 +101,7 @@ def create_app():
         if not scheduler.running:
             scheduler.start()
             logger.info("Database tables created")
-
+        
     return app
 
 if __name__ == "__main__":

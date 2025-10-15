@@ -9,9 +9,9 @@ def submit_form():
     data  = request.json
     name = data.get('name')
     email = data.get('email')
-    msg = data.get('message')
+    mmessage = data.get('message')
     admin = User.query.filter_by(role="admin").first()
     admin_email = admin.email if email else None
 
-    send_email(name,email,msg,admin_email)
+    send_email(name,email,mmessage,admin_email)
     return jsonify({"message":"Form submitted!"}), 200

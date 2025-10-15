@@ -10,6 +10,7 @@ import { Reminder } from './pages/reminder/reminder';
 import { OcrComponent } from './pages/ocr/ocr';
 import { AuthGuard } from './guard/auth.guard';
 import { AiChatComponent } from './pages/assistant/assistant';
+import { AdminComponent } from './pages/admin/admin';
 
 export const routes: Routes = [
    { path: '', component: Home, canActivate: [AuthGuard] },
@@ -23,5 +24,6 @@ export const routes: Routes = [
   {path:'service-reminders', component:Reminder},
   {path:'fuellog/ocr', component:OcrComponent},
   {path:'assistant/c', component:AiChatComponent},
+  {path:'admin', component:AdminComponent},
   { path: '**', redirectTo: 'signup' },
 ];

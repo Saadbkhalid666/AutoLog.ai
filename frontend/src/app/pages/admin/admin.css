@@ -1,0 +1,8 @@
+/* src/app/components/admin-dashboard/admin-dashboard.component.css */
+:host {
+  display: block;
+}
+/* subtle hover row */
+table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+}

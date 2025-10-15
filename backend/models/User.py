@@ -1,8 +1,8 @@
 # models/user.py
 from datetime import datetime
 from utils.extensions import db
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin #type:ignore
+from werkzeug.security import generate_password_hash, check_password_hash #type:ignore
 
 
 class User(db.Model, UserMixin):
@@ -24,3 +24,12 @@ class User(db.Model, UserMixin):
     def check_password(self, raw_password: str) -> bool:
         return check_password_hash(self.password, raw_password)
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username":self.username
+            ,"email":self.email,
+            "password":self.password,
+            "role":self.role
+            ,"created_at":str(self.created_at)
+        }

@@ -1,0 +1,75 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+}
+
+export interface FuelLog {
+  id: number;
+  car_id: string;
+  fuel_amount: number;
+  price: number;
+  mileage: number;
+  date: string;
+}
+
+export interface Reminder {
+  id: number;
+  car_id: string;
+  service_type: string;
+  next_service_date: string;
+  notes: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminService {
+  private baseUrl = 'http://127.0.0.1:5000/admin'; 
+
+  constructor(private http: HttpClient) {}
+
+  // Users
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/get-all-users`);
+  }
+
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update-user/${id}`, data);
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/del-user/${id}`);
+  }
+
+  // Fuel Logs
+  getAllLogs(): Observable<FuelLog[]> {
+    return this.http.get<FuelLog[]>(`${this.baseUrl}/get-all-logs`);
+  }
+
+  updateLog(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update-log/${id}`, data);
+  }
+
+  deleteLog(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/del-log/${id}`);
+  }
+
+  // Service Reminders
+  getAllReminders(): Observable<Reminder[]> {
+    return this.http.get<Reminder[]>(`${this.baseUrl}/get-all-reminders`);
+  }
+
+  updateReminder(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update-reminder/${id}`, data);
+  }
+
+  deleteReminder(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/del-reminder/${id}`);
+  }
+}
