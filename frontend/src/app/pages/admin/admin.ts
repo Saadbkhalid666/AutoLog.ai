@@ -1,10 +1,12 @@
 // src/app/components/admin-dashboard/admin-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminService, User, FuelLog, Reminder } from '../../services/admin.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin',
+  imports:[CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './admin.html',
   styleUrls: ['./admin.css']
 })
@@ -13,7 +15,7 @@ export class AdminComponent implements OnInit {
   logs: FuelLog[] = [];
   reminders: Reminder[] = [];
 
-  editForm: FormGroup = this.fb.group({});
+  editForm!: FormGroup; 
   editingType: 'user' | 'log' | 'reminder' | null = null;
   editingId: number | null = null;
   loading = false;

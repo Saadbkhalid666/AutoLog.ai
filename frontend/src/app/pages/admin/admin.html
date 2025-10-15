@@ -1,1 +1,131 @@
-<p>admin works!</p>
+<!-- src/app/components/admin-dashboard/admin-dashboard.component.html -->
+<section class="p-8 bg-[#071017] min-h-screen text-white">
+  <h1 class="text-4xl text-center mb-10 text-[#42f5d8]">Admin Dashboard</h1>
+
+  <!-- USERS -->
+  <div class="mb-12">
+    <h2 class="text-2xl mb-4 text-lime-400">Users</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto border border-white/10">
+        <thead class="bg-white/5">
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Username</th>
+            <th class="px-4 py-2">Email</th>
+            <th class="px-4 py-2">Role</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users" class="hover:bg-white/2">
+            <td class="px-4 py-2">{{ u.id }}</td>
+            <td class="px-4 py-2">{{ u.username }}</td>
+            <td class="px-4 py-2">{{ u.email }}</td>
+            <td class="px-4 py-2">{{ u.role }}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button (click)="startEdit('user', u.id, u)" class="px-2 py-1 bg-lime-600 rounded">Edit</button>
+              <button (click)="deleteItem('user', u.id)" class="px-2 py-1 bg-red-600 rounded">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FUEL LOGS -->
+  <div class="mb-12">
+    <h2 class="text-2xl mb-4 text-lime-400">Fuel Logs</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto border border-white/10">
+        <thead class="bg-white/5">
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Car ID</th>
+            <th class="px-4 py-2">Fuel</th>
+            <th class="px-4 py-2">Price</th>
+            <th class="px-4 py-2">Mileage</th>
+            <th class="px-4 py-2">Date</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let l of logs" class="hover:bg-white/2">
+            <td class="px-4 py-2">{{ l.id }}</td>
+            <td class="px-4 py-2">{{ l.car_id }}</td>
+            <td class="px-4 py-2">{{ l.fuel_amount }}</td>
+            <td class="px-4 py-2">{{ l.price }}</td>
+            <td class="px-4 py-2">{{ l.mileage }}</td>
+            <td class="px-4 py-2">{{ l.date | date:'medium' }}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button (click)="startEdit('log', l.id, l)" class="px-2 py-1 bg-lime-600 rounded">Edit</button>
+              <button (click)="deleteItem('log', l.id)" class="px-2 py-1 bg-red-600 rounded">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SERVICE REMINDERS -->
+  <div class="mb-12">
+    <h2 class="text-2xl mb-4 text-lime-400">Service Reminders</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full table-auto border border-white/10">
+        <thead class="bg-white/5">
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Car ID</th>
+            <th class="px-4 py-2">Service Type</th>
+            <th class="px-4 py-2">Next Service Date</th>
+            <th class="px-4 py-2">Notes</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of reminders" class="hover:bg-white/2">
+            <td class="px-4 py-2">{{ r.id }}</td>
+            <td class="px-4 py-2">{{ r.car_id }}</td>
+            <td class="px-4 py-2">{{ r.service_type }}</td>
+            <td class="px-4 py-2">{{ r.next_service_date | date:'mediumDate' }}</td>
+            <td class="px-4 py-2">{{ r.notes }}</td>
+            <td class="px-4 py-2 space-x-2">
+              <button (click)="startEdit('reminder', r.id, r)" class="px-2 py-1 bg-lime-600 rounded">Edit</button>
+              <button (click)="deleteItem('reminder', r.id)" class="px-2 py-1 bg-red-600 rounded">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EDIT PANEL -->
+  <div id="admin-edit-panel" class="mt-8">
+    <div *ngIf="editingType" class="max-w-3xl mx-auto p-6 bg-white/5 rounded-lg border border-white/10">
+      <h3 class="text-xl text-lime-400 mb-4">Editing {{ editingType }} (ID: {{ editingId }})</h3>
+      <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="space-y-4">
+        <div *ngFor="let key of editForm.controls | keyvalue">
+          <label class="block text-sm text-gray-200 mb-1">{{ key.key }}</label>
+          <input
+            *ngIf="!key.value.value?.toString().includes('\\n')"
+            [formControlName]="key.key"
+            class="w-full p-2 rounded bg-transparent border border-gray-700 text-white"
+          />
+          <textarea
+            *ngIf="key.value.value?.toString().includes('\\n')"
+            [formControlName]="key.key"
+            rows="3"
+            class="w-full p-2 rounded bg-transparent border border-gray-700 text-white"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center gap-3 mt-2">
+          <button type="submit" [disabled]="loading" class="px-4 py-2 bg-lime-600 rounded">
+            Save
+          </button>
+          <button type="button" (click)="cancelEdit()" class="px-4 py-2 bg-gray-600 rounded">Cancel</button>
+          <div *ngIf="error" class="text-sm text-red-400">{{ error }}</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
