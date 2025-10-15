@@ -101,6 +101,16 @@ def create_app():
         if not scheduler.running:
             scheduler.start()
             logger.info("Database tables created")
+        
+        user = User.query.filter_by(email="saadbkhalid666@gmail.com").first()
+        print(user)  # Check if user is found
+
+        if user:
+            user.set_password("123456")  # ✅ This will hash it
+            db.session.commit()
+            print("Password updated successfully!")
+        else:
+            print("User not found!")
 
     return app
 
