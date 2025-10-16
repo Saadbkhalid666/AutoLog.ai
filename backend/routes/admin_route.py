@@ -119,7 +119,7 @@ def delete_log(id):
     db.session.commit()
     return jsonify({"message": "Fuel log deleted!"}), 200
 
-# ------------------ Service Reminders ------------------ #
+
 
 # Get all reminders
 @admin_bp.route("/get-all-reminders", methods=["GET"])
@@ -135,10 +135,10 @@ def update_reminder(id):
         return jsonify({"message": "Reminder not found!"}), 404
 
     data = request.json
-    reminder.car_id = data.get("car_id", reminder.car_id)
+    reminder.user_id = data.get("user_id", reminder.user_id)
     reminder.service_type = data.get("service_type", reminder.service_type)
-    reminder.next_service_date = data.get("next_service_date", reminder.next_service_date)
-    reminder.notes = data.get("notes", reminder.notes)
+    reminder.due_date = data.get("due_date", reminder.due_date)
+    reminder.note = data.get("note", reminder.note)
 
     try:
         db.session.commit()
