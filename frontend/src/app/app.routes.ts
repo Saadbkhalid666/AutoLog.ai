@@ -11,6 +11,7 @@ import { OcrComponent } from './pages/ocr/ocr';
 import { AuthGuard } from './guard/auth.guard';
 import { AiChatComponent } from './pages/assistant/assistant';
 import { AdminComponent } from './pages/admin/admin';
+import { AccessFormComponent } from './pages/access-form/access-form';
 
 export const routes: Routes = [
    { path: '', component: Home, canActivate: [AuthGuard] },
@@ -25,5 +26,6 @@ export const routes: Routes = [
   {path:'fuellog/ocr', component:OcrComponent},
   {path:'assistant/c', component:AiChatComponent},
   {path:'admin', component:AdminComponent},
+  {path:'db-access-form', component:AccessFormComponent},
   { path: '**', redirectTo: 'signup' },
 ];

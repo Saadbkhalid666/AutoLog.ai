@@ -11,19 +11,19 @@ export interface User {
 
 export interface FuelLog {
   id: number;
-  car_id: string;
-  fuel_amount: number;
+  user_id: string;
+  litres: number;
   price: number;
-  mileage: number;
+  odometer: number;
   date: string;
 }
 
 export interface Reminder {
   id: number;
-  car_id: string;
+  user_id: string;
   service_type: string;
-  next_service_date: string;
-  notes: string;
+  due_date: string;
+  note: string;
 }
 
 @Injectable({
@@ -72,4 +72,11 @@ export class AdminService {
   deleteReminder(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/del-reminder/${id}`);
   }
+
+  adminLogin(credentials: { email: string; password: string }): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/login`, credentials, {
+    withCredentials: true // Important for session cookies
+  });
+}
+
 }

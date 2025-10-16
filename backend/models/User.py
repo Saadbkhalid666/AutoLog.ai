@@ -18,11 +18,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"<User {self.username}>"
     
-    def set_password(self, raw_password: str):
-        self.password = generate_password_hash(raw_password)
-
-    def check_password(self, raw_password: str) -> bool:
-        return check_password_hash(self.password, raw_password)
     
     def to_dict(self):
         return {

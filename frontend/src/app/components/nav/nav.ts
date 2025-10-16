@@ -14,15 +14,28 @@ import { Subscription } from 'rxjs';
 export class Nav implements OnInit, OnDestroy {
   isOpen = false;
   userFirstName: string | null = null;
+  name:string | null = null;
+  showPanel:boolean = false
   private sub!: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor( public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.sub = this.authService.username$.subscribe((username) => {
       this.userFirstName = username ? username.split(' ')[0] : null;
     });
+   this.authService.userRole$.subscribe((role)=>{
+    this.showPanel = (role == "admin")
+   })
+
   }
+  scrollTo(sectionId: string) {
+  const el = document.getElementById(sectionId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 
   ngOnDestroy() {
     this.sub.unsubscribe();

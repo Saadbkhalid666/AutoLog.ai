@@ -72,33 +72,32 @@ export class FuelLogs implements OnInit {
     this.editingModel = {};
   }
 
-  saveEdit() {
-    if (!this.editingLogId) return;
-    const id = this.editingLogId;
-    const payload: Partial<FuelLog> = {
-      date: this.editingModel.date,
-      litres: Number(this.editingModel.litres || 0),
-      price: Number(this.editingModel.price || 0),
-      odometer: Number(this.editingModel.odometer || 0)
-    };
+ saveEdit() {
+  if (!this.editingLogId) return;
+  const id = this.editingLogId;
+  const payload: Partial<FuelLog> = {
+    litres: Number(this.editingModel.litres || 0),
+    price: Number(this.editingModel.price || 0),
+    odometer: Number(this.editingModel.odometer || 0)
+  };
 
-    this.fuelService.updateFuelLog(id, payload).subscribe({
-      next: () => {
-        // update local list without full reload for snappiness
-        const idx = this.fuelLogs.findIndex(l => l.id === id);
-        if (idx !== -1) {
-          this.fuelLogs[idx] = { ...this.fuelLogs[idx], ...payload } as FuelLog;
-        }
-        this.editingLogId = null;
-        this.editingModel = {};
-        this.buildChart();
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMsg = err.error?.error || 'Failed to update fuel log';
+  this.fuelService.updateFuelLog(id, payload).subscribe({
+    next: () => {
+      const idx = this.fuelLogs.findIndex(l => l.id === id);
+      if (idx !== -1) {
+        this.fuelLogs[idx] = { ...this.fuelLogs[idx], ...payload } as FuelLog;
       }
-    });
-  }
+      this.editingLogId = null;
+      this.editingModel = {};
+      this.buildChart();
+    },
+    error: (err) => {
+      console.error(err);
+      this.errorMsg = err.error?.error || 'Failed to update fuel log';
+    }
+  });
+}
+
 
   deleteLog(id: number) {
     this.fuelService.deleteFuelLog(id).subscribe({
