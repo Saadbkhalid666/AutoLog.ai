@@ -4,6 +4,7 @@ from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from utils.extensions import db
+from datetime import datetime
 
 
 admin_bp = Blueprint("admin_auth", __name__)
@@ -91,12 +92,15 @@ def update_log(id):
     if not log:
         return jsonify({"message": "Fuel log not found!"}), 404
 
+    date_str = request.json.get('date')
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+
     data = request.json
-    log.car_id = data.get("car_id", log.car_id)
-    log.fuel_amount = data.get("fuel_amount", log.fuel_amount)
+    log.user_id = data.get("user_id", log.user_id)
+    log.litres = data.get("litres", log.litres)
     log.price = data.get("price", log.price)
-    log.mileage = data.get("mileage", log.mileage)
-    log.date = data.get("date", log.date)
+    log.odometer = data.get("odometer", log.odometer)
+    log.date = date_obj
 
     try:
         db.session.commit()

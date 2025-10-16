@@ -11,10 +11,10 @@ export interface User {
 
 export interface FuelLog {
   id: number;
-  car_id: string;
-  fuel_amount: number;
+  user_id: string;
+  litres: number;
   price: number;
-  mileage: number;
+  odometer: number;
   date: string;
 }
 
