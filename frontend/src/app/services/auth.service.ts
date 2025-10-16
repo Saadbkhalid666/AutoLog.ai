@@ -15,6 +15,8 @@ export class AuthService {
   private apiUrl = 'http://127.0.0.1:5000/auth';
   private usernameSubject = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSubject.asObservable();
+  private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private http: HttpClient) {
     const savedUsername = localStorage.getItem('username');
@@ -25,7 +27,7 @@ export class AuthService {
 
   signup(user: User): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
-      tap(res => {
+      tap((res) => {
         if (res?.token && res?.username) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.username);
@@ -37,11 +39,14 @@ export class AuthService {
 
   verifyOtp(otpData: { otp: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/verify-otp`, otpData).pipe(
-      tap(res => {
+      tap((res) => {
         if (res?.token && res?.username) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.username);
+          localStorage.setItem('role', res.role);
+
           this.usernameSubject.next(res.username);
+          this.userRoleSubject.next(res.role)
         }
       })
     );
@@ -49,11 +54,14 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(res => {
+      tap((res) => {
         if (res?.token && res?.username) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.username);
+          localStorage.setItem('role', res.role);
           this.usernameSubject.next(res.username);
+
+           this.userRoleSubject.next(res.role);
         }
       })
     );
@@ -62,6 +70,7 @@ export class AuthService {
   getUsername(): string | null {
     return this.usernameSubject.value;
   }
+  
 
   getToken(): string | null {
     return localStorage.getItem('token');

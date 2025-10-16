@@ -17,7 +17,7 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         print(user.password)
-        if user and user.check_password(password) and user.role == "admin":
+        if user and user.password and user.role == "admin":
             login_user(user)
             return redirect("/admin") 
         else:

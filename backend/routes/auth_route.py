@@ -60,7 +60,8 @@ def verify_otp():
         "message": "OTP verified and user created successfully!",
         "username": user.username,
         "email": user.email,
-        "token": access_token
+        "token": access_token,
+        "role":user.role
     }), 201
 
 @auth_bp.route("/login", methods=["POST"])
@@ -83,7 +84,8 @@ def login():
         "username": user.username,
         "email": user.email,
         "user_id": user.id,
-        "token": access_token
+        "token": access_token,
+        "role":user.role
     }), 200
 
  
