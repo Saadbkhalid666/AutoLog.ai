@@ -111,7 +111,7 @@ def get_reminders():
 def update_reminder(id):
     user_id = get_jwt_identity()
     reminder = ServiceReminders.query.get_or_404(id)
-    if reminder.user_id != user_id:
+    if int(reminder.user_id) != int(user_id):
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.json
