@@ -24,7 +24,8 @@ export class FuelLogService {
     const token = localStorage.getItem('token') || '';
     return {
       headers: new HttpHeaders({
-        Authorization: token ? `Bearer ${token}` : ''
+        Authorization: token ? `Bearer ${token}` : '',
+         'Content-Type': 'application/json' 
       })
     };
   }

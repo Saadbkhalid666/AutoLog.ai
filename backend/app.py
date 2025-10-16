@@ -98,6 +98,7 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        print(app.url_map)
         if not scheduler.running:
             scheduler.start()
             logger.info("Database tables created")

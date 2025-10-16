@@ -94,19 +94,35 @@ def get_fuel_logs():
 @fuel_log_bp.route("/update-fuel-log/<int:log_id>", methods=["PUT"])
 @jwt_required()
 def update_fuel_log_by_id(log_id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())  
     log = FuelLog.query.get(log_id)
-    if not log or log.user_id != user_id:
+
+    print("JWT user_id:", user_id)
+    print("FuelLog user_id:", log.user_id if log else "No Log Found")
+    print("Requested log_id:", log_id)
+
+    if not log or int(log.user_id) != int(user_id):
         return jsonify({"error": "Fuel Log not found or unauthorized!"}), 404
 
     data = request.get_json()
-    log.date = datetime.utcnow().date()
-    log.litres = data.get("litres", log.litres)
-    log.price = data.get("price", log.price)
-    log.odometer = data.get("odometer", log.odometer)
+    print("Incoming Data:", data)
 
-    db.session.commit()
+    if not data:
+        return jsonify({"error": "No data provided!"}), 400
+
+    log.date = datetime.utcnow().date()
+    log.litres = float(data.get("litres", log.litres))
+    log.price = float(data.get("price", log.price))
+    log.odometer = int(data.get("odometer", log.odometer))
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        print("DB COMMIT ERROR:", e)
+        return jsonify({"error": "Database error"}), 500
+
     return jsonify({"message": "Fuel log updated!", "fuel_log": log.to_dict()})
+
 
 @fuel_log_bp.route("/delete-fuel-log/<int:log_id>", methods=["DELETE"])
 @jwt_required()
