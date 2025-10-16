@@ -22,13 +22,13 @@
         >
       </li>
       <li>
-        <a href="#about" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition"
+        <a (click)="scrollTo('about')" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition"
           >About</a
         >
       </li>
       <li>
         <a
-          routerLink="services"
+          (click)="scrollTo('services')"
           routerLinkActive="text-[#42f5d8]"
           class="hover:text-[#42f5d8] transition"
           >Services</a
@@ -36,7 +36,7 @@
       </li>
       <li>
         <a
-          routerLink="contact"
+         (click)="scrollTo('contact')"
           routerLinkActive="text-[#42f5d8]"
           class="hover:text-[#42f5d8] transition"
           >Contact</a
@@ -132,19 +132,19 @@
       >Home</a
     >
     <a
-      routerLink="about"
+      (click)="scrollTo('about')"
       routerLinkActive="text-[#42f5d8]"
       class="hover:text-[#42f5d8] cursor-pointer"
       >About</a
     >
     <a
-      routerLink="services"
+      (click)="scrollTo('services')"
       routerLinkActive="text-[#42f5d8]"
       class="hover:text-[#42f5d8] cursor-pointer"
       >Services</a
     >
     <a
-      routerLink="contact"
+     (click)="scrollTo('contact')"
       routerLinkActive="text-[#42f5d8]"
       class="hover:text-[#42f5d8] cursor-pointer"
       >Contact</a
