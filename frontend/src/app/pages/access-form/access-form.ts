@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-access-form',
+  imports:[CommonModule, FormsModule],
   templateUrl: './access-form.html'
 })
-export class AdminLoginComponent {
+export class AccessFormComponent {
   email = '';
   password = '';
   errorMessage = '';
