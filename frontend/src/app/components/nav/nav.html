@@ -51,6 +51,14 @@
         >
           Admin
         </a>
+        <a
+          *ngIf="role === 'admin'"
+          routerLink="db-access-form"
+          routerLinkActive="text-[#42f5d8]"
+          class="hover:text-[#42f5d8] cursor-pointer"
+        >
+          DB
+        </a>
       </ng-container>
     </ul>
 
