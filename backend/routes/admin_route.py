@@ -137,7 +137,9 @@ def update_reminder(id):
     data = request.json
     reminder.user_id = data.get("user_id", reminder.user_id)
     reminder.service_type = data.get("service_type", reminder.service_type)
-    reminder.due_date = data.get("due_date", reminder.due_date)
+    date_str = data.get("due_date")
+    data_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+    reminder.due_date = data_obj
     reminder.note = data.get("note", reminder.note)
 
     try:
