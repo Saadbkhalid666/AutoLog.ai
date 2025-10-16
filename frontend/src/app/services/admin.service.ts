@@ -72,4 +72,11 @@ export class AdminService {
   deleteReminder(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/del-reminder/${id}`);
   }
+
+  adminLogin(credentials: { email: string; password: string }): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/login`, credentials, {
+    withCredentials: true // Important for session cookies
+  });
+}
+
 }
