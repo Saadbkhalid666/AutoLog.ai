@@ -9,27 +9,19 @@ from datetime import datetime
 
 admin_bp = Blueprint("admin_auth", __name__)
 
-@admin_bp.route("/login", methods=["GET", "POST"])
+@admin_bp.route("/login", methods=["POST"])
 def login():
-    if request.method == "POST":
-        email = request.form.get("email") or request.json.get("email")
-        password = request.form.get("password") or request.json.get("password")
-        user = User.query.filter_by(email=email).first()
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
 
-        print(user.password)
-        if user and user.password and user.role == "admin":
-            login_user(user)
-            return redirect("/admin") 
-        else:
-            return "Invalid credentials or not admin", 401
+    user = User.query.filter_by(email=email).first()
 
-    return """
-<form method="POST" action="/admin/login">
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
-"""
+    if user and user.password == password and user.role == "admin":
+        login_user(user)
+        return jsonify({"message": "Admin login successful"}), 200
+    else:
+        return jsonify({"error": "Invalid credentials or not admin"}), 401
 
 @admin_bp.route("/logout")
 @login_required
