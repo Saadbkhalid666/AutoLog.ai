@@ -1,9 +1,9 @@
 <div class="max-w-3xl mx-auto p-6 text-white">
-  <h2 class="text-2xl font-bold mb-4 text-lime-400 text-center">Velix — AI Assistant</h2>
+  <h2 class="text-2xl font-bold mb-4 text-lime-400 text-center">Nex — AI Assistant</h2>
 
   <div class="bg-white/5 rounded-2xl p-4 mb-4 ai-messages" style="max-height:58vh; overflow:auto;">
     <div *ngIf="messages.length === 0" class="text-center text-gray-400 py-10">
-      Ask Velix anything — maintenance tips, logs summary, or a friendly hello.
+      Ask Nex anything — maintenance tips, logs summary, or a friendly hello.
     </div>
 
     <div *ngFor="let m of messages" class="mb-3">
@@ -16,7 +16,7 @@
 
   <!-- ASSISTANT MESSAGE (LEFT SIDE) -->
   <div *ngIf="m.role === 'assistant'" class="flex gap-3 items-start">
-    <div class="text-sky-300 font-semibold w-16">Velix</div>
+    <div class="text-sky-300 font-semibold w-16">Nex</div>
     <div class="max-w-[70%] bg-white/6 p-3 rounded-lg text-gray-100 whitespace-pre-wrap">{{ m.text }}</div>
     <div class="flex-1"></div>
   </div>
@@ -35,6 +35,6 @@
     <button (click)="clearConversation()" class="px-3 py-2 rounded-lg bg-white/6 text-gray-200">Clear</button>
   </div>
 
-  <p *ngIf="loading" class="mt-3 text-gray-400">Velix is thinking…</p>
+  <p *ngIf="loading" class="mt-3 text-gray-400">Nex is thinking…</p>
   <p *ngIf="error" class="mt-2 text-red-400">{{ error }}</p>
 </div>
