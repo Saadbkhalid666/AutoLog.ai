@@ -1,39 +1,60 @@
-from flask import Blueprint, request, jsonify #type:ignore
-from transformers import AutoTokenizer, AutoModelForCausalLM #type:ignore
-from pathlib import Path 
-import torch #type:ignore
+from flask import Blueprint, request, jsonify  # type:ignore
+import requests  # type:ignore
+import os  # type:ignore
 
 chat_bp = Blueprint("chat", __name__)
 
-model_path = Path(__file__).parent.parent / "autolog-ai-chatbot"
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForCausalLM.from_pretrained(model_path)
+# ✅ OpenRouter Settings
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") or "sk-or-v1-REPLACE_WITH_YOURS"
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_MODEL = "openai/gpt-4o-mini"  # ✅ Confirmed working in your curl
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
+SYSTEM_PROMPT = (
+    "Your name is Nex. You are an intelligent automotive maintenance assistant inside the AutoLog.AI platform. "
+    "You respond formally and professionally. Your primary goal is to assist users with car maintenance, "
+    "fuel efficiency, service reminders, and automotive best practices. Keep responses clear, precise, and informative."
+)
 
 @chat_bp.route("/c", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_input = data.get("message", "").strip()
+    user_message = data.get("message", "").strip()
 
-    if not user_input:
+    if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors="pt").to(device)
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "HTTP-Referer": "http://localhost:5000",  # ✅ Required by OpenRouter
+        "X-Title": "AutoLog AI"  # ✅ Required meta
+    }
 
-    chat_history_ids = model.generate(
-        input_ids,
-        max_length=200,
-        pad_token_id=tokenizer.eos_token_id,
-        no_repeat_ngram_size=2,
-        top_k=20,
-        top_p=0.9,
-        temperature=0.6
-    )
+    payload = {
+        "model": OPENROUTER_MODEL,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_message}
+        ]
+    }
 
-    reply_ids = chat_history_ids[0][input_ids.shape[-1]:]
-    reply = tokenizer.decode(reply_ids, skip_special_tokens=True).strip()
- 
+    try:
+        response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
 
-    return jsonify({"reply": reply})
+        data = response.json()
+        reply = data["choices"][0]["message"]["content"]
+        return jsonify({"reply": reply})
+
+    except requests.exceptions.HTTPError as http_err:
+        # Extract OpenRouter’s actual error message if available
+        try:
+            error_data = response.json()
+            return jsonify({"error": error_data.get("error", {}).get("message", str(http_err))}), response.status_code
+        except:
+            return jsonify({"error": f"AI request failed: {str(http_err)}"}), 503
+
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "AI timed out. Please try again."}), 504
+    except Exception as e:
+        return jsonify({"error": f"AI request failed: {str(e)}"}), 503
