@@ -22,21 +22,21 @@ def chat():
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
-    
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+
     headers = { "Content-Type": "application/json" }
     params = { "key": GEMINI_API_KEY }
 
     payload = {
-        "system_instruction": {
-            "parts": [{"text": SYSTEM_PROMPT}]
-        },
-        "contents": [
-            {
-                "parts": [{"text": user_message}]
-            }
-        ]
-    }
+            "system_instruction": {
+                "parts": [{"text": SYSTEM_PROMPT}]
+            },
+            "contents": [
+                {
+                    "parts": [{"text": user_message}]
+                }
+            ]
+        }
 
     try:
         response = requests.post(url, headers=headers, params=params, json=payload, timeout=30)
