@@ -4,12 +4,10 @@ import os  # type:ignore
 
 chat_bp = Blueprint("chat", __name__)
 
-# ✅ Use OpenRouter Instead of Gemini API
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") or "sk-or-v1-YOUR_KEY_HERE"
+# ✅ OpenRouter Settings
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") or "sk-or-v1-REPLACE_WITH_YOURS"
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-
-# ✅ Choose Model (works reliably)
-OPENROUTER_MODEL = "openai/gpt-4o-mini"  # or "google/gemini-pro-1.5" / "google/gemini-2.0-flash-exp:free"
+OPENROUTER_MODEL = "openai/gpt-4o-mini"  # ✅ Confirmed working in your curl
 
 SYSTEM_PROMPT = (
     "Your name is Nex. You are an intelligent automotive maintenance assistant inside the AutoLog.AI platform. "
@@ -27,7 +25,9 @@ def chat():
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}"
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "HTTP-Referer": "http://localhost:5000",  # ✅ Required by OpenRouter
+        "X-Title": "AutoLog AI"  # ✅ Required meta
     }
 
     payload = {
@@ -46,7 +46,15 @@ def chat():
         reply = data["choices"][0]["message"]["content"]
         return jsonify({"reply": reply})
 
+    except requests.exceptions.HTTPError as http_err:
+        # Extract OpenRouter’s actual error message if available
+        try:
+            error_data = response.json()
+            return jsonify({"error": error_data.get("error", {}).get("message", str(http_err))}), response.status_code
+        except:
+            return jsonify({"error": f"AI request failed: {str(http_err)}"}), 503
+
     except requests.exceptions.Timeout:
-        return jsonify({"error": "AI request timed out. Please try again."}), 504
+        return jsonify({"error": "AI timed out. Please try again."}), 504
     except Exception as e:
         return jsonify({"error": f"AI request failed: {str(e)}"}), 503
