@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
-import requests
-import os
+from flask import Blueprint, request, jsonify #type:ignore
+import requests #type:ignore
+import os #type:ignore
 
 chat_bp = Blueprint("chat", __name__)
 
