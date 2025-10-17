@@ -5,7 +5,8 @@ import os #type:ignore
 chat_bp = Blueprint("chat", __name__)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or "YOUR_API_KEY_HERE"
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key={GEMINI_API_KEY}"
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+params = { "key": GEMINI_API_KEY }
 
 SYSTEM_PROMPT = (
     "Your name is Nex. You are an intelligent automotive maintenance assistant inside the AutoLog.AI platform. "
