@@ -21,24 +21,31 @@ def chat():
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+    
+    headers = { "Content-Type": "application/json" }
+    params = { "key": GEMINI_API_KEY }
+
     payload = {
+        "system_instruction": {
+            "parts": [{"text": SYSTEM_PROMPT}]
+        },
         "contents": [
-            {"parts": [{"text": SYSTEM_PROMPT}]},
-            {"parts": [{"text": user_message}]}
+            {
+                "parts": [{"text": user_message}]
+            }
         ]
     }
 
     try:
-        response = requests.post(GEMINI_URL, json=payload, timeout=15)
-        response.raise_for_status()  # Raises HTTPError for bad status codes
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": f"Gemini API request failed: {str(e)}"}), 503
-
-    try:
-        candidates = response.json().get("candidates", [])
-        if not candidates:
-            return jsonify({"error": "No candidates returned by Gemini"}), 500
-        reply = candidates[0]["content"]["parts"][0]["text"]
+        response = requests.post(url, headers=headers, params=params, json=payload, timeout=30)
+        response.raise_for_status()
+        
+        data = response.json()
+        reply = data["candidates"][0]["content"]["parts"][0]["text"]
         return jsonify({"reply": reply})
-    except (KeyError, IndexError, ValueError) as e:
-        return jsonify({"error": f"Unexpected Gemini response format: {str(e)}"}), 500
+    
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Gemini timed out. Please try again."}), 504
+    except Exception as e:
+        return jsonify({"error": f"Gemini API request failed: {str(e)}"}), 503
