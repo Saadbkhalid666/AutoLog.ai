@@ -6,9 +6,9 @@ export interface FuelLog {
   id?: number;
   user_id?: number;
   date: string;
-  litres: number;
-  price: number;
-  odometer: number;
+  litres?: number;
+  price?: number;
+  odometer?: number;
   created_at?: string;
 }
 

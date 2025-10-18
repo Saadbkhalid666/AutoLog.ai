@@ -5,15 +5,33 @@
   <div class="bg-white/10 p-6 rounded-2xl mb-10 shadow-md border border-white/10 backdrop-blur-md">
     <h3 class="text-xl font-semibold mb-4 text-gray-200 text-center">Add New Fuel Log</h3>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <input [(ngModel)]="manualLog.date" type="date"
-        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
-      <input [(ngModel)]="manualLog.litres" type="number" placeholder="Litres"
-        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
-      <input [(ngModel)]="manualLog.price" type="number" placeholder="Price"
-        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
-      <input [(ngModel)]="manualLog.odometer" type="number" placeholder="Odometer"
-        class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
-    </div>
+  
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Date</label>
+    <input [(ngModel)]="manualLog.date" type="date"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Litres</label>
+    <input [(ngModel)]="manualLog.litres" type="number" placeholder="Litres" 
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Price</label>
+    <input [(ngModel)]="manualLog.price" type="number" placeholder="Price"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Odometer</label>
+    <input [(ngModel)]="manualLog.odometer" type="number" placeholder="Odometer"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+</div>
+
     <button (click)="addManualLog()"
       class="mt-5 w-full bg-lime-500 hover:bg-lime-600 text-black font-semibold py-3 rounded-xl transition-all duration-200">
       Add Log
