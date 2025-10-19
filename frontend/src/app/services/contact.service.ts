@@ -13,7 +13,7 @@ export interface ContactPayload {
   providedIn: 'root'
 })
 export class ContactService {
-  private baseUrl = 'https://autolog-backend-60015686cd54.herokuapp.com/'; 
+  private baseUrl = 'https://autolog-backend-ecc53876d2e8.herokuapp.com/'; 
 
   constructor(private http: HttpClient) {}
 
