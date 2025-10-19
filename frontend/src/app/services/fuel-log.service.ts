@@ -16,7 +16,7 @@ export interface FuelLog {
   providedIn: 'root'
 })
 export class FuelLogService {
-  private baseUrl = 'http://127.0.0.1:5000/vehicle';
+  private baseUrl = 'https://autolog-backend-60015686cd54.herokuapp.com/vehicle';
 
   constructor(private http: HttpClient) {}
 
