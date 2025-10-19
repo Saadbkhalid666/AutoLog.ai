@@ -1,3 +1,4 @@
+from flask_cors import CORS
 import os
 import atexit
 import  logging
@@ -38,15 +39,22 @@ app = Flask(__name__)
 app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
 
 def create_app():
-    from flask_cors import CORS
+    app.config.from_object(Config)
 
     CORS(app,
-     supports_credentials=True,
-     resources={r"/*": {"origins": ["http://localhost:4200", "https://autolog-backend-60015686cd54.herokuapp.com/"]}},
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    )
+    supports_credentials=True,
+    resources={r"/*": {
+        "origins": [
+            "http://localhost:4200",
+            "https://autolog-backend-60015686cd54.herokuapp.com",  # Removed trailing slash
+            "https://autolog-frontend.vercel.app"  # Example for your live frontend
+        ],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    }}
+)
+
  
-    app.config.from_object(Config)
 
     
     db.init_app(app)
