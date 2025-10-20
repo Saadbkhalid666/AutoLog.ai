@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OcrFuelService {
-  private baseUrl = 'https://autolog-backend-60015686cd54.herokuapp.com/vehicle';
+  private baseUrl = 'https://autolog-backend-ecc53876d2e8.herokuapp.com/vehicle';
   private tokenKey = 'token';
 
   constructor(private http: HttpClient) {}

@@ -1,4 +1,4 @@
-from flask_cors import CORS
+from flask_cors import CORS #type: ignore
 import os
 import atexit
 import  logging
