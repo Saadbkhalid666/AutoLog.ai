@@ -1,5 +1,4 @@
 from flask_cors import CORS #type: ignore
-import os
 import atexit
 import  logging
 from flask import Flask, request #type: ignore
@@ -46,8 +45,8 @@ def create_app():
     resources={r"/*": {
         "origins": [
             "http://localhost:4200",
-            "https://autolog-backend-60015686cd54.herokuapp.com",  # Removed trailing slash
-            "https://autolog-frontend.vercel.app"  # Example for your live frontend
+            "https://autolog-backend-60015686cd54.herokuapp.com",  
+            "https://autolog-frontend.vercel.app"  
         ],
         "allow_headers": ["Content-Type", "Authorization"],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
