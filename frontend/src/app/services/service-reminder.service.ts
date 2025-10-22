@@ -12,7 +12,7 @@ export interface ServiceReminder {
 }
 @Injectable({ providedIn: 'root' })
 export class ServiceReminderService {
-  private baseUrl = 'https://autolog-backend-ecc53876d2e8.herokuapp.com/service-reminders';
+  private baseUrl = 'https://autolog-d31ef4455b97.herokuapp.com/service-reminders';
 
   constructor(private http: HttpClient) {}
 
