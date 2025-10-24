@@ -8,9 +8,14 @@ class BaseSecureModelView(ModelView):
 
     def is_accessible(self):
         try:
+            print("is_accessible called")
+            print("Authenticated:", current_user.is_authenticated)
+            print("User role:", getattr(current_user, "role", None))
             return current_user.is_authenticated and current_user.role == "admin"
-        except Exception:
+        except Exception as e:
+            print("Error in is_accessible:", e)
             return False
+
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to admin login page

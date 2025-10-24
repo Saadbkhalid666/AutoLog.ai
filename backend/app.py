@@ -31,32 +31,27 @@ from view.safe_model_view import UserAdmin,BaseSecureModelView
 
 
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-app = Flask(__name__)
-app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
 
 def create_app():
+    app = Flask(__name__)
     app.config.from_object(Config)
 
-    CORS(app,
-    supports_credentials=True,
-    resources={r"/*": {
-        "origins": [
-            "http://localhost:4200",
-            "https://autolog-backend-60015686cd54.herokuapp.com",  
-            "https://autolog-frontend.vercel.app"  
-        ],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    }}
-)
+    CORS(app, supports_credentials=True, origins=[
+    "http://localhost:4200",
+    "https://autolog-backend-7961ac6afab3.herokuapp.com"
+])
+
 
  
 
     
     db.init_app(app)
+
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
+
     mail.init_app(app)
     csrf.init_app(app)
 
@@ -96,7 +91,7 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-    admin.add_view(UserAdmin(User, db.session))
+    admin.add_view(ModelView(User, db.session))
     admin.add_view(BaseSecureModelView(FuelLog, db.session))
     admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
 
@@ -113,6 +108,19 @@ def create_app():
         if not scheduler.running:
             scheduler.start()
             logger.info("Database tables created")
+    
+        u = User(username="Admin", email="saadbkhalid666@gmail.com")
+        
+        if u:
+            u.role = "admin"
+            db.session.commit()
+        else:
+            u = User(username="Admin", email="saadbkhalid666@gmail.com")
+            u.set_password("Saadbinkhalid03004196455")
+            u.role = "admin"
+            db.session.add(u)
+            db.session.commit()
+
         
     return app
 

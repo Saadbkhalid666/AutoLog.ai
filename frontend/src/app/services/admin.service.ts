@@ -30,7 +30,7 @@ export interface Reminder {
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = 'https://autolog-backend-7ee9e96b61b5.herokuapp.com/admin'; 
+  private baseUrl = 'http://127.0.0.1:5000/admin'; 
 
   constructor(private http: HttpClient) {}
 
@@ -75,7 +75,7 @@ export class AdminService {
 
   adminLogin(credentials: { email: string; password: string }): Observable<any> {
   return this.http.post<any>(`${this.baseUrl}/login`, credentials, {
-    withCredentials: true // Important for session cookies
+    withCredentials: true 
   });
 }
 

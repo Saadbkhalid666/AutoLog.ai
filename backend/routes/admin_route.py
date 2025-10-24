@@ -1,13 +1,13 @@
-from flask import Blueprint, request, redirect, jsonify #type:ignore
-from flask_login import login_user, logout_user, login_required #type:ignore
+from flask import Blueprint, request, redirect, jsonify
+from flask_login import login_user, logout_user, login_required
 from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
 from utils.extensions import db
 from datetime import datetime
 
-
 admin_bp = Blueprint("admin_auth", __name__)
+
 
 @admin_bp.route("/login", methods=["POST"])
 def login():
@@ -17,11 +17,13 @@ def login():
 
     user = User.query.filter_by(email=email).first()
 
-    if user and user.password == password and user.role == "admin":
-        login_user(user)
+    # ✅ Use check_password with role check
+    if user and user.check_password(password) and user.role == "admin":
+        login_user(user, remember=True)
         return jsonify({"message": "Admin login successful"}), 200
     else:
         return jsonify({"error": "Invalid credentials or not admin"}), 401
+
 
 @admin_bp.route("/logout")
 @login_required
@@ -29,12 +31,15 @@ def logout():
     logout_user()
     return redirect("/admin/login")
 
+
+# ---------- USER ROUTES ---------- #
+
 @admin_bp.route("/get-all-users", methods=["GET"])
 def get_all_users():
     users = User.query.all()
     return jsonify([user.to_dict() for user in users]), 200
 
-# Update user
+
 @admin_bp.route("/update-user/<int:id>", methods=["PUT"])
 def update_user(id):
     user = User.query.get(id)
@@ -42,7 +47,6 @@ def update_user(id):
         return jsonify({"message": "User not found!"}), 404
 
     data = request.json
-
     if "username" in data:
         user.username = data["username"]
     if "email" in data:
@@ -59,7 +63,7 @@ def update_user(id):
         db.session.rollback()
         return jsonify({"message": "Failed to update user", "error": str(e)}), 500
 
-# Delete user
+
 @admin_bp.route("/del-user/<int:id>", methods=["DELETE"])
 def delete_user(id):
     user = User.query.get(id)
@@ -69,30 +73,31 @@ def delete_user(id):
     db.session.commit()
     return jsonify({"message": "User deleted successfully!"}), 200
 
-# ------------------ Fuel Logs ------------------ #
 
-# Get all logs
+# ---------- FUEL LOGS ---------- #
+
 @admin_bp.route("/get-all-logs", methods=["GET"])
 def get_all_logs():
     logs = FuelLog.query.all()
     return jsonify([log.to_dict() for log in logs]), 200
 
-# Update log
+
 @admin_bp.route("/update-log/<int:id>", methods=["PUT"])
 def update_log(id):
     log = FuelLog.query.get(id)
     if not log:
         return jsonify({"message": "Fuel log not found!"}), 404
 
-    date_str = request.json.get('date')
-    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
-
     data = request.json
+    date_str = data.get("date")
+    if date_str:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+        log.date = date_obj
+
     log.user_id = data.get("user_id", log.user_id)
     log.litres = data.get("litres", log.litres)
     log.price = data.get("price", log.price)
     log.odometer = data.get("odometer", log.odometer)
-    log.date = date_obj
 
     try:
         db.session.commit()
@@ -101,7 +106,7 @@ def update_log(id):
         db.session.rollback()
         return jsonify({"message": "Failed to update log", "error": str(e)}), 500
 
-# Delete log
+
 @admin_bp.route("/del-log/<int:id>", methods=["DELETE"])
 def delete_log(id):
     log = FuelLog.query.get(id)
@@ -112,14 +117,14 @@ def delete_log(id):
     return jsonify({"message": "Fuel log deleted!"}), 200
 
 
+# ---------- SERVICE REMINDERS ---------- #
 
-# Get all reminders
 @admin_bp.route("/get-all-reminders", methods=["GET"])
 def get_all_reminders():
     reminders = ServiceReminders.query.all()
     return jsonify([r.to_dict() for r in reminders]), 200
 
-# Update reminder
+
 @admin_bp.route("/update-reminder/<int:id>", methods=["PUT"])
 def update_reminder(id):
     reminder = ServiceReminders.query.get(id)
@@ -130,8 +135,9 @@ def update_reminder(id):
     reminder.user_id = data.get("user_id", reminder.user_id)
     reminder.service_type = data.get("service_type", reminder.service_type)
     date_str = data.get("due_date")
-    data_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
-    reminder.due_date = data_obj
+    if date_str:
+        data_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+        reminder.due_date = data_obj
     reminder.note = data.get("note", reminder.note)
 
     try:
@@ -141,7 +147,7 @@ def update_reminder(id):
         db.session.rollback()
         return jsonify({"message": "Failed to update reminder", "error": str(e)}), 500
 
-# Delete reminder
+
 @admin_bp.route("/del-reminder/<int:id>", methods=["DELETE"])
 def delete_reminder(id):
     reminder = ServiceReminders.query.get(id)

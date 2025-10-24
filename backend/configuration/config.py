@@ -16,6 +16,9 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(hours=6)  
     WTF_CSRF_ENABLED = True
+    SESSION_COOKIE_SECURE = False      # keep False for localhost
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
 
  
    
