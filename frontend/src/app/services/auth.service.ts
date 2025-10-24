@@ -12,7 +12,7 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://autolog-backend-7ee9e96b61b5.herokuapp.com/auth';
+  private apiUrl = 'https://autolog-backend-7961ac6afab3.herokuapp.com/auth';
   private usernameSubject = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSubject.asObservable();
   private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));

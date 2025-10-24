@@ -13,6 +13,11 @@ export class AccessFormComponent {
   errorMessage = '';
 
   constructor(private authService: AdminService) {}
+showPassword = false;
+
+togglePassword() {
+  this.showPassword = !this.showPassword;
+}
 
   onLogin() {
     this.authService.adminLogin({ email: this.email, password: this.password }).subscribe({
