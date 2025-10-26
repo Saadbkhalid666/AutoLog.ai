@@ -20,10 +20,11 @@ LOGIN_FORM_HTML = """
 
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
-     
+
     # POST (form submit)
-    email = request.form.get("email")
-    password = request.form.get("password")
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
 
     user = User.query.filter_by(email=email).first()
     if user and user.check_password(password) and user.role == "admin":
@@ -33,7 +34,8 @@ def login():
         session.permanent = True
         current_app.permanent_session_lifetime = timedelta(days=7)
 
-        return redirect("/admin")   # redirect to flask-admin UI
+        return jsonify({"message": "Login successful", "redirect": "/admin"}), 200
+
     else:
         return "Invalid credentials or not admin", 401
 
@@ -60,4 +62,31 @@ def debug_auth():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
- 
+# Add this temporary route to create an admin user for testing
+@admin_bp.route("/create-admin", methods=["POST"])
+def create_admin():
+    """Create an admin user for testing"""
+    try:
+        # Check if admin already exists
+        existing_admin = User.query.filter_by(email="admin@autolog.com").first()
+        if existing_admin:
+            return jsonify({"message": "Admin user already exists", "email": "admin@autolog.com"}), 200
+        
+        admin_user = User(
+            username="admin",
+            email="admin@autolog.com", 
+            role="admin"
+        )
+        admin_user.set_password("admin03004196455")
+        
+        db.session.add(admin_user)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Admin user created successfully",
+            "email": "admin@autolog.com",
+            "password": "admin03004196455"
+        }), 201
+    except Exception as e:
+        print(f"Error creating admin: {e}")
+        return jsonify({"error": str(e)}), 500
