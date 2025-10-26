@@ -1,35 +1,30 @@
 # safe_model_view.py
-from flask_admin.contrib.sqla import ModelView #type:ignore
-from flask_login import current_user #type:ignore
-from wtforms.fields import SelectField #type:ignore
+from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user
+from flask import redirect, url_for, request
+import logging
+
+logger = logging.getLogger(__name__)
 
 class BaseSecureModelView(ModelView):
     form_excluded_columns = ('created_at',)
 
     def is_accessible(self):
-        try:
-            print("is_accessible called")
-            print("Authenticated:", current_user.is_authenticated)
-            print("User role:", getattr(current_user, "role", None))
-            return current_user.is_authenticated and current_user.role == "admin"
-        except Exception as e:
-            print("Error in is_accessible:", e)
-            return False
-
+        print(f"🔍 Checking access | Authenticated: {current_user.is_authenticated}, Role: {getattr(current_user, 'role', None)}")
+        return current_user.is_authenticated and current_user.role == 'admin'
 
     def inaccessible_callback(self, name, **kwargs):
-        # redirect to admin login page
-        from flask import redirect, url_for #type:ignore
-        return redirect(url_for("admin_auth.login"))
-
+        print("🚫 Redirecting unauthenticated user to admin login")
+        return redirect('/admin-login')
+    
 class UserAdmin(BaseSecureModelView):
-
-    form_excluded_columns = ('created_at', 'role',)
+    form_excluded_columns = ('created_at', 'role', 'password')
     can_create = False    
     can_delete = False
+    column_exclude_list = ['password']
+    column_list = ['id', 'username', 'email', 'role', 'created_at']
 
     def on_model_change(self, form, model, is_created):
-
         if is_created:
             model.role = "user"
         return super().on_model_change(form, model, is_created)

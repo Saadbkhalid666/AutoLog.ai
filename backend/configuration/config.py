@@ -14,11 +14,22 @@ class Config:
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
+    
+    # Flask-Login session configuration
     PERMANENT_SESSION_LIFETIME = timedelta(hours=6)  
-    WTF_CSRF_ENABLED = True
-    SESSION_COOKIE_SECURE = False      # keep False for localhost
+    SESSION_COOKIE_NAME = 'session'
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = "Lax"
-
- 
-   
+    SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    
+    # Flask-WTF CSRF configuration
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_CHECK_DEFAULT = False  # Disable CSRF by default, enable per route
+    
+    # Remember me cookie
+    REMEMBER_COOKIE_DURATION = timedelta(days=7)
+    REMEMBER_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_SECURE = False
+    SESSION_COOKIE_DOMAIN=None
+    SESSION_COOKIE_NAME="flask_login_session"
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)

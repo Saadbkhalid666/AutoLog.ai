@@ -1,18 +1,18 @@
 // src/app/components/admin-dashboard/admin-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminService, User, FuelLog, Reminder } from '../../services/admin.service';
+import { AdminService, User, FuelLog, Reminder } from '../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @Component({
-  selector: 'app-admin',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxEchartsModule],
-  templateUrl: './admin.html',
-  styleUrls: ['./admin.css']
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css'],
 })
-export class AdminComponent implements OnInit {
+export class Dashboard implements OnInit {
   users: User[] = [];
   logs: FuelLog[] = [];
   reminders: Reminder[] = [];
@@ -39,27 +39,27 @@ export class AdminComponent implements OnInit {
 
   loadAllData() {
     this.adminService.getAllUsers().subscribe({
-      next: u => {
+      next: (u) => {
         this.users = Array.isArray(u) ? u : (u as any).users || [];
         this.buildUsersChart();
       },
-      error: e => console.error(e)
+      error: (e) => console.error(e),
     });
 
     this.adminService.getAllLogs().subscribe({
-      next: l => {
+      next: (l) => {
         this.logs = Array.isArray(l) ? l : (l as any).fuel_logs || [];
         this.buildLogsChart();
       },
-      error: e => console.error(e)
+      error: (e) => console.error(e),
     });
 
     this.adminService.getAllReminders().subscribe({
-      next: r => {
+      next: (r) => {
         this.reminders = Array.isArray(r) ? r : (r as any).reminders || [];
         this.buildRemindersChart();
       },
-      error: e => console.error(e)
+      error: (e) => console.error(e),
     });
   }
 
@@ -68,9 +68,12 @@ export class AdminComponent implements OnInit {
     this.editingType = type;
     this.editingId = id;
     const controls: any = {};
-    Object.keys(data).forEach(k => controls[k] = [data[k]]);
+    Object.keys(data).forEach((k) => (controls[k] = [data[k]]));
     this.editForm = this.fb.group(controls);
-    setTimeout(() => document.getElementById('admin-edit-panel')?.scrollIntoView({ behavior: 'smooth' }), 100);
+    setTimeout(
+      () => document.getElementById('admin-edit-panel')?.scrollIntoView({ behavior: 'smooth' }),
+      100
+    );
   }
 
   cancelEdit() {
@@ -83,8 +86,10 @@ export class AdminComponent implements OnInit {
     if (!this.editingType || this.editingId === null) return;
     this.loading = true;
     let obs;
-    if (this.editingType === 'user') obs = this.adminService.updateUser(this.editingId, this.editForm.value);
-    else if (this.editingType === 'log') obs = this.adminService.updateLog(this.editingId, this.editForm.value);
+    if (this.editingType === 'user')
+      obs = this.adminService.updateUser(this.editingId, this.editForm.value);
+    else if (this.editingType === 'log')
+      obs = this.adminService.updateLog(this.editingId, this.editForm.value);
     else obs = this.adminService.updateReminder(this.editingId, this.editForm.value);
 
     obs.subscribe({
@@ -93,11 +98,11 @@ export class AdminComponent implements OnInit {
         this.loadAllData();
         this.cancelEdit();
       },
-      error: err => {
+      error: (err) => {
         this.loading = false;
         this.error = err?.error?.message || 'Update failed';
         console.error(err);
-      }
+      },
     });
   }
 
@@ -110,7 +115,7 @@ export class AdminComponent implements OnInit {
 
     obs.subscribe({
       next: () => this.loadAllData(),
-      error: err => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
@@ -136,13 +141,13 @@ export class AdminComponent implements OnInit {
     // produce map dateKey -> count for last N days
     const labels = this.makeWindowLabels(days);
     const countsMap: Record<string, number> = {};
-    labels.forEach(l => countsMap[l] = 0);
+    labels.forEach((l) => (countsMap[l] = 0));
 
-    items.forEach(it => {
+    items.forEach((it) => {
       let raw = it[dateField];
       if (!raw) return;
       // support Date object or ISO string
-      const dt = (raw instanceof Date) ? raw : new Date(raw);
+      const dt = raw instanceof Date ? raw : new Date(raw);
       if (isNaN(dt.getTime())) return;
       const key = this.getDateKey(dt);
       if (key in countsMap) countsMap[key] += 1;
@@ -150,32 +155,31 @@ export class AdminComponent implements OnInit {
 
     return {
       labels,
-      data: labels.map(l => countsMap[l] || 0)
+      data: labels.map((l) => countsMap[l] || 0),
     };
   }
 
   private buildUsersChart() {
-  const roles = this.users.reduce((acc: Record<string, number>, u) => {
-    acc[u.role] = (acc[u.role] || 0) + 1;
-    return acc;
-  }, {});
+    const roles = this.users.reduce((acc: Record<string, number>, u) => {
+      acc[u.role] = (acc[u.role] || 0) + 1;
+      return acc;
+    }, {});
 
-  this.usersChartOptions = {
-    title: { text: 'User Distribution by Role', left: 'center', textStyle: { color: '#42f5d8' } },
-    tooltip: { trigger: 'item' },
-    legend: { bottom: 0, textStyle: { color: '#cfeee6' } },
-    series: [
-      {
-        name: 'Users',
-        type: 'pie',
-        radius: '60%',
-        data: Object.keys(roles).map(role => ({ name: role, value: roles[role] }))
-      }
-    ],
-    textStyle: { color: '#cfeee6' }
-  };
-}
-
+    this.usersChartOptions = {
+      title: { text: 'User Distribution by Role', left: 'center', textStyle: { color: '#42f5d8' } },
+      tooltip: { trigger: 'item' },
+      legend: { bottom: 0, textStyle: { color: '#cfeee6' } },
+      series: [
+        {
+          name: 'Users',
+          type: 'pie',
+          radius: '60%',
+          data: Object.keys(roles).map((role) => ({ name: role, value: roles[role] })),
+        },
+      ],
+      textStyle: { color: '#cfeee6' },
+    };
+  }
 
   private buildLogsChart() {
     // FuelLog date field is usually 'date'
@@ -184,30 +188,65 @@ export class AdminComponent implements OnInit {
     this.logsChartOptions = {
       title: { text: 'Fuel Logs (daily)', left: 'center', textStyle: { color: '#42f5d8' } },
       tooltip: { trigger: 'axis' },
-      xAxis: { type: 'category', data: processed.labels, axisLabel: { rotate: 30, color: '#cfeee6' } },
+      xAxis: {
+        type: 'category',
+        data: processed.labels,
+        axisLabel: { rotate: 30, color: '#cfeee6' },
+      },
       yAxis: { type: 'value', axisLabel: { color: '#cfeee6' } },
       grid: { left: 10, right: 10, bottom: 60 },
-      series: [{ name: 'Logs', type: 'line', data: processed.data, smooth: true, lineStyle: { width: 2 }, areaStyle: {} }],
-      textStyle: { color: '#cfeee6' }
+      series: [
+        {
+          name: 'Logs',
+          type: 'line',
+          data: processed.data,
+          smooth: true,
+          lineStyle: { width: 2 },
+          areaStyle: {},
+        },
+      ],
+      textStyle: { color: '#cfeee6' },
     };
   }
 
   private buildRemindersChart() {
     // Reminders due_date or dueAt
-    const remindersNormalized = this.reminders.map(r => {
-      return { date: r.due_date };
-    }).map(x => ({ date: x.date }));
+    const remindersNormalized = this.reminders
+      .map((r) => {
+        return { date: r.due_date };
+      })
+      .map((x) => ({ date: x.date }));
 
-    const processed = this.buildSeriesCountsByDay(remindersNormalized.map(x => ({ date: x.date })), 'date');
+    const processed = this.buildSeriesCountsByDay(
+      remindersNormalized.map((x) => ({ date: x.date })),
+      'date'
+    );
 
     this.remindersChartOptions = {
-      title: { text: 'Service Reminders (due daily)', left: 'center', textStyle: { color: '#42f5d8' } },
+      title: {
+        text: 'Service Reminders (due daily)',
+        left: 'center',
+        textStyle: { color: '#42f5d8' },
+      },
       tooltip: { trigger: 'axis' },
-      xAxis: { type: 'category', data: processed.labels, axisLabel: { rotate: 30, color: '#cfeee6' } },
+      xAxis: {
+        type: 'category',
+        data: processed.labels,
+        axisLabel: { rotate: 30, color: '#cfeee6' },
+      },
       yAxis: { type: 'value', axisLabel: { color: '#cfeee6' } },
       grid: { left: 10, right: 10, bottom: 60 },
-      series: [{ name: 'Reminders', type: 'line', data: processed.data, smooth: true, lineStyle: { width: 2 }, areaStyle: {} }],
-      textStyle: { color: '#cfeee6' }
+      series: [
+        {
+          name: 'Reminders',
+          type: 'line',
+          data: processed.data,
+          smooth: true,
+          lineStyle: { width: 2 },
+          areaStyle: {},
+        },
+      ],
+      textStyle: { color: '#cfeee6' },
     };
   }
 }
