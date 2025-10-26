@@ -39,6 +39,7 @@ export class Reminder implements OnInit {
   }
 
   addReminder() {
+    this.loading = true
     if (!this.newReminder.service_type || !this.newReminder.due_date || !this.newReminder.note) {
       this.errorMsg = 'Please fill in all fields.';
       return;
@@ -48,6 +49,7 @@ export class Reminder implements OnInit {
       next: () => {
         this.newReminder = { service_type: '', due_date: '', note: '' };
         this.getReminders();
+        this.loading=false
       },
       error: (err) => {
         this.errorMsg = err.error?.error || 'Failed to add reminder';

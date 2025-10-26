@@ -43,6 +43,7 @@ export class FuelLogs implements OnInit {
   }
 
   addManualLog() {
+    this.loading= true
     const payload: Partial<FuelLog> = {
       date: this.manualLog.date || undefined,
       litres: Number(this.manualLog.litres || 0),
@@ -54,6 +55,7 @@ export class FuelLogs implements OnInit {
       next: () => {
         this.manualLog = { date: '', litres: 0, price: 0, odometer: 0 };
         this.loadFuelLogs();
+        this.loading = false
       },
       error: (err) => {
         console.error(err);

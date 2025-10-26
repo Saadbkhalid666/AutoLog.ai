@@ -7,16 +7,7 @@ from utils.extensions import db
 
 admin_bp = Blueprint("admin_auth", __name__)
 
-LOGIN_FORM_HTML = """
-<!doctype html>
-<title>Admin Login</title>
-<h3>Admin Login</h3>
-<form method="post">
-  <input name="email" placeholder="Email" required><br>
-  <input name="password" type="password" placeholder="Password" required><br>
-  <button type="submit">Login</button>
-</form>
-"""
+ 
 
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
