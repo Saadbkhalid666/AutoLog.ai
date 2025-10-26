@@ -1,11 +1,11 @@
-from flask_cors import CORS #type:ignore
-import atexit
-import logging
-from flask import Flask #type:ignore
-from flask_admin import Admin #type:ignore
-from flask_migrate import Migrate #type:ignore
+import  logging
+from flask import Flask #type: ignore
+from flask_admin import Admin #type: ignore
+from flask_admin.contrib.sqla import ModelView #type: ignore
+from flask_cors import CORS #type: ignore
+from flask_migrate import Migrate #type: ignore
 from configuration.config import Config
-from utils.extensions import db, mail, csrf
+from utils.extensions import db, mail
 from routes.auth_route import auth_bp
 from routes.assistant_route import chat_bp
 from routes.fuel_logs_route import fuel_log_bp
@@ -13,122 +13,46 @@ from routes.service_reminders_route import service_reminder_bp
 from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders
-from apscheduler.schedulers.background import BackgroundScheduler #type:ignore
-from flask_jwt_extended import JWTManager #type:ignore
-from routes.contact_form_route import contact_bp
-from flask_login import LoginManager #type:ignore
-from flask_talisman import Talisman #type:ignore
-from flask_limiter import Limiter #type:ignore
-from flask_limiter.util import get_remote_address #type:ignore
-from routes.admin_route import admin_bp
-from view.safe_model_view import UserAdmin, BaseSecureModelView
-from routes.dashboard_routes import dashboard_bp
+from apscheduler.schedulers.background import  BackgroundScheduler #type: ignore
+import atexit
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "http://192.168.1.7:4200"}}, supports_credentials=True)
     app.config.from_object(Config)
-
-    CORS(app, 
-         supports_credentials=True,
-         origins=[
-             "http://localhost:4200",
-             "http://127.0.0.1:4200", 
-             "http://localhost:5000",
-             "http://127.0.0.1:5000"
-         ],
-         allow_headers=["Content-Type", "Authorization"],
-         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-         expose_headers=["Set-Cookie"]
-    )
-
-    # Initialize extensions
     db.init_app(app)
     mail.init_app(app)
-    csrf.init_app(app)
-    
-    # CSRF exemptions
-    csrf.exempt(auth_bp)
-    csrf.exempt(chat_bp)
-    csrf.exempt(fuel_log_bp)
-    csrf.exempt(service_reminder_bp)
-    csrf.exempt(contact_bp)
-    csrf.exempt(admin_bp)
-    csrf.exempt(dashboard_bp)
 
     migrate = Migrate(app, db)
-    jwt = JWTManager(app)
 
-    # Flask-Login configuration
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = "admin.login"  # Blueprint endpoint
-    login_manager.session_protection = "strong"
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        try:
-            return User.query.get(int(user_id))
-        except Exception as e:
-            logging.error(f"Error loading user: {e}")
-            return None
-
-    # Security middleware
-    Talisman(app, content_security_policy=None)
-    
-    # Rate limiting
-    limiter = Limiter(
-        key_func=get_remote_address, 
-        default_limits=["200 per day", "50 per hour"]
-    )
-    limiter.init_app(app)
-    limiter.exempt(admin_bp)
-    limiter.exempt(auth_bp)
-
-    # Register blueprints
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(chat_bp, url_prefix="/chat")
     app.register_blueprint(fuel_log_bp, url_prefix="/vehicle")
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
-    app.register_blueprint(contact_bp, url_prefix="/form")
-    app.register_blueprint(admin_bp, url_prefix="/admin_auth")
-    app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
 
-    # Flask-Admin configuration
-    admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3", url="/admin")
-    admin.add_view(UserAdmin(User, db.session, name="Users", category="Models"))
-    admin.add_view(BaseSecureModelView(FuelLog, db.session, name="Fuel Logs", category="Models"))
-    admin.add_view(BaseSecureModelView(ServiceReminders, db.session, name="Service Reminders", category="Models"))
-    # Scheduler setup
+    admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
+    admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(FuelLog, db.session))
+    admin.add_view(ModelView(ServiceReminders, db.session))
+
     scheduler = BackgroundScheduler()
     app.scheduler = scheduler
     scheduler.start()
-    
-    # Proper shutdown handling
-    def shutdown_scheduler():
-        if scheduler.running:
-            scheduler.shutdown()
-    
-    atexit.register(shutdown_scheduler)
+    atexit.register(lambda: scheduler.shutdown())
+    logger.info("APScheduler started")
 
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s %(levelname)s %(name)s %(message)s'
-    )
-    logger = logging.getLogger(__name__)
-
-    # Create database tables
     with app.app_context():
-        try:
-            db.create_all()
-            logger.info("Database tables created successfully")
-            logger.info("Application started successfully")
-        except Exception as e:
-            logger.error(f"Database creation error: {e}")
-            raise
+        db.create_all()
+        if not scheduler.running:
+            scheduler.start()
+            logger.info("Database tables created")
 
     return app
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(host="192.168.1.7", port=5000, debug=True)
