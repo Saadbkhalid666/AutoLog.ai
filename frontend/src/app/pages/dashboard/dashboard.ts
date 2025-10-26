@@ -6,11 +6,11 @@ import { CommonModule } from '@angular/common';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @Component({
-  selector: 'app-admin',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, NgxEchartsModule],
-  templateUrl: './admin.html',
-  styleUrls: ['./admin.css'],
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css'],
 })
 export class Dashboard implements OnInit {
   users: User[] = [];
