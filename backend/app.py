@@ -26,6 +26,7 @@ from flask_limiter.util import get_remote_address #type:ignore
 from datetime import timedelta
 from routes.admin_route import admin_bp
 from view.safe_model_view import UserAdmin,BaseSecureModelView
+from routes.dashboard_routes import dashboard_bp
 
 
 
@@ -72,7 +73,6 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        from models.User import User
         return User.query.get(int(user_id))
 
 
@@ -89,6 +89,7 @@ def create_app():
     app.register_blueprint(service_reminder_bp, url_prefix="/service-reminders")
     app.register_blueprint(contact_bp, url_prefix="/form")
     app.register_blueprint(admin_bp, url_prefix="/admin_auth")
+    app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
     admin.add_view(UserAdmin(User, db.session))

@@ -30,7 +30,8 @@ export interface Reminder {
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = 'http://127.0.0.1:5000/admin_auth'; 
+  private baseUrl = 'http://127.0.0.1:5000/dashboard'; 
+  private adminUrl = 'http://127.0.0.1:5000/admin';
 
   constructor(private http: HttpClient) {}
 
@@ -74,7 +75,7 @@ export class AdminService {
   }
 
   adminLogin(credentials: { email: string; password: string }): Observable<any> {
-  return this.http.post<any>(`${this.baseUrl}/login`, credentials, {
+  return this.http.post<any>(`${this.adminUrl}/login`, credentials, {
     withCredentials: true 
   });
 }
