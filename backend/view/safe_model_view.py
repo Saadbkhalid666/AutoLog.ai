@@ -10,11 +10,15 @@ class BaseSecureModelView(ModelView):
     form_excluded_columns = ('created_at',)
 
     def is_accessible(self):
-        """TEMPORARY: Allow access to test if Flask-Admin works"""
-        print("🚨 TEMPORARY: Allowing access without authentication")
-        return True  # Change this to True temporarily
+        # Check if user is authenticated and role is admin
+        if current_user.is_authenticated and getattr(current_user, "role", None) == "admin":
+            print("✅ Admin access granted")
+            return True
+        print(f"❌ Access denied | Authenticated: {current_user.is_authenticated}, Role: {getattr(current_user, 'role', None)}")
+        return False
 
     def inaccessible_callback(self, name, **kwargs):
+        # Redirect to admin login if not accessible
         return redirect('/admin-login')
 class UserAdmin(BaseSecureModelView):
     form_excluded_columns = ('created_at', 'role', 'password')
