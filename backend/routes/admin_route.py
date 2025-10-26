@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, redirect, url_for, render_template_string, current_app, session
 from flask_login import login_user, logout_user, login_required, current_user
 from models.User import User
 from datetime import timedelta
@@ -7,53 +7,37 @@ from utils.extensions import db
 
 admin_bp = Blueprint("admin_auth", __name__)
 
-@admin_bp.route("/login", methods=["POST"])
+LOGIN_FORM_HTML = """
+<!doctype html>
+<title>Admin Login</title>
+<h3>Admin Login</h3>
+<form method="post">
+  <input name="email" placeholder="Email" required><br>
+  <input name="password" type="password" placeholder="Password" required><br>
+  <button type="submit">Login</button>
+</form>
+"""
+
+@admin_bp.route("/login", methods=["GET", "POST"])
 def login():
-    try:
-        print("🔍 Login endpoint called")
-        data = request.get_json()
-        print(f"📦 Request data: {data}")
-        
-        if not data:
-            return jsonify({"error": "No data provided"}), 400
-            
-        email = data.get("email")
-        password = data.get("password")
+    if request.method == "GET":
+        return render_template_string(LOGIN_FORM_HTML)
 
-        if not email or not password:
-            return jsonify({"error": "Email and password required"}), 400
+    # POST (form submit)
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-        print(f"🔐 Checking user: {email}")
-        user = User.query.filter_by(email=email).first()
-        print(f"👤 User found: {user is not None}")
+    user = User.query.filter_by(email=email).first()
+    if user and user.check_password(password) and user.role == "admin":
+        login_user(user, remember=True)
 
-        if user:
-            print(f"🔑 Checking password and role...")
-            print(f"📝 User role: {user.role}")
-            password_correct = user.check_password(password)
-            print(f"🔑 Password correct: {password_correct}")
-            
-        if user and user.check_password(password) and user.role == "admin":
-            print("✅ Admin credentials verified")
-            
-            # Login user with Flask-Login
-            login_user(user, remember=True)
-            
-            print(user)
-            print(f"🎪 User logged in via Flask-Login: {current_user.is_authenticated}")
-            
-            return jsonify({
-                "message": "Admin login successful",
-                "redirect": "/admin"
-            }), 200
-        else:
-            print("❌ Invalid credentials or not admin")
-            return jsonify({"error": "Invalid credentials or not admin"}), 401
-            
-    except Exception as e:
-        print(f"🚨 LOGIN ERROR: {str(e)}")
-        print(f"📝 TRACEBACK: {traceback.format_exc()}")
-        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+        # ensure session is permanent for the lifetime configured
+        session.permanent = True
+        current_app.permanent_session_lifetime = timedelta(days=7)
+
+        return redirect("/admin")   # redirect to flask-admin UI
+    else:
+        return "Invalid credentials or not admin", 401
 
 @admin_bp.route("/logout")
 @login_required

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Admin } from '../../services/admin.service';
 
 @Component({
   selector: 'app-access-form',
   imports: [CommonModule, FormsModule],
-  templateUrl: './access-form.html'
+  templateUrl: './access-form.html',
 })
 export class AccessFormComponent {
   email = '';
@@ -15,7 +15,7 @@ export class AccessFormComponent {
   showPassword = false;
   isLoading = false;
 
-  constructor(private authService: AdminService) {}
+  constructor(private authService: Admin) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -34,7 +34,7 @@ export class AccessFormComponent {
       next: (response: any) => {
         this.isLoading = false;
         console.log('✅ Login successful:', response);
-        
+
         // Add a small delay to ensure session cookie is set
         setTimeout(() => {
           console.log('🔄 Redirecting to Flask-Admin...');
@@ -45,7 +45,7 @@ export class AccessFormComponent {
         this.isLoading = false;
         console.error('❌ Login error:', err);
         this.errorMessage = err?.error?.error || 'Login failed. Please check your credentials.';
-      }
+      },
     });
   }
 }

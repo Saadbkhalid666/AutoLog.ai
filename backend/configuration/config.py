@@ -32,3 +32,4 @@ class Config:
     REMEMBER_COOKIE_SECURE = False
     SESSION_COOKIE_DOMAIN=None
     SESSION_COOKIE_NAME="flask_login_session"
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
