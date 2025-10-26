@@ -1,0 +1,86 @@
+<div class="min-h-screen flex items-center justify-center bg-black animate-[fadeIn_0.6s_ease-out]">
+  <div
+    class="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-sm transform transition-all duration-500 hover:scale-105 border border-white/20"
+  >
+    <h2 class="text-2xl font-bold text-lime-400 text-center mb-6">Admin Login</h2>
+
+    <form (ngSubmit)="onLogin()" class="space-y-4">
+      <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="email"
+        name="email"
+        required
+        class="w-full px-4 py-2 bg-black/60 text-lime-400 border border-lime-400 rounded-lg focus:outline-none focus:ring focus:ring-lime-400 transition-all"
+      />
+
+      <div class="relative">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          class="w-full px-4 py-2 bg-black/60 text-lime-400 border border-lime-400 rounded-lg focus:outline-none focus:ring focus:ring-lime-400 transition-all pr-10"
+        />
+
+        <!-- Eye Icon -->
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute inset-y-0 right-3 flex items-center text-lime-400 hover:text-lime-300 focus:outline-none"
+        >
+          <svg
+            *ngIf="!showPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+
+          <!-- Eye Off Icon -->
+          <svg
+            *ngIf="showPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 013.338-4.972M9.88 9.88a3 3 0 104.24 4.24M3 3l18 18"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full py-2 bg-lime-400 text-black font-bold rounded-lg hover:bg-lime-300 transition-all duration-300"
+      >
+        Login
+      </button>
+    </form>
+
+    <p *ngIf="errorMessage" class="text-red-400 text-center mt-4 animate-pulse">
+      {{ errorMessage }}
+    </p>
+  </div>
+</div>

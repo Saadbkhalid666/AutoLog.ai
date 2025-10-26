@@ -1,0 +1,119 @@
+<div class="max-w-5xl mx-auto p-8 text-white">
+  <h2 class="text-3xl font-bold mb-6 text-center text-lime-400">Manual Fuel Logs</h2>
+
+  <!-- Add Fuel Log Form -->
+  <div class="bg-white/10 p-6 rounded-2xl mb-10 shadow-md border border-white/10 backdrop-blur-md">
+    <h3 class="text-xl font-semibold mb-4 text-gray-200 text-center">Add New Fuel Log</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+  
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Date</label>
+    <input [(ngModel)]="manualLog.date" type="date"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Litres</label>
+    <input [(ngModel)]="manualLog.litres" type="number" placeholder="Litres" 
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Price</label>
+    <input [(ngModel)]="manualLog.price" type="number" placeholder="Price"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+  <div class="flex flex-col">
+    <label class="mb-1 text-gray-400">Odometer</label>
+    <input [(ngModel)]="manualLog.odometer" type="number" placeholder="Odometer"
+      class="p-3 rounded-lg bg-transparent border border-white/20 focus:outline-none focus:border-lime-400 placeholder-gray-400">
+  </div>
+
+</div>
+
+    <button 
+  (click)="addManualLog()"
+  class="mt-5 w-full bg-lime-500 hover:bg-lime-600 text-black font-semibold py-3 rounded-xl transition-all duration-200"
+  [disabled]="loading">   
+  
+  <span *ngIf="!loading">Add Log</span>
+  <span *ngIf="loading">Loading...</span>
+</button>
+
+  </div>
+
+  <!-- Fuel Logs Table -->
+  <div class="bg-white/10 p-6 rounded-2xl shadow-md border border-white/10 backdrop-blur-md">
+    <h3 class="text-2xl font-bold mb-6 text-lime-400 text-center">Your Fuel Logs</h3>
+
+    <div *ngIf="fuelLogs.length > 0; else noLogs" class="overflow-x-auto">
+      <table class="w-full border border-white/10 text-sm rounded-lg overflow-hidden">
+        <thead class="bg-white/5">
+          <tr>
+            <th class="p-3 text-left">Date</th>
+            <th class="p-3 text-left">Litres</th>
+            <th class="p-3 text-left">Price</th>
+            <th class="p-3 text-left">Odometer</th>
+            <th class="p-3 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of fuelLogs" class="border-t border-white/10 hover:bg-white/5 transition-colors duration-150">
+            <!-- Date / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.date" type="date"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.date | date:'mediumDate' }}</span>
+            </td>
+
+            <!-- Litres / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.litres" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.litres }}</span>
+            </td>
+
+            <!-- Price / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.price" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.price }}</span>
+            </td>
+
+            <!-- Odometer / Edit -->
+            <td class="p-3">
+              <input *ngIf="editingLogId === log.id" [(ngModel)]="editingModel.odometer" type="number"
+                     class="bg-transparent border border-white/20 p-1 rounded" />
+              <span *ngIf="editingLogId !== log.id">{{ log.odometer }}</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="p-3 flex gap-2">
+              <button *ngIf="editingLogId !== log.id" (click)="startEdit(log)"
+                      class="text-blue-400 hover:underline">Edit</button>
+
+              <button *ngIf="editingLogId === log.id" (click)="saveEdit()"
+                      class="text-green-400 hover:underline">Save</button>
+
+              <button *ngIf="editingLogId === log.id" (click)="cancelEdit()"
+                      class="text-gray-400 hover:underline">Cancel</button>
+
+              <button (click)="deleteLog(log.id!)" class="text-red-400 hover:underline">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noLogs>
+      <p class="text-center text-gray-400 mt-4">No fuel logs yet</p>
+    </ng-template>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="bg-white/10 p-6 rounded-2xl shadow-md border border-white/10 backdrop-blur-md mt-10">
+    <h3 class="text-2xl font-bold mb-4 text-lime-400 text-center">Fuel Usage & Price Over Time</h3>
+    <div echarts [options]="chartOptions" class="w-full h-64"></div>
+  </div>
+</div>
