@@ -17,12 +17,12 @@
         <a
           routerLink="/home"
           routerLinkActive="text-[#42f5d8]"
-          class="hover:text-[#42f5d8] transition"
+          class="hover:text-[#42f5d8] transition  hover:cursor-pointer"
           >Home</a
         >
       </li>
       <li>
-        <a (click)="scrollTo('about')" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] transition"
+        <a (click)="scrollTo('about')" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8]  hover:cursor-pointer transition"
           >About</a
         >
       </li>
@@ -30,7 +30,7 @@
         <a
           (click)="scrollTo('services')"
           routerLinkActive="text-[#42f5d8]"
-          class="hover:text-[#42f5d8] transition"
+          class="hover:text-[#42f5d8] transition  hover:cursor-pointer"
           >Services</a
         >
       </li>
@@ -38,7 +38,7 @@
         <a
          (click)="scrollTo('contact')"
           routerLinkActive="text-[#42f5d8]"
-          class="hover:text-[#42f5d8] transition"
+          class="hover:text-[#42f5d8] transition  hover:cursor-pointer"
           >Contact</a
         >
       </li>
@@ -47,7 +47,7 @@
           *ngIf="role === 'admin'"
           routerLink="admin"
           routerLinkActive="text-[#42f5d8]"
-          class="hover:text-[#42f5d8] cursor-pointer"
+          class="hover:text-[#42f5d8]  hover:cursor-pointer"
         >
           Admin
         </a>
@@ -55,7 +55,7 @@
           *ngIf="role === 'admin'"
           routerLink="db-access-form"
           routerLinkActive="text-[#42f5d8]"
-          class="hover:text-[#42f5d8] cursor-pointer"
+          class="hover:text-[#42f5d8]  hover:cursor-pointer"
         >
           DB
         </a>
@@ -128,25 +128,25 @@
     role="menu"
     aria-label="Mobile Navigation"
   >
-    <a routerLink="" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8] cursor-pointer"
+    <a routerLink="" routerLinkActive="text-[#42f5d8]" class="hover:text-[#42f5d8]  hover:cursor-pointer"
       >Home</a
     >
     <a
       (click)="scrollTo('about')"
       routerLinkActive="text-[#42f5d8]"
-      class="hover:text-[#42f5d8] cursor-pointer"
+      class="hover:text-[#42f5d8] hover:cursor-pointer"
       >About</a
     >
     <a
       (click)="scrollTo('services')"
       routerLinkActive="text-[#42f5d8]"
-      class="hover:text-[#42f5d8] cursor-pointer"
+      class="hover:text-[#42f5d8] hover:cursor-pointer"
       >Services</a
     >
     <a
      (click)="scrollTo('contact')"
       routerLinkActive="text-[#42f5d8]"
-      class="hover:text-[#42f5d8] cursor-pointer"
+      class="hover:text-[#42f5d8]  hover:cursor-pointer"
       >Contact</a
     >
     <ng-container *ngIf="authService.userRole$ | async as role">
@@ -154,10 +154,19 @@
         *ngIf="role === 'admin'"
         routerLink="admin"
         routerLinkActive="text-[#42f5d8]"
-        class="hover:text-[#42f5d8] cursor-pointer"
+        class="hover:text-[#42f5d8]  hover:cursor-pointer"
       >
         Admin
       </a>
+      
+        <a
+          *ngIf="role === 'admin'"
+          routerLink="db-access-form"
+          routerLinkActive="text-[#42f5d8]"
+          class="hover:text-[#42f5d8]  hover:cursor-pointer"
+        >
+          DB
+        </a>
     </ng-container>
 
     <div class="flex flex-col gap-3 pt-2">

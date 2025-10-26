@@ -12,4 +12,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Footer {
   currentYear: number = new Date().getFullYear();
 
+  scrollTo(sectionId: string) {
+  const el = document.getElementById(sectionId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
 }
