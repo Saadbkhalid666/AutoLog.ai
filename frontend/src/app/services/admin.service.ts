@@ -31,7 +31,7 @@ export interface Reminder {
 })
 export class AdminService {
   private baseUrl = 'http://127.0.0.1:5000/dashboard'; 
-  private adminUrl = 'http://127.0.0.1:5000/admin';
+  private adminUrl = 'http://127.0.0.1:5000/admin_auth';
 
   constructor(private http: HttpClient) {}
 
@@ -75,9 +75,21 @@ export class AdminService {
   }
 
   adminLogin(credentials: { email: string; password: string }): Observable<any> {
-  return this.http.post<any>(`${this.adminUrl}/login`, credentials, {
-    withCredentials: true 
-  });
+    return this.http.post(`${this.adminUrl}/login`, credentials, {
+      withCredentials: true  // Crucial for session cookies
+    });
+  }
+
+  checkAuth(): Observable<any> {
+    return this.http.get(`${this.adminUrl}/debug-auth`, {
+      withCredentials: true
+    });
+  }
+
+  logout(): Observable<any> {
+    return this.http.get(`${this.adminUrl}/logout`, {
+      withCredentials: true
+    });
 }
 
 }
