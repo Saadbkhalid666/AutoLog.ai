@@ -13,7 +13,7 @@ export interface ContactPayload {
   providedIn: 'root'
 })
 export class ContactService {
-  private baseUrl = 'http://127.0.0.1:5000/'; 
+  private baseUrl = 'https://autolog-backend-7961ac6afab3.herokuapp.com/'; 
 
   constructor(private http: HttpClient) {}
 
