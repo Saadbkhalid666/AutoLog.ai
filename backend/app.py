@@ -94,7 +94,6 @@ def create_app():
     admin.add_view(UserAdmin(User, db.session, name="Users", category="Models"))
     admin.add_view(BaseSecureModelView(FuelLog, db.session, name="Fuel Logs", category="Models"))
     admin.add_view(BaseSecureModelView(ServiceReminders, db.session, name="Service Reminders", category="Models"))
-
     # Scheduler setup
     scheduler = BackgroundScheduler()
     app.scheduler = scheduler

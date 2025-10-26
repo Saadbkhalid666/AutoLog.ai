@@ -1,6 +1,10 @@
+# safe_model_view.py
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from flask import redirect, url_for
+from flask import redirect, url_for, request
+import logging
+
+logger = logging.getLogger(__name__)
 
 class BaseSecureModelView(ModelView):
     form_excluded_columns = ('created_at',)
@@ -8,18 +12,27 @@ class BaseSecureModelView(ModelView):
     def is_accessible(self):
         """Check if current user is authenticated and is admin"""
         try:
-            is_authenticated = current_user.is_authenticated
-            user_role = getattr(current_user, 'role', None)
-            print(f"Auth Check - Authenticated: {is_authenticated}, Role: {user_role}")
-            return is_authenticated and user_role == 'admin'
+            is_auth = current_user.is_authenticated
+            role = getattr(current_user, 'role', None)
+            user_id = getattr(current_user, 'id', None)
+            
+            print(f"🔐 AUTH DEBUG - User ID: {user_id}, Authenticated: {is_auth}, Role: {role}")
+            
+            if is_auth and role == 'admin':
+                print("✅ Access GRANTED to admin view")
+                return True
+            else:
+                print("❌ Access DENIED to admin view")
+                return False
+                
         except Exception as e:
-            print(f"Auth check error: {e}")
+            print(f"🚨 Error in is_accessible: {e}")
             return False
 
     def inaccessible_callback(self, name, **kwargs):
         """Redirect to frontend admin login page"""
-        print("Access denied - redirecting to login")
-        return redirect('/admin-login')  # Your Angular admin login page
+        print("🔒 Redirecting to login page")
+        return redirect('http://localhost:4200/admin-login')  # Your Angular login page
 
 class UserAdmin(BaseSecureModelView):
     form_excluded_columns = ('created_at', 'role', 'password')
