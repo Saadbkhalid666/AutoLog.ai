@@ -38,6 +38,7 @@ def login():
             
             # Login user with Flask-Login
             login_user(user, remember=True)
+            
             print(user)
             print(f"🎪 User logged in via Flask-Login: {current_user.is_authenticated}")
             

@@ -10,16 +10,13 @@ class BaseSecureModelView(ModelView):
     form_excluded_columns = ('created_at',)
 
     def is_accessible(self):
-        # Check if user is authenticated and role is admin
-        if current_user.is_authenticated and getattr(current_user, "role", None) == "admin":
-            print("✅ Admin access granted")
-            return True
-        print(f"❌ Access denied | Authenticated: {current_user.is_authenticated}, Role: {getattr(current_user, 'role', None)}")
-        return False
+        print(f"🔍 Checking access | Authenticated: {current_user.is_authenticated}, Role: {getattr(current_user, 'role', None)}")
+        return current_user.is_authenticated and current_user.role == 'admin'
 
     def inaccessible_callback(self, name, **kwargs):
-        # Redirect to admin login if not accessible
+        print("🚫 Redirecting unauthenticated user to admin login")
         return redirect('/admin-login')
+    
 class UserAdmin(BaseSecureModelView):
     form_excluded_columns = ('created_at', 'role', 'password')
     can_create = False    

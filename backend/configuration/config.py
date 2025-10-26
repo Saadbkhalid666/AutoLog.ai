@@ -31,3 +31,4 @@ class Config:
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_SECURE = False
     SESSION_COOKIE_DOMAIN=None
+    SESSION_COOKIE_NAME="flask_login_session"

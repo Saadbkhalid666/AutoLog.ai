@@ -61,7 +61,7 @@ def create_app():
     # Flask-Login configuration
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = "admin_auth.login"  # Blueprint endpoint
+    login_manager.login_view = "admin.login"  # Blueprint endpoint
     login_manager.session_protection = "strong"
 
     @login_manager.user_loader
