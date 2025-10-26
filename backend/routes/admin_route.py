@@ -1,5 +1,5 @@
-from flask import Blueprint, request, redirect, url_for, render_template_string, current_app, session, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Blueprint, request, redirect, url_for, render_template_string, current_app, session, jsonify #type:ignore
+from flask_login import login_user, logout_user, login_required, current_user #type:ignore
 from models.User import User
 from datetime import timedelta
 import traceback
