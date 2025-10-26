@@ -1,38 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient , HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
+export class AdminService {
+  private readonly baseUrl = 'http://127.0.0.1:5000/admin_auth';
 
-export class Admin {
-    
-    private adminUrl = 'http://127.0.0.1:5000/admin_auth'
-    constructor (private http: HttpClient){}
-    
-    adminLogin(credentials: { email: string; password: string }): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+  constructor(private http: HttpClient) {}
 
-    return this.http.post(`${this.adminUrl}/login`, credentials, {
-      headers: headers,
-      withCredentials: true  // Crucial for session cookies
+  adminLogin(credentials: { email: string; password: string }): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.baseUrl}/login`, credentials, {
+      headers,
+      withCredentials: true // for Flask session cookie
     });
   }
 
   checkAuth(): Observable<any> {
-    return this.http.get(`${this.adminUrl}/debug-auth`, {
+    return this.http.get(`${this.baseUrl}/debug-auth`, {
       withCredentials: true
     });
   }
 
   logout(): Observable<any> {
-    return this.http.get(`${this.adminUrl}/logout`, {
+    return this.http.get(`${this.baseUrl}/logout`, {
       withCredentials: true
     });
-}
+  }
 }
