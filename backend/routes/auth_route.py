@@ -87,7 +87,6 @@ def login():
 
     user = User.query.filter_by(email=email).first()
 
-    # ✅ Check hashed password properly
     if not user or not user.check_password(password):
         return jsonify({"message": "Invalid email or password!"}), 401
 

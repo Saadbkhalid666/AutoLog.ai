@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, jsonify
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required # type: ignore
 from models.User import User
 from models.fuel_log import FuelLog
 from models.service_reminders import ServiceReminders

@@ -91,7 +91,7 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
     admin = Admin(app, name="AutoLog Admin", template_mode="bootstrap3")
-    admin.add_view(ModelView(User, db.session))
+    admin.add_view(UserAdmin(User, db.session))
     admin.add_view(BaseSecureModelView(FuelLog, db.session))
     admin.add_view(BaseSecureModelView(ServiceReminders, db.session))
 
@@ -109,17 +109,7 @@ def create_app():
             scheduler.start()
             logger.info("Database tables created")
     
-        u = User(username="Admin", email="saadbkhalid666@gmail.com")
-        
-        if u:
-            u.role = "admin"
-            db.session.commit()
-        else:
-            u = User(username="Admin", email="saadbkhalid666@gmail.com")
-            u.set_password("Saadbinkhalid03004196455")
-            u.role = "admin"
-            db.session.add(u)
-            db.session.commit()
+         
 
         
     return app
