@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface User {
@@ -75,7 +75,12 @@ export class AdminService {
   }
 
   adminLogin(credentials: { email: string; password: string }): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
     return this.http.post(`${this.adminUrl}/login`, credentials, {
+      headers: headers,
       withCredentials: true  // Crucial for session cookies
     });
   }
@@ -90,6 +95,7 @@ export class AdminService {
     return this.http.get(`${this.adminUrl}/logout`, {
       withCredentials: true
     });
+  
 }
 
 }

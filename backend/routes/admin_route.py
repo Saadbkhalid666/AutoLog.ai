@@ -1,13 +1,19 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from models.User import User
+from datetime import timedelta
+import traceback
+from utils.extensions import db
 
 admin_bp = Blueprint("admin_auth", __name__)
 
 @admin_bp.route("/login", methods=["POST"])
 def login():
     try:
+        print("🔍 Login endpoint called")
         data = request.get_json()
+        print(f"📦 Request data: {data}")
+        
         if not data:
             return jsonify({"error": "No data provided"}), 400
             
@@ -17,79 +23,84 @@ def login():
         if not email or not password:
             return jsonify({"error": "Email and password required"}), 400
 
+        print(f"🔐 Checking user: {email}")
         user = User.query.filter_by(email=email).first()
+        print(f"👤 User found: {user is not None}")
 
+        if user:
+            print(f"🔑 Checking password and role...")
+            print(f"📝 User role: {user.role}")
+            password_correct = user.check_password(password)
+            print(f"🔑 Password correct: {password_correct}")
+            
         if user and user.check_password(password) and user.role == "admin":
-            # Force session creation by accessing session first
-            session['user_id'] = user.id
-            session.permanent = True
+            print("✅ Admin credentials verified")
             
-            # Then login the user
-            login_user(user, remember=True, force=True, duration=timedelta(hours=24))
-            
-            print(f"✅ Admin logged in: {user.email}")
-            print(f"📝 Session created - User ID: {user.id}, Role: {user.role}")
-            print(f"🔐 Session keys: {list(session.keys())}")
+            # Login user with Flask-Login
+            login_user(user, remember=True)
+            print(f"🎪 User logged in via Flask-Login: {current_user.is_authenticated}")
             
             return jsonify({
                 "message": "Admin login successful",
-                "redirect": "/admin",
-                "user": {
-                    "id": user.id,
-                    "email": user.email,
-                    "role": user.role
-                }
+                "redirect": "/admin"
             }), 200
         else:
-            print(f"❌ Login failed for email: {email}")
+            print("❌ Invalid credentials or not admin")
             return jsonify({"error": "Invalid credentials or not admin"}), 401
+            
     except Exception as e:
-        print(f"🚨 Login error: {e}")
-        return jsonify({"error": "Internal server error"}), 500
+        print(f"🚨 LOGIN ERROR: {str(e)}")
+        print(f"📝 TRACEBACK: {traceback.format_exc()}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
-@admin_bp.route("/session-info")
-def session_info():
-    """Check session contents"""
-    return jsonify({
-        "session_keys": list(session.keys()),
-        "session_data": dict(session),
-        "current_user": {
-            "authenticated": current_user.is_authenticated,
-            "id": getattr(current_user, 'id', None),
-            "email": getattr(current_user, 'email', None),
-            "role": getattr(current_user, 'role', None)
-        }
-    }), 200
 @admin_bp.route("/logout")
 @login_required
 def logout():
     try:
-        print(f"👋 Logging out user: {current_user.email}")
         logout_user()
         return jsonify({"message": "Logout successful", "redirect": "/admin-login"}), 200
     except Exception as e:
-        print(f"🚨 Logout error: {e}")
+        print(f"Logout error: {e}")
         return jsonify({"error": "Logout failed"}), 500
 
 @admin_bp.route("/debug-auth")
 def debug_auth():
     """Debug route to check authentication status"""
     try:
-        debug_info = {
+        return jsonify({
             "authenticated": current_user.is_authenticated,
             "user_id": getattr(current_user, 'id', None),
             "email": getattr(current_user, 'email', None),
-            "role": getattr(current_user, 'role', None),
-            "session_keys": list(session.keys()) if hasattr(session, 'keys') else []
-        }
-        print(f"🐛 DEBUG AUTH: {debug_info}")
-        return jsonify(debug_info), 200
+            "role": getattr(current_user, 'role', None)
+        }), 200
     except Exception as e:
-        print(f"🚨 Debug auth error: {e}")
         return jsonify({"error": str(e)}), 500
 
-@admin_bp.route("/test-session")
-def test_session():
-    """Test if session is working"""
-    session['test_key'] = 'test_value'
-    return jsonify({"session_set": True}), 200
+# Add this temporary route to create an admin user for testing
+@admin_bp.route("/create-admin", methods=["POST"])
+def create_admin():
+    """Create an admin user for testing"""
+    try:
+        # Check if admin already exists
+        existing_admin = User.query.filter_by(email="admin@autolog.com").first()
+        if existing_admin:
+            return jsonify({"message": "Admin user already exists", "email": "admin@autolog.com"}), 200
+        
+        admin_user = User(
+            username="admin",
+            email="admin@autolog.com", 
+            role="admin"
+        )
+        admin_user.set_password("admin123")
+        
+        db.session.add(admin_user)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Admin user created successfully",
+            "email": "admin@autolog.com",
+            "password": "admin123"
+        }), 201
+    except Exception as e:
+        print(f"Error creating admin: {e}")
+        return jsonify({"error": str(e)}), 500

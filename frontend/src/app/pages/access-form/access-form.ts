@@ -33,16 +33,17 @@ export class AccessFormComponent {
     this.authService.adminLogin({ email: this.email, password: this.password }).subscribe({
       next: (response: any) => {
         this.isLoading = false;
-        console.log('Login successful:', response);
+        console.log('✅ Login successful:', response);
         
-        // Redirect to Flask-Admin after successful login
+        // Add a small delay to ensure session cookie is set
         setTimeout(() => {
+          console.log('🔄 Redirecting to Flask-Admin...');
           window.location.href = 'http://127.0.0.1:5000/admin';
-        }, 100);
+        }, 500);
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Login error:', err);
+        console.error('❌ Login error:', err);
         this.errorMessage = err?.error?.error || 'Login failed. Please check your credentials.';
       }
     });

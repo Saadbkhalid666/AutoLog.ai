@@ -28,14 +28,18 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # CORS configuration with proper credentials support
     CORS(app, 
-         supports_credentials=True, 
+         supports_credentials=True,
          origins=[
              "http://localhost:4200",
-             "http://127.0.0.1:4200",  # Added for Angular dev server
-             "https://autolog-backend-7961ac6afab3.herokuapp.com"
-         ])
+             "http://127.0.0.1:4200", 
+             "http://localhost:5000",
+             "http://127.0.0.1:5000"
+         ],
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+         expose_headers=["Set-Cookie"]
+    )
 
     # Initialize extensions
     db.init_app(app)
