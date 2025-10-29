@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdminService {
-  private readonly baseUrl = 'https://autolog-backend-7961ac6afab3.herokuapp.com//admin_auth';
+  private readonly baseUrl =  'http://127.0.0.1:5000/admin_auth';
 
   constructor(private http: HttpClient) {}
 

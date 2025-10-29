@@ -30,7 +30,7 @@ export interface Reminder {
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = 'https://autolog-backend-7961ac6afab3.herokuapp.com/dashboard'; 
+  private baseUrl = 'http://127.0.0.1:5000/dashboard'; 
 
   constructor(private http: HttpClient) {}
 

@@ -14,7 +14,7 @@ export interface ChatResponse {
   providedIn: 'root'
 })
 export class AiService {
-  private baseUrl = 'https://autolog-backend-7961ac6afab3.herokuapp.com/chat' ;
+  private baseUrl = ' http://127.0.0.1:5000/chat' ;
 
   constructor(private http: HttpClient) {}
 
