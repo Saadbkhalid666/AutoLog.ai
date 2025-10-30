@@ -39,34 +39,33 @@ From **fuel logs** to **service reminders**, **AI chatbot assistance (Nex)** to 
 
 ## 📸 Screenshots  
 
-> Add your images to the `/images` or `/assets` folder and use the paths below 👇  
-
 ### 🏠 Landing Page  
-![Hero Section](./images/hero.png)
+![Hero Section](./images/hero.PNG)
 
 ### 🔐 Authentication  
-![Signup Page](./images/signup.png)  
-![Login Page](./images/login.png)  
-![OTP Verification](./images/otp.png)
+![Signup Page](./images/signup.PNG)  
+![Login Page](./images/login.PNG)  
+![OTP Verification](./images/otp.PNG)
 
 ### 📋 User Dashboard  
-![Fuel Logs](./images/fuellogs.png)  
-![Service Reminders](./images/reminder.png)
+
+![Fuel Logs](./images/fuellogs.PNG)  
+![Service Reminders](./images/reminder.PNG)
 
 ### 🤖 AI Assistant (Nex)  
-![AI Chat](./images/ai.png)
+![AI Chat](./images/ai.PNG)
 
 ### 🧾 OCR Upload  
-![OCR Scanner](./images/ocr.png)
+![OCR Scanner](./images/ocr.PNG)
 
 ### ⚙️ Admin Panel  
-![Admin Dashboard](./images/admin.png)  
-![Admin Dashboard - Extended](./images/admin2.png)
+![Admin Dashboard](./images/admin.PNG)  
+![Admin Dashboard - Extended](./images/admin2.PNG)
 
 ### 📜 Legal Pages  
-![Privacy Policy](./images/policy.png)  
-![Terms & Conditions](./images/terms.png)  
-![Footer Section](./images/footer.png)
+![Privacy Policy](./images/policy.PNG)  
+![Terms & Conditions](./images/terms.PNG)  
+![Footer Section](./images/footer.PNG)
 
 ---
 
