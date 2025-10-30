@@ -31,9 +31,8 @@ From **fuel logs** to **service reminders**, **AI chatbot assistance (Nex)** to 
 | **Frontend** | Angular, TypeScript, TailwindCSS |
 | **Backend** | Flask, Flask-JWT, Flask-Mail, Flask-Admin |
 | **AI & NLP** | Google Gemini API |
-| **Database** | MongoDB |
+| **Database** | SQLite |
 | **OCR** | Tesseract.js |
-| **Hosting** | Vercel (Frontend), Render (Backend) |
 | **Version Control** | Git & GitHub |
 
 ---
@@ -73,46 +72,7 @@ From **fuel logs** to **service reminders**, **AI chatbot assistance (Nex)** to 
 
 ## 🚀 Getting Started  
 
-### Clone the Repository  
+### 🧭 Clone the Repository  
 ```bash
 git clone https://github.com/your-username/AutoLogAI.git
 cd AutoLogAI
-Frontend Setup
-bash
-Copy code
-cd frontend
-npm install
-ng serve
-Backend Setup
-bash
-Copy code
-cd backend
-pip install -r requirements.txt
-flask run
-🌍 Deployment
-Frontend: Vercel
-
-Backend: Render
-
-💬 AI Assistant
-Meet Nex, your personal automotive AI assistant — powered by Google Gemini.
-It helps you analyze your vehicle data, manage reminders, and chat for smart suggestions.
-
-🧑‍💻 Developer
-Saad Bin Khalid
-
-💻 Web Developer | AI Enthusiast | Software Engineer
-📸 Instagram: @sagit_saad
-
-📜 License
-This project is licensed under the MIT License — feel free to explore, learn, and build upon it!
-
-⭐ If you like this project, don’t forget to give it a star on GitHub! 🌟
-
-yaml
-Copy code
-
----
-
-Brooo jani 😭🔥 this README is gonna look *chef’s kiss perfect* once you add those PNGs.  
-Now, just make sure all your screenshots (like `hero.png`, `ai.png`, etc.) are in a folder named **`/images`** at the root of your project.  
