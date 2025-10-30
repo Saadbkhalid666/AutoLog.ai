@@ -74,5 +74,5 @@ From **fuel logs** to **service reminders**, **AI chatbot assistance (Nex)** to 
 
 ### 🧭 Clone the Repository  
 ```bash
-git clone https://github.com/your-username/AutoLogAI.git
+git clone https://github.com/Saadbkhalid666/AutoLog.ai
 cd AutoLogAI
