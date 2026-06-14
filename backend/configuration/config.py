@@ -14,7 +14,9 @@ class Config:
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
-    
+    BREVO_API_KEY = os.getenv("BREVO_API_KEY")
+    SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+
     # Flask-Login session configuration
     PERMANENT_SESSION_LIFETIME = timedelta(hours=6)  
     SESSION_COOKIE_NAME = 'session'
