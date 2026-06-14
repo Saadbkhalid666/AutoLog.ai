@@ -1,8 +1,8 @@
-from flask_mail import Message #type: ignore
-from utils.extensions import mail
-from configuration.config import Config
-from flask import render_template_string #type: ignore
+from flask import render_template_string  # type: ignore
 from datetime import datetime
+from utils.send_email import send_email  # Brevo service
+from configuration.config import Config
+
 
 HTML_TEMPLATE = """
 <!doctype html>
@@ -12,13 +12,16 @@ HTML_TEMPLATE = """
       <h2 style="color:#00ff7f;margin:0 0 10px">AutoLog.ai — OTP Verification</h2>
       <p>Salam {{ username or "User" }},</p>
       <p>Your one-time code is:</p>
+
       <div style="text-align:center;margin:20px 0">
         <span style="font-size:28px;letter-spacing:6px;font-weight:bold;color:#00ff7f;
           padding:12px 24px;border:1px solid #333;border-radius:8px;display:inline-block">
           {{ otp }}
         </span>
       </div>
+
       <p>This code will expire in <strong>5 minutes</strong>. Do not share it with anyone.</p>
+
       <p style="color:#999;font-size:12px;margin-top:20px">
         &copy; {{ year }} AutoLog.ai — All rights reserved.
       </p>
@@ -26,9 +29,10 @@ HTML_TEMPLATE = """
   </body>
 </html>
 """
+
+
 def send_otp(email, otp, username=None):
     subject = "Your AutoLog.ai OTP Code"
-    sender = Config.MAIL_USERNAME  
 
     plain_body = f"Your AutoLog.ai OTP code is: {otp}\nThis code will expire in 5 minutes."
 
@@ -39,12 +43,13 @@ def send_otp(email, otp, username=None):
         year=datetime.utcnow().year
     )
 
-    msg = Message(subject, sender=sender, recipients=[email])
-    msg.body = plain_body
-    msg.html = html_body
-
     try:
-        mail.send(msg)
-        print(f" OTP sent to {email}")
+        send_email(
+            to_email=email,
+            subject=subject,
+            html_content=html_body
+        )
+        print(f"OTP sent to {email}")
+
     except Exception as e:
-        print(f" Error sending OTP: {e}")
+        print(f"Error sending OTP: {e}")
