@@ -56,7 +56,7 @@ CONTACT_FORM_TEMPLATE = """
 """
 
 
-def send_email(user_name, user_email, user_message, admin_mail):
+def send_contact_email(user_name, user_email, user_message, admin_mail):
     subject = "New Contact Form Submission"
 
     html_body = render_template_string(

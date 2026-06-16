@@ -51,7 +51,6 @@ def verify_otp():
         del temporary_users[otp]
         return jsonify({"message": "OTP has expired"}), 400
 
-    # ✅ Create user with hashed password
     user = User(
         username=storedData["username"],
         email=storedData["email"],

@@ -1,6 +1,6 @@
 from flask import jsonify, request, Blueprint #type:ignore
 from models.User import User
-from utils.contact_mail import send_email
+from utils.contact_mail import send_contact_email
 
 contact_bp = Blueprint("form", __name__)
 
@@ -13,5 +13,5 @@ def submit_form():
     admin = User.query.filter_by(role="admin").first()
     admin_email = admin.email if email else None
 
-    send_email(name,email,mmessage,admin_email)
+    send_contact_email(name,email,mmessage,admin_email)
     return jsonify({"message":"Form submitted!"}), 200
