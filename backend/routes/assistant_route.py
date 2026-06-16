@@ -4,8 +4,8 @@ import os  # type:ignore
 
 chat_bp = Blueprint("chat", __name__)
 
-# ✅ OpenRouter Settings
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") 
+ 
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") or "sk-or-v1-REPLACE_WITH_YOURS"
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_MODEL = "openai/gpt-4o-mini"   
 
